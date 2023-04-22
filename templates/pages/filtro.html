@@ -1,0 +1,115 @@
+{% include "header.html" %}
+{% load custom_filters %}
+
+<a class="btn btn-secondary" href="/graphic">Voltar</a>
+<table class="table table-dark">
+  <thead>
+    <tr>
+      {% for dado in dados %}
+      {% if dado.titles != None and dado.titles != 'nan' %}
+      <th scope="col" style="font-size: 12px;">{{dado.titles}}</th>
+      {% endif %}
+      {% endfor %}
+      <th scope="col" style="font-size: 12px;">Data de previsão final</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for objeto in objetos %}
+    <tr>
+      {% if objeto.item is not none %}
+        <th scope="row">{{objeto.item}}</th>
+      {% else %}
+        <th></th>
+      {% endif %}
+      {% if objeto.cod_sol_compra is not none %}
+        <td style="font-size: 11px;">{{objeto.cod_sol_compra }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.cod_obra is not none %}
+        <td style="font-size: 11px;">{{objeto.cod_obra }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.cod_insumo is not none %}
+        <td style="font-size: 11px;">{{objeto.cod_insumo }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.desc_insumo is not none %}
+        <td style="font-size: 11px;">{{objeto.desc_insumo }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.quant_sol is not none %}
+        <td style="font-size: 11px;">{{objeto.quant_sol }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.data_sol is not none %}
+        <td style="font-size: 11px;">{{objeto.data_sol }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.data_sol_cheg_obra is not none %}
+        <td style="font-size: 11px;">{{objeto.data_sol_cheg_obra }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.num_ped_compra is not none %}
+        <td style="font-size: 11px;">{{objeto.num_ped_compra }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.data_emissao_pc is not none %}
+        <td style="font-size: 11px;">{{objeto.data_emissao_pc }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.prev_entrega is not none %}
+        <td style="font-size: 11px;">{{objeto.prev_entrega }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.quant_entregue is not none %}
+        <td style="font-size: 11px;">{{objeto.quant_entregue }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.saldo is not none %}
+        <td style="font-size: 11px;">{{objeto.saldo }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.data_NF is not none %}
+        <td style="font-size: 11px;">{{objeto.data_NF }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.cod_NF is not none %}
+        <td style="font-size: 11px;">{{objeto.cod_NF }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.data_entrada_obra is not none %}
+        <td style="font-size: 11px;">{{objeto.data_entrada_obra }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.data_vencimento is not none %}
+        <td style="font-size: 11px;">{{objeto.data_vencimento }}</td>
+      {% else %}
+        <td style="font-size: 11px;"></td>
+      {% endif %}
+      {% if objeto.data_prev_final is not none %}
+      <td style="font-size: 11px;">{{objeto.data_prev_final }}</td>
+      {% else %}
+        <td style="font-size: 11px;">{{objeto.prev_entrega}}</td>
+      {% endif %} 
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</section>
+</body>
+</html>

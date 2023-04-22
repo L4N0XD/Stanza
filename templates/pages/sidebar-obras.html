@@ -1,0 +1,25 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; margin-top: -36%;" id="divSidebar">
+    <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
+        <li>
+            <form class="d-flex ms-auto" role="search" method="POST" action="{% url 'filtrar' %}" id="formulario">
+                {% csrf_token %}
+                <div class="input-group d-flex justify-content-center align-items-center">
+                    <button class="btn btn-outline-secondary dropdown-toggle mb-2" style="width: 100%; border-radius: 7px;" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="button-filtrar">Filtrar por:</button>
+                    <ul class="dropdown-menu filtro-dropdown">
+                        <li><a class="dropdown-item filter" href="#" onclick="document.getElementById('id_filtro').value='mes_entrega';">Previsão de entrega</a></li>
+                        <li><a class="dropdown-item filter" href="#" onclick="document.getElementById('id_filtro').value='mes_emissao_pc';">Emissão do PC</a></li>
+                    </ul>
+                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"  name="data_inicial" class="form-control mb-2" placeholder="Data inicial" style="width: 100%; border-radius: 7px;">
+                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"  name="data_final" class="form-control mb-2" placeholder="Data final" style="width: 100%; border-radius: 7px;">
+                    <input type="hidden" name="filtro" required id="id_filtro" value="">
+                    <button id="filtrarBtn"class="btn btn-outline-success"  style="width: 100%; border-radius: 7px; margin-bottom: 300px;" type="submit">Filtrar</button>
+                </div>
+            </form>
+        </li>
+        <hr>
+      <li>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-secondary" style="width: 100%; border-radius: 7px;" data-bs-toggle="modal" data-bs-target="#exampleModal"> Adicionar Insumo </button>   
+      </li>
+    </ul>
+  </div>

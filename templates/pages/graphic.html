@@ -1,0 +1,152 @@
+{% include "header-obras.html" %}
+
+<button style="display: none;" id="modalBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pageModal">
+</button>
+
+<div class="modal fade" id="pageModal" tabindex="-1" aria-labelledby="pageModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="pageModalLabel"></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <p id="modalText">  </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<section id="page" style="display: flex; flex-direction: column-reverse;">
+  {% include "sidebar-obras.html" %}
+
+      <div class="container ">
+        {% for dado in dados %}
+        {% if dado.nome_obra != None %}
+        <h4 class="text-white d-flex justify-content-center mt-3 mb-0">Obra: {{dado.nome_obra}} </h4>
+        <div class="d-flex justify-content-center mt-1">
+            {% for dado in dados %}
+            {% if dado.total_sols_compra != None %}
+            <p class="text-white" style="width: 200px;" >Nº de Solicitacões: {{dado.total_sols_compra}} </p>
+            {% endif %}
+            {% endfor %}
+            {% for prazo in prazos %}
+            <p class="text-white" style="width: 180px;">Total atendido: {{prazo.total_atendido}}</p>
+            {% endfor %}
+            {% endif %}
+        </div>  
+        {% endfor %}
+        <button type="button" id="BotaoNoPrazo" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NoPrazo" style="display: none;">
+          Ver SC entregues no prazo
+        </button>
+        {% include "prazo.html" %}
+        <button type="button" id="BotaoAtrasados" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Atrasados" style="display: none;">
+          Ver SC atrasadas
+        </button>
+        {% include "atrasados.html" %}
+        <button type="button" id="BotaoIndeterminados" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Indeterminados" style="display: none;">
+          Ver SC Indeterminadas
+        </button>
+        {% include "indeterminados.html" %}
+        <div id="barchart_values" style="width: 100%; height: 65%;" class="d-flex justify-content-center align-items-center bg-dark mt-0">
+        </div>
+      </div>
+
+
+  </section>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <script>
+    const filtrarBtn = document.getElementById('filtrarBtn');
+    const idFiltro = document.getElementById('id_filtro');
+    const form = document.querySelector('#formulario');
+    const modalBtn = document.querySelector('#modalBtn');
+    const salvarInsumo = document.querySelector('#salvarInsumo');
+    const modalText = document.querySelector('#modalText');
+    const modalTitle = document.querySelector('#pageModalLabel');
+    form.addEventListener('submit', (event) => {
+          if (idFiltro.value == "") {
+            event.preventDefault();
+            modalTitle.textContent = 'Erro'
+            modalText.textContent = 'Por favor, selecione um filtro antes de enviar o formulário.'
+            modalBtn.click();
+
+      }
+    });
+    salvarInsumo.addEventListener('click', () => { 
+      modalTitle.textContent = 'Sucesso!'
+      modalText.textContent = 'Insumo cadastrado!'
+      modalBtn.click();
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('.filtro-dropdown a').click(function() {
+        var selectedOption = $(this).text();
+        $('#button-filtrar').text(selectedOption);
+      });
+    });
+    </script>
+  <script type="text/javascript">
+    $.ajax({
+    url: '/ajax/',
+    type: "GET",
+    dataType: "json",
+    success: function(operations) {
+        var prazo = (operations[0]["prazo"]);
+        var atrasados = operations[0]["atrasados"];
+        var indeterminados = operations[0]["indeterminados"]
+        console.log(indeterminados);
+
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(function() { drawChart(prazo, atrasados, indeterminados); });
+    },
+    error: function(xhr, status, error) {
+        console.log(error);
+    }
+});
+
+    function drawChart(prazo, atrasados, indeterminados) {
+      var data = google.visualization.arrayToDataTable([
+        ["Element", "Quantidade", { role: "style" } ],
+        ["No Prazo", prazo, "green"],
+        ["Atrasados", atrasados, "red"],
+        ["Indeterminados", indeterminados, "gray"],
+      ]);
+      
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+      { calc: "stringify",
+      sourceColumn: 1,
+      type: "string",
+      role: "annotation" },
+      2]);
+      
+      var options = {
+        title: "Solicitacões de Compra entregues",
+        width: 600,
+        height: 400,
+        bar: {groupWidth: "70%"},
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+      google.visualization.events.addListener(chart, 'select', function() {
+    var selectedItem = chart.getSelection()[0];
+    if (selectedItem) {
+    if (selectedItem.row == 0) {
+      document.getElementById('BotaoNoPrazo').click(); 
+    } else if (selectedItem.row == 1) {
+      document.getElementById('BotaoAtrasados').click();
+    } else if (selectedItem.row == 2) {
+      document.getElementById('BotaoIndeterminados').click();
+  }
+}});
+      chart.draw(view, options);
+    }
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</body>
+</body>
+</html>

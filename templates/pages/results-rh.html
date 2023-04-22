@@ -1,0 +1,44 @@
+{% include "header.html" %}
+<div class="dropdown" style="    justify-content: end; display: flex; margin-right: 28%; margin-top: 10px;">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Exportar para:
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="{% url 'download_table' %}">Planilha XLS</a></li>
+      <li><a class="dropdown-item" href="{% url 'download_txt' %}">Baixar como txt</a></li>
+    </ul>
+  </div>
+<div style="width: 900px; margin-right: auto;margin-left: auto; justify-content: center;display: flex;margin-top: 30px;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center; color: white; width: 70px;" scope="col"  >CPF</th>
+                <th style="color: white;text-align: center; " scope="col">Nome</th>
+                <th style="color: white;text-align: center; " scope="col">Dias</th>
+                <th style="color: white;text-align: center; " scope="col">Valor a pagar</th>
+                <th style="color: white;text-align: center; " scope="col">Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for real in reais %}
+            <tr>
+                <th style="text-align: center; color: white;">{{real.cpf}}</th>
+                <th style="text-align: center; color: white;">{{real.nome}}</th>
+                <th style="text-align: center; color: white;">{{real.dias_trabalhados}}</th>
+            {% if real.pagar is not none %}
+                <th style="text-align: center; color: white;">{{real.pagar}}</th>
+            {% else %}
+                <th style="text-align: center; color: white;">Sem informações</th>
+            {% endif %}
+            {% if real.total is not none %}
+                <th style="text-align: center; color: white;">{{real.total}}</th>
+            {% else %}
+                <th style="text-align: center; color: white;">Sem informações</th>
+            {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> 
+</div>
+</body>
+</html>

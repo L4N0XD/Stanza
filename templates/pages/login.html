@@ -1,0 +1,81 @@
+{% include "header.html" %}
+<section id="login">
+    <div class="container-fluid" style="margin-top: 10%;" >
+        <div class="row justify-content-center">
+                <div class="card" style="width: 500px; ">
+                    <div class="card-header">
+                        Login
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" style="display: grid;" >
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Nome de usuário</label>
+                                <input type="text" class="form-control" id="username" name="username">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Senha</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Entrar</button>
+                        </form>
+                            <button id="cadastro" class="btn btn-primary mt-2">Cadastrar</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="signup">
+    <div class="container-fluid" style="margin-top: 10%;" >
+        <div class="row justify-content-center">
+            <div class="card" style="width: 500px; ">
+                <div class="card-header">
+                        Cadastro
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" >
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Nome de usuário</label>
+                                <input type="text" class="form-control" id="usernameRegister" name="usernameRegister">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password1" class="form-label">Senha</label>
+                                <input type="password" class="form-control" id="password1" name="password1">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password2" class="form-label">Confirme a senha</label>
+                                <input type="password" class="form-control" id="password2" name="password2">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    #login {
+        display: flex;
+    }
+    #signup {
+        display: none;
+    }
+
+</style>
+<script>
+    cadastro = document.querySelector('#cadastro')
+    registro = document.getElementById("signup");
+    login = document.getElementById("login");
+    cadastro.addEventListener('click', () => registrar())
+    function registrar () {
+        login.style.display = 'none',
+        registro.style.display = 'flex'
+    }
+
+</script>
+
+    
+</body>
+</html>

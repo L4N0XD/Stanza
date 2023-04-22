@@ -1,0 +1,130 @@
+
+<div class="modal fade" id="Indeterminados" tabindex="-1" aria-labelledby="IndeterminadosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
+      <div class="modal-content bg-dark">
+        <div class="modal-header bg-dark">
+          <h1 class="modal-title fs-5 text-white" id="IndeterminadosLabel">Indeterminadas</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body bg-dark">
+          <table class="table table-dark">
+            <thead>
+              <tr>
+                {% for dado in dados %}
+                {% if dado.titles != None and dado.titles != 'nan' %}
+                <th scope="col" style="font-size: 12px;">{{dado.titles}}</th>
+                {% endif %}
+                {% endfor %}
+                <th scope="col" style="font-size: 12px;">Data de previsão final</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% with sliced_data=indeterminados|slice:"24:1360" %}
+              {% for indeterminado in sliced_data %}
+              <tr>
+                {% if indeterminado.item is not none %}
+                  <th scope="row">{{indeterminado.item}}</th>
+                {% else %}
+                  <th></th>
+                {% endif %}
+                {% if indeterminado.cod_sol_compra is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.cod_sol_compra }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.cod_obra is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.cod_obra }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.cod_insumo is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.cod_insumo }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.desc_insumo is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.desc_insumo }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.quant_sol is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.quant_sol }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.data_sol is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.data_sol }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.data_sol_cheg_obra is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.data_sol_cheg_obra }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.num_ped_compra is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.num_ped_compra }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.data_emissao_pc is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.data_emissao_pc }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.prev_entrega is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.prev_entrega }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.quant_entregue is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.quant_entregue }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.saldo is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.saldo }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.data_NF is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.data_NF }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.cod_NF is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.cod_NF }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.data_entrada_obra is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.data_entrada_obra }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.data_vencimento is not none %}
+                  <td style="font-size: 11px;">{{indeterminado.data_vencimento }}</td>
+                {% else %}
+                  <td style="font-size: 11px;"></td>
+                {% endif %}
+                {% if indeterminado.data_prev_final is not none %}
+                <td style="font-size: 11px;">{{indeterminado.data_prev_final }}</td>
+                {% else %}
+                  {% if indeterminado.prev_entrega is not none %}
+                    <td style="font-size: 11px;">{{indeterminado.prev_entrega}}</td>
+                  {% else %}
+                  <td style="font-size: 11px;"></td>
+                  {% endif %} 
+                {% endif %} 
+              </tr>
+            {% endfor %}
+            {% endwith %}
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>  
