@@ -161,10 +161,10 @@ def download_txt(request):
 
     reais = DadosRH.objects.all()
 
-    response.write('    CPF     |Dias| Valor a pagar | Saldo | Nome\n')
+    response.write('CPF|Dias|Valor a pagar|Saldo|Nome\n\n\n')
 
     for real in reais:
-        response.write('{0} | {1} |     {2}      |  {3}  | {4}\n'.format(
+        response.write('{0}|{1}|{2}|{3}|{4}\n'.format(
             real.cpf,
             real.dias_trabalhados,
             real.pagar,
