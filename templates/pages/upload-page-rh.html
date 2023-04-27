@@ -9,7 +9,12 @@
             <p id="text_progress" style="position: absolute; z-index: 1; text-align: center; left: 42%; transform: translateX(-50%); color: orange"></p>
         </div>
         <div style="display: grid;" id="uploadRH">
-            <div  class="divInput form-group mb-4"style="width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
+            
+          <div  class="divInput form-group mb-4"style="width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
+              <p class="text-dark" style="width:50%; text-align: center;">Dias a contar</p>
+                <input type="number" required class="form-control" id="diasUteis" name="diasUteis">
+            </div>
+          <div  class="divInput form-group mb-4"style="width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
               <p class="text-dark input-label" style="width:50%; text-align: center;">Planilha Real</p>
                 <input type="file" required class="form-control input-file" id="arquivo1" name="arquivo1">
             </div>
@@ -29,7 +34,7 @@
     .input-label {cursor: pointer;}
     </style>
     <script>
-      
+    document.querySelector('#titulo').textContent = 'Upload de VT'  
     const startUpload = document.querySelector('#startUpload')
     const startProgress = document.querySelector('#startProgress')
     const divProgress = document.querySelector('#divProgress')
@@ -42,7 +47,7 @@
       divProgress.style.display = 'flex'
       var width = 0;
       var index = 0;
-      var id = setInterval(frame, 30);
+      var id = setInterval(frame, 100);
       const loadTexts = ["Carregando...","Por favor, aguarde...","Lendo o arquivo...","Processando os dados...","Carregando informações...","Quase lá...","Finalizando a leitura...", "Pronto!"];
   
       

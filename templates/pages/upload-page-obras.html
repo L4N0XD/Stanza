@@ -17,7 +17,7 @@
     </form>
     
     <script>
-    
+    document.querySelector('#titulo').textContent = 'Upload de solicitação de compra'
     const startUpload = document.querySelector('#startUpload')
     const startProgress = document.querySelector('#startProgress')
     const divProgress = document.querySelector('#divProgress')
@@ -30,7 +30,7 @@
       divProgress.style.display = 'flex'
       var width = 0;
       var index = 0;
-      var id = setInterval(frame, 275);
+      var id = setInterval(frame, 400);
       const loadTexts = ["Carregando...","Por favor, aguarde...","Lendo o arquivo...","Processando os dados...","Carregando informações...","Quase lá...","Finalizando a leitura...", "Pronto!"];
   
       

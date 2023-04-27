@@ -34,5 +34,6 @@ urlpatterns = [
     path('insumos/', views.cadastrar_insumo, name='insumos'),
     path('', RedirectView.as_view(url='/index/', permanent=True)),
     path('download_table/', views.download_table, name='download_table'),
-    path('download_txt/', views.download_txt, name='download_txt'),
+    path('save_data/', views.save_data, name='save_data'),
+    path('download_txt/<str:nome_obra>/', views.download_txt, name='download_txt'),
 ]
