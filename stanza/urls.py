@@ -33,7 +33,7 @@ urlpatterns = [
     path('upload-rh/', views.upload_rh, name='upload-rh'),
     path('insumos/', views.cadastrar_insumo, name='insumos'),
     path('', RedirectView.as_view(url='/index/', permanent=True)),
-    path('download_table/', views.download_table, name='download_table'),
+    path('download_table/<str:nome_obra>/', views.download_table, name='download_table'),
     path('save_data/', views.save_data, name='save_data'),
     path('download_txt/<str:nome_obra>/', views.download_txt, name='download_txt'),
 ]

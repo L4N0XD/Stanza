@@ -26,7 +26,7 @@
       Exportar para:
     </button>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="{% url 'download_table' %}">Planilha XLS</a></li>
+      <li><a class="dropdown-item" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLS</a></li>
       <li><a class="dropdown-item" href="{% url 'download_txt' nome_obra=nome_obra %}">Baixar como txt</a></li>
     </ul>
 </div>

@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponse
 from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais
 from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH
 from datetime import datetime, timedelta
-import tempfile, os, math
+import tempfile, os, math, time
 import pandas as pd
 import numpy as np
 
@@ -43,7 +43,7 @@ def upload(request):
                     tmp.write(chunk)
             dados_xls = pd.read_excel(tmp.name)
             os.unlink(tmp.name)
-            salvar_dados(dados_xls, request)
+            dados_obras(dados_xls, request)
             return(redirect('graphic'))
 
         else:
@@ -81,19 +81,23 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
     data = str(dados_xls2.iloc[1, 17])
     formato = '%Y-%m-%d %H:%M:%S'
     data_sem_horas = str(datetime.strptime(data, formato).date())
+    lista_real = []
+    lista_aju = []
+
+    
+    
 
     for index, row in dados_xls.iterrows():
-
-        cpf = row[0]
-        cpf = cpf.zfill(11)
+        
+        cpf = (row[0])
         if not pd.isna(cpf):
+                cpf = cpf.zfill(11)
             #if str(row[6]) == 'OPERACIONAL DE OBRA':
                 dias_trabalhados = row[1] if not pd.isna(row[1]) else None
                 valor = row[2] if not pd.isna(row[2]) else None
                 nome = row[3] if not pd.isna(row[3]) else None
-                real_vt = DadosRH(cpf=cpf, dias_trabalhados=dias_trabalhados, valor=valor, nome=nome, nome_obra=nome_obra)
-                real_vt.save()
-
+                lista_real.append(DadosRH(cpf=cpf, dias_trabalhados=dias_trabalhados, valor=valor, nome=nome, nome_obra=nome_obra))
+    DadosRH.objects.bulk_create(lista_real) 
     
 
     for index, row in dados_xls2.iterrows():
@@ -116,11 +120,10 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
                 total_atualizado = (total - (dias_uteis * 9))
             else:
                 total_atualizado = 0
-            dados_aju_card = DadosAjuCard(cpf=cpf2, nome=nome2, cartao=cartao, 
+            lista_aju.append(DadosAjuCard(cpf=cpf2, nome=nome2, cartao=cartao, 
                                           saldoA=saldoA, saldo=saldo, total_saldo=total_saldo, 
                                           recarga=recarga, total=total, total_atualizado=total_atualizado, 
-                                          data_planilha=data_sem_horas, nome_obra=nome_obra)
-            dados_aju_card.save()
+                                          data_planilha=data_sem_horas, nome_obra=nome_obra))
             try:
                 dadorh = DadosRH.objects.get(pk=cpf2)
                 dadorh.total = total
@@ -130,6 +133,7 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
             except DadosRH.DoesNotExist:
                 pass
 
+    DadosAjuCard.objects.bulk_create(lista_aju) 
     dados = DadosRH.objects.filter(nome_obra=nome_obra)   
     ctrl_total = int(0)
     ctrl_total_pagar = int(0)
@@ -198,7 +202,7 @@ def results_rh(request):
                                                    'total': total, 'total_pagar': total_pagar, 'total_descontos': total_descontos, 
                                                    'data_planilha': new_date, 'nome_obra': nome_obra, 'obras': obras,})
 
-def download_table(request):
+def download_table(request, nome_obra):
     reais = DadosRH.objects.all()
     dados = Totais.objects.all()
     totais = (list(dados.values('total', 'total_pagar', 'total_descontos')))
@@ -213,7 +217,7 @@ def download_table(request):
     df.columns = ['CPF', 'Nome', 'Dias', 'Dias 2', 'Valor a pagar', 'Saldo', 'Saldo Atualizado']
     
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="Planilha VT.xls"'
+    response['Content-Disposition'] = f'attachment; filename="{nome_obra}.xls"'
     
     writer = pd.ExcelWriter(response, engine='xlsxwriter')
     df.to_excel(writer, index=False, startrow=6)
@@ -269,13 +273,15 @@ def format_date(indice):
         date = None
     return date
 
-def salvar_dados(dados_xls, request):
+def dados_obras(dados_xls, request):
+    start = time.time()
     numero = []    
     insumos = Insumos.objects.all()
     atrasado = []
     noprazo = []
     titulos = []
     controle_titulos = int(0)
+    bulk_list = []
     nome_obra = str(dados_xls.iloc[3, 3])
     
     for index, row in dados_xls.iterrows():
@@ -306,15 +312,28 @@ def salvar_dados(dados_xls, request):
         cod_NF = None if pd.isna(row[20]) else row[20] if isinstance(row[20], str) else None
         data_entrada_obra = None if pd.isna(row[21]) else row[21] if isinstance(row[21], str) else None
         data_vencimento = None if pd.isna(row[22]) else row[22] if isinstance(row[22], str) else None
-         
+        status = 'Total'
+
         insumos = Insumos.objects.filter(codigo_insumo=cod_insumo)
         if insumos.exists() and data_emissao_pc:
             insumo = insumos.first()
             data_prev_final = format_date(data_emissao_pc) + timedelta(days=insumo.qtd_dias) if insumo.qtd_dias else None
         else:
             data_prev_final = format_date(prev_entrega)
-        
-        dados = Dados(item=item,
+
+        data_entrada_obra = format_date(data_entrada_obra)
+        if data_prev_final and data_entrada_obra:
+            data_prev_final = datetime.strptime(str(data_prev_final), "%Y-%m-%d").date()
+            data_entrada_obra = datetime.strptime(str(data_entrada_obra), "%Y-%m-%d").date()
+            diferenca = (data_entrada_obra - data_prev_final).days
+            if diferenca <= 0:
+                status = 'NoPrazo'
+                noprazo.append(diferenca)
+            else:
+                status = 'Atrasado'
+                atrasado.append(diferenca)
+
+        bulk_list.append(Dados(item=item,
                   id=index, 
                   cod_sol_compra=cod_sol_compra, 
                   cod_obra=cod_obra, cod_insumo=cod_insumo, 
@@ -327,7 +346,7 @@ def salvar_dados(dados_xls, request):
                   saldo=saldo,
                   titles = titulos[controle_titulos] if (controle_titulos <= 16) else None,
                   nome_obra=nome_obra,
-                  status = 'Total',
+                  status = status,
                   data_NF=(format_date(data_NF)),
                   cod_NF=cod_NF,
                   prev_entrega=(format_date(prev_entrega)),
@@ -335,31 +354,14 @@ def salvar_dados(dados_xls, request):
                   data_entrada_obra=(format_date(data_entrada_obra)),
                   data_vencimento=(format_date(data_vencimento)),
                   data_prev_final = data_prev_final
-                  )
+                  ))
+        
         controle_titulos += 1
-        dados.save()
-        data_entrada_obra = format_date(data_entrada_obra)
-        if data_prev_final and data_entrada_obra:
-            data_prev_final = datetime.strptime(str(data_prev_final), "%Y-%m-%d").date()
-            data_entrada_obra = datetime.strptime(str(data_entrada_obra), "%Y-%m-%d").date()
-            diferenca = (data_entrada_obra - data_prev_final).days
-            if diferenca <= 0:
-                obj = Dados.objects.get(pk=index)
-                obj.status = 'NoPrazo'
-                noprazo.append(diferenca)
-            else:
-                obj = Dados.objects.get(pk=index)
-                obj.status = 'Atrasado'
-                atrasado.append(diferenca)
-            obj.save()
-        else:
-            obj = Dados.objects.get(pk=index)
-            obj.status = 'Indeterminado'
-            obj.save()
+        
 
         if isinstance(row[1], int):
             numero.append(row[1])
-          
+    Dados.objects.bulk_create(bulk_list)      
     total_sols_compra = len(numero)   
     iten = Dados.objects.all().first()
     iten.total_sols_compra = total_sols_compra 
@@ -378,6 +380,8 @@ def salvar_dados(dados_xls, request):
 
     atendidos = Operations(prazo=prazo, atrasados=atrasados, total_atendido=total_atendido, indeterminados=indeterminados)
     atendidos.save()
+    end = time.time()
+    print(f"Tempo total de leitura: {end - start}")
     return render(request, 'graphic.html', {'nome_obra': nome_obra, 
     'dados': Dados.objects.all(), 
     'prazos': Operations.objects.all(), 
@@ -418,7 +422,6 @@ def upload_page_obras(request):
 
         print('Dados excluidos!')
         return render(request, 'upload-page-obras.html')
-
 
 def upload_page_rh(request):
     DadosRH.objects.all().delete()
