@@ -1,5 +1,5 @@
 {% include "header.html" %}
-
+<body class="bg-dark">
 <button id="startProgress"  onclick="startProgressBar()" style="display: none;">comecar</button>
 <form method="POST" action="{% url 'upload-rh' %}" enctype="multipart/form-data">
     {% csrf_token %}
@@ -22,7 +22,7 @@
               <p class="text-dark input-label" style="width:50%; text-align: center;">Planilha AracajuCard</p>
               <input type="file" required class="form-control input-file" id="arquivo2" name="arquivo2">
             </div>
-              <button id="startUpload" class="btn btn-outline-success d-flex mb-4" style="justify-content: center;" type="submit">Upload</button>
+              <button id="startUpload" class="btn btn-outline-stanza d-flex mb-4" style="justify-content: center;" type="submit">Upload</button>
         </div>
         </div>
     </form>
@@ -47,7 +47,7 @@
       divProgress.style.display = 'flex'
       var width = 0;
       var index = 0;
-      var id = setInterval(frame, 100);
+      var id = setInterval(frame, 3);
       const loadTexts = ["Carregando...","Por favor, aguarde...","Lendo o arquivo...","Processando os dados...","Carregando informações...","Quase lá...","Finalizando a leitura...", "Pronto!"];
   
       

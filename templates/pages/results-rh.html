@@ -1,28 +1,31 @@
 {% include "header.html" %}
-<div style="width: 240px; z-index: 0; position: fixed; display: flex; justify-content: center; " id="divSidebar">
+<div class="container-xxl col-md-12">
+<div class="row">
+
+<div class="container col-md-2" style="position: fixed; margin-top: -10px;" id="divSidebar">
     <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
         <li>
-            <a href="/upload-page-rh" style="font-size: 16px; width: 230px; margin-top: 35px;" class="btn btn-outline-light mb-5" >Nova consulta</a>
+            <a href="/upload-page-rh" style="font-size: 16px; width: 100%; margin-top: 35px;" class="btn btn-outline-light mb-5" >Nova consulta</a>
         </li>
         <li>
-            <p style="font-size: 16px; cursor: context-menu; width: 230px;" class="btn btn-outline-info mb-5" >Total: <br> {{total}}</p>
+            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-info mb-5" >Total: <br> {{total}}</p>
         </li>
         <li>
-            <p style="font-size: 16px; cursor: context-menu; width: 230px;" class="btn btn-outline-danger mb-5">Total a pagar: <br> {{total_pagar}}</p>
+            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-danger mb-5">Total a pagar: <br> {{total_pagar}}</p>
         </li>
         <li>
-            <p style="font-size: 16px; cursor: context-menu; width: 230px;" class="btn btn-outline-success mb-5">Total Descontos: <br> {{total_descontos}}</p>
+            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-success mb-5">Total Descontos: <br> {{total_descontos}}</p>
         </li>
         <li>
-            <p style="font-size: 16px; cursor: context-menu; width: 230px;" class="btn btn-outline-light mb-5">Data da Planilha: <br> {{data_planilha}}</p>
+            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-light mb-5">Data da Planilha: <br> {{data_planilha}}</p>
         </li>
   </div>
-<div class="dropdown" style="    justify-content: space-around; display: flex;  margin-top: 10px;">
 
-</div>
-<div class="dropdown" style="justify-content: end;display: flex;margin-top: 20px;margin-left: 12%;width: 1100px;">
-    <p style="font-size: 18px; cursor: context-menu; margin-right: 10%; margin-top: 1%; margin-bottom: 0;" class="btn btn-outline-light">Obra: {{nome_obra}}</p>
-    <button style="height: 45px; margin-top: 10px " class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+<div class="container row mt-4">
+<div class="col-md-11 d-flex mx-auto" >
+    <p style="font-size: 16px; cursor: context-menu;" class="btn btn-outline-light mx-auto my-auto">Obra: {{nome_obra}}</p>
+    <div class="dropdown" >
+    <button  class="btn btn-secondary dropdown-toggle my-auto" type="button" data-bs-toggle="dropdown" aria-expanded="false">
       Exportar para:
     </button>
     <ul class="dropdown-menu">
@@ -30,7 +33,9 @@
       <li><a class="dropdown-item" href="{% url 'download_txt' nome_obra=nome_obra %}">Baixar como txt</a></li>
     </ul>
 </div>
-<div style="width: 1000px; margin-right: 6%;margin-left: auto; justify-content: center;display: flex;margin-top: 30px;">
+</div>
+</div>
+<div class="col-md-9 container mt-3" style=" margin-right: 6%;">
     <table class="table">
         <thead>
             <tr>
@@ -74,5 +79,8 @@
         </tbody>
     </table> 
 </div>
+</div>
+</div>
 </body>
+{% include "footer.html" %}
 </html>

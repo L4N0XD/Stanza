@@ -77,12 +77,14 @@ def upload_rh(request):
         return(redirect('upload-page-rh'))
     
 def dados_rh(dados_xls, dados_xls2, dias_uteis):
+    start = time.time()
     nome_obra = str(dados_xls2.iloc[8, 1])
     data = str(dados_xls2.iloc[1, 17])
     formato = '%Y-%m-%d %H:%M:%S'
     data_sem_horas = str(datetime.strptime(data, formato).date())
     lista_real = []
     lista_aju = []
+    dados_rh_update = []
 
     
     
@@ -124,28 +126,24 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
                                           saldoA=saldoA, saldo=saldo, total_saldo=total_saldo, 
                                           recarga=recarga, total=total, total_atualizado=total_atualizado, 
                                           data_planilha=data_sem_horas, nome_obra=nome_obra))
-            try:
-                dadorh = DadosRH.objects.get(pk=cpf2)
-                dadorh.total = total
-                dadorh.total_atualizado = total_atualizado
-                dadorh.nome_obra = nome_obra
-                dadorh.save()
-            except DadosRH.DoesNotExist:
-                pass
+            
+            dados_rh_update.append(DadosRH(pk=cpf2, total=total, total_atualizado=total_atualizado))
 
+    DadosRH.objects.bulk_update(dados_rh_update, ['total', 'total_atualizado'])
     DadosAjuCard.objects.bulk_create(lista_aju) 
+
     dados = DadosRH.objects.filter(nome_obra=nome_obra)   
     ctrl_total = int(0)
     ctrl_total_pagar = int(0)
+    dias_list = []
     for dado in dados:
         obj_rh = DadosRH.objects.get(pk=dado.cpf)
         obj_rh.pagar = calcular_pagar(dado.cpf)
         if obj_rh.pagar is not None:
             if obj_rh.pagar != 0:
-                obj_rh.dias_contabilizados = (obj_rh.pagar/9)
+                dias_list.append(DadosRH(pk=dado.cpf, pagar=obj_rh.pagar, dias_contabilizados=(obj_rh.pagar/9)))
             else: 
-                obj_rh.dias_contabilizados = int(0)
-        obj_rh.save()
+                dias_list.append(DadosRH(pk=dado.cpf, pagar=obj_rh.pagar, dias_contabilizados=int(0)))
         ctrl_total += obj_rh.dias_trabalhados
         if obj_rh.pagar:
             ctrl_total_pagar += obj_rh.pagar
@@ -154,9 +152,13 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
     total = formatar_real(ctrl_total)
     total_pagar = formatar_real(ctrl_total_pagar)
     total_descontos = formatar_real(ctrl_total - ctrl_total_pagar)
-
+    
+    DadosRH.objects.bulk_update(dias_list, ['pagar','dias_contabilizados'])
     salvar = Totais(total=total, total_descontos=total_descontos, total_pagar=total_pagar, nome_obra=nome_obra)
     salvar.save()
+
+    end = time.time()
+    print(f"Tempo total de leitura: {end - start}")
 
 def formatar_real(value):
     formatar = '{:,.0f}'.format(value).replace(',','.')
@@ -332,6 +334,8 @@ def dados_obras(dados_xls, request):
             else:
                 status = 'Atrasado'
                 atrasado.append(diferenca)
+        else:
+            status = 'Indeterminado'
 
         bulk_list.append(Dados(item=item,
                   id=index, 
