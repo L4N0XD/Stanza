@@ -18,26 +18,47 @@
 {% include "header.html" %}
 <div id="background">
 </div>
-<div class="container-xxl p-2 col-md-12" style="border:2px solid #fb8306; background-color: rgba(0,0,0, 0.4);  position: absolute; z-index: 3; top: 40%;  text-align: center;">
+<div class="container-xxl p-2 col-md-12">
     <h1 style="font-size: 100px; font-family: 'Nanum Gothic Coding', monospace; letter-spacing: 30px; color: #fb8306; text-align: center;">BREVE</h1>
     <h3 style="font-size: 25px; font-family: 'Nanum Gothic Coding', monospace; letter-spacing: 7.5px; color: #fb8306; text-align: center;">O SITE ESTÁ QUASE PRONTO</h3>
 </div>
-<style>
-        #background {
-height: 569px;
-background-image: url("https://stanza.com.br/wp-content/uploads/2022/07/FACHADA-NOTURNA.png");
-background-repeat: no-repeat;
-background-size: 100%;
-filter: blur(8px);
--webkit-filter: blur(8px);
-z-index: -1;
-position: relative;
-}
-
-
-</style>
 </body>
 {% include "footer.html" %}
+<style>
+    #background {
+    height: 569px;
+    background-image: url("https://stanza.com.br/wp-content/uploads/2022/07/FACHADA-NOTURNA.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    z-index: -1;
+    position: relative;
+    }
+    .container-xxl.p-2.col-md-12 {
+        border:2px solid #fb8306; 
+        background-color: rgba(0,0,0, 0.4);  
+        position: absolute;
+        z-index: 3; 
+        top: 40%;  
+        text-align: center;
+    }
+    
+    @media (max-width: 768px) { 
+    #background {
+    height: 1000px;
+    background-size: 1600px;
+    }
+    .container.col-2.footer-container{
+    bottom: 0;
+    align-items: end;
+    left: 50%;
+    display: contents;
+    transform: translate(-50%, -50%);
+}
+     }
+    
+    </style>
 <script>
     var textFooter = document.querySelector(".footer-text");
     var iconFooter = document.querySelector(".footer-icon");

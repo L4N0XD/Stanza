@@ -315,7 +315,8 @@ def dados_obras(dados_xls, request):
         data_entrada_obra = None if pd.isna(row[21]) else row[21] if isinstance(row[21], str) else None
         data_vencimento = None if pd.isna(row[22]) else row[22] if isinstance(row[22], str) else None
         status = 'Total'
-
+        if cod_insumo == 5444:
+            print(cod_insumo)
         insumos = Insumos.objects.filter(codigo_insumo=cod_insumo)
         if insumos.exists() and data_emissao_pc:
             insumo = insumos.first()
@@ -355,7 +356,7 @@ def dados_obras(dados_xls, request):
                   cod_NF=cod_NF,
                   prev_entrega=(format_date(prev_entrega)),
                   quant_entregue=quant_entregue,
-                  data_entrada_obra=(format_date(data_entrada_obra)),
+                  data_entrada_obra=(data_entrada_obra),
                   data_vencimento=(format_date(data_vencimento)),
                   data_prev_final = data_prev_final
                   ))
