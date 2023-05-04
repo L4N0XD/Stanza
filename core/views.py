@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
-from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais
+from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial
 from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH
 from datetime import datetime, timedelta
 import tempfile, os, math, time
@@ -32,7 +32,7 @@ def calcular_pagar(cpf):
         pagar = ((obj_rh.valor/100) * obj_rh.dias_trabalhados)
 
     return pagar
-
+#Upload dos arquivos de SC
 def upload(request):
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
@@ -50,7 +50,7 @@ def upload(request):
             return(redirect('upload-page-obras'))
     else:
         return(redirect('upload-page-obras'))
-
+#Upload dos arquivos de VT
 def upload_rh(request):
     if request.method == 'POST':
         form = UploadRH(request.POST, request.FILES)
@@ -75,7 +75,7 @@ def upload_rh(request):
             return(redirect('upload-page-rh'))
     else:
         return(redirect('upload-page-rh'))
-    
+#Define e salva os dados dos arquivos de VT    
 def dados_rh(dados_xls, dados_xls2, dias_uteis):
     start = time.time()
     nome_obra = str(dados_xls2.iloc[8, 1])
@@ -131,7 +131,7 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
 
     DadosRH.objects.bulk_update(dados_rh_update, ['total', 'total_atualizado'])
     DadosAjuCard.objects.bulk_create(lista_aju) 
-
+    salario_base = 2000
     dados = DadosRH.objects.filter(nome_obra=nome_obra)   
     ctrl_total = int(0)
     ctrl_total_pagar = int(0)
@@ -141,9 +141,15 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
         obj_rh.pagar = calcular_pagar(dado.cpf)
         if obj_rh.pagar is not None:
             if obj_rh.pagar != 0:
-                dias_list.append(DadosRH(pk=dado.cpf, pagar=obj_rh.pagar, dias_contabilizados=(obj_rh.pagar/9)))
+                dias_contabilizados=(obj_rh.pagar/9)
+                desconto_vt = (salario_base*0.06)
+                porcentagem = (dias_contabilizados/obj_rh.dias_trabalhados)
+                valor_desconto_colaborador = math.ceil((desconto_vt*porcentagem)*10)/10
+                dias_list.append(DadosRH(pk=dado.cpf, pagar=obj_rh.pagar, dias_contabilizados=dias_contabilizados))
             else: 
+                valor_desconto_colaborador = int(0)
                 dias_list.append(DadosRH(pk=dado.cpf, pagar=obj_rh.pagar, dias_contabilizados=int(0)))
+            print(valor_desconto_colaborador)
         ctrl_total += obj_rh.dias_trabalhados
         if obj_rh.pagar:
             ctrl_total_pagar += obj_rh.pagar
@@ -159,24 +165,12 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
 
     end = time.time()
     print(f"Tempo total de leitura: {end - start}")
-
+#Formata os valores para uma string em Real
 def formatar_real(value):
     formatar = '{:,.0f}'.format(value).replace(',','.')
     total = (f'R${formatar},00')
     return total
-
-#def calcular_dias_uteis(data):
-#    data_sem_horas = np.datetime64(data)
-#    p = pd.Period(data_sem_horas, freq='D')
-#    dias_no_mes =  p.days_in_month
-#    data_final =  (f'{p.year}-{str(p.month).zfill(2)}-{dias_no_mes}')
-#    data_final = np.datetime64(data_final)
-#    feriados = np.array(['2023-01-01', '2023-02-24', '2023-02-25', '2023-02-26', '2023-04-10', 
-#                         '2023-04-21', '2023-05-01', '2023-06-11', '2023-06-26', '2023-07-08', '2023-09-07', 
-#                         '2023-10-12', '2023-10-28', '2023-11-02', '2023-11-15', '2023-12-24', '2023-12-25', '2023-12-31'], dtype='datetime64[D]')
-#    dias_uteis = np.busday_count(data_sem_horas, data_final, holidays=feriados, weekmask='Mon Tue Wed Thu Fri')
-#    print(dias_uteis)
-
+#Renderiza a página de resultados do VT
 def results_rh(request):
     dados = Totais.objects.all()
     data = DadosAjuCard.objects.all().first()
@@ -203,7 +197,7 @@ def results_rh(request):
     return render(request, 'results-rh.html', {'reais':DadosRH.objects.all(), 'Ajucards': DadosAjuCard.objects.all(), 
                                                    'total': total, 'total_pagar': total_pagar, 'total_descontos': total_descontos, 
                                                    'data_planilha': new_date, 'nome_obra': nome_obra, 'obras': obras,})
-
+#Cria e disponibiliza para download o arquivo Excel com os dados do VT
 def download_table(request, nome_obra):
     reais = DadosRH.objects.all()
     dados = Totais.objects.all()
@@ -245,7 +239,7 @@ def download_table(request, nome_obra):
     writer.close()
     
     return response
-    
+#Cria e disponibiliza para download o arquivo TXT com os dados do VT  
 def download_txt(request, nome_obra):
     
     response = HttpResponse(content_type='text/plain')
@@ -264,7 +258,7 @@ def download_txt(request, nome_obra):
                 ))
 
     return response
-
+#Formata os valores de datas para salvar no DB 
 def format_date(indice):
     if isinstance(indice, str):
         try:
@@ -274,15 +268,13 @@ def format_date(indice):
     else:
         date = None
     return date
-
+#Define e salva os dados dos arquivos de SC
 def dados_obras(dados_xls, request):
     start = time.time()
     numero = []    
     insumos = Insumos.objects.all()
     atrasado = []
     noprazo = []
-    titulos = []
-    controle_titulos = int(0)
     bulk_list = []
     nome_obra = str(dados_xls.iloc[3, 3])
     
@@ -291,11 +283,7 @@ def dados_obras(dados_xls, request):
         
         if index < 5:
             continue
-        if index == 5:
-            titles = row[:23] 
-            for title in titles:
-                if str(title) != 'nan':
-                    titulos.append(title)
+
             
         item = None if pd.isna(row[0]) else int(row[0]) if isinstance(row[0], (int, float)) else None
         cod_sol_compra = None if pd.isna(row[1]) else int(row[1]) if isinstance(row[1], (int, float)) else None
@@ -349,7 +337,6 @@ def dados_obras(dados_xls, request):
                   data_sol=(format_date(data_sol)),
                   data_sol_cheg_obra=(format_date(data_sol_cheg_obra)),
                   saldo=saldo,
-                  titles = titulos[controle_titulos] if (controle_titulos <= 16) else None,
                   nome_obra=nome_obra,
                   status = status,
                   data_NF=(format_date(data_NF)),
@@ -361,7 +348,6 @@ def dados_obras(dados_xls, request):
                   data_prev_final = data_prev_final
                   ))
         
-        controle_titulos += 1
         
 
         if isinstance(row[1], int):
@@ -395,7 +381,7 @@ def dados_obras(dados_xls, request):
     'indeterminados':Dados.objects.filter(status='Indeterminado'), 
     'form': FiltroForm(), 
     'insumos': Insumos.objects.all()})
-
+#Renderiza a página de resultados de SC
 def graphic(request):
     iten = Dados.objects.all().first()
     nome_obra = iten.nome_obra
@@ -419,7 +405,7 @@ def graphic(request):
     'indeterminados':Dados.objects.filter(status='Indeterminado'), 
     'form': FiltroForm(), 
     'insumos': Insumos.objects.all()})
-
+#Renderiza a página de upload dos arquivos de SC
 def upload_page_obras(request):
 
         Dados.objects.all().delete()
@@ -427,18 +413,18 @@ def upload_page_obras(request):
 
         print('Dados excluidos!')
         return render(request, 'upload-page-obras.html')
-
+#Renderiza a página de upload dos arquivos de VT
 def upload_page_rh(request):
     DadosRH.objects.all().delete()
     DadosAjuCard.objects.all().delete()
     Totais.objects.all().delete()
     print('Dados excluidos!')
     return render(request, 'upload-page-rh.html')
-
+#Retorna os valores das quantidades de SC em atraso, no prazo e indeterminadas para gerar o gráfico
 def dados_do_modelo(request):
     operations = Operations.objects.all().values()
     return JsonResponse(list(operations), safe=False)
-
+#Cadastrar novos insumos no banco de dados para o calculo de previsão de entrega
 def cadastrar_insumo(request):
     if request.method == 'POST':
         form = AddInsumoForm(request.POST)
@@ -450,7 +436,7 @@ def cadastrar_insumo(request):
             novo_insumo.save()
         return(redirect('graphic'))
     return(redirect('graphic'))
-        
+#Filtra os dados dos resultados de SC por datas        
 def filtrar(request):
     print(Insumos.objects.all())
     if request.method == 'POST':
@@ -477,13 +463,13 @@ def filtrar(request):
         form = FiltroForm()
     context = {'form': form}
     return render(request, 'filtro.html', context)
-
+#Retorna Index.html
 def index(request):
     return render(request, 'index.html')
-
+#Retorna página de login
 def login(request):
     return render(request, 'login.html')
-
+#Salva os dados
 def save_data(request):
     if request.method == 'POST':
         data = DadosAjuCard.objects.all().first()
@@ -497,6 +483,90 @@ def save_data(request):
 
         return HttpResponse('success')
   
+def upload_page_comercial(request):
+    DadosComercial.objects.all().delete()
+    print('Dados excluidos!')
+    return render(request, 'upload-page-comercial.html')
 
+def dados_comercial(dados_xls, request):
+    empresa = str(dados_xls.iloc[3, 5])
+    centro_custo = str(dados_xls.iloc[4, 5])
+    titulo_cliente = int(dados_xls.iloc[4, 25])
+    cliente = str(dados_xls.iloc[7, 5])
+    data_emissão = format_date(str(dados_xls.iloc[5, 5]))
+    limite_correcao = format_date(str(dados_xls.iloc[6, 5]))
+    ultimo_reajuste = format_date(str(dados_xls.iloc[6, 25]))
+    documento = str(dados_xls.iloc[8, 5])
+    unidades = str(dados_xls.iloc[8, 25])
+    total_lanc = str(dados_xls.iloc[71, 9])
+    lista_comercial = []
 
+    for index, row in dados_xls.iterrows():
+        if str(row[0]) != '(C) - Parcela enviada para a cobrança escritural.':
+            
+            if 11 < index:
+                par = str(row[0]) if isinstance(row[2], str) else None
+                data_vcto = format_date(str(row[2])) if isinstance(row[2], str) else None
+                tipo_condicao = str(row[4]) if isinstance(row[4], str) else None
+                id = (row[7]) 
+                vl_original = float(row[9]) if isinstance(row[9], (int, float)) and not np.isnan(row[9]) else None
+                ind_dt_base = float(row[13]) if isinstance(row[13], (int, float)) and not np.isnan(row[13]) else None
+                ind_dt_calc = float(row[15]) if isinstance(row[15], (int, float)) and not np.isnan(row[15]) else None
+                correcao = float(row[17]) if isinstance(row[17], (int, float)) and not np.isnan(row[17]) else None
+                porc_juro_contr = float(row[20]) if isinstance(row[20], (int, float)) and not np.isnan(row[20]) else 0
+                dt_base_juro = float(row[21]) if isinstance(row[21], (int, float)) and not np.isnan(row[21]) else 0
+                dt_calc_juro = float(row[23]) if isinstance(row[23], (int, float)) and not np.isnan(row[23]) else 0
+                juro_contr = float(row[24]) if isinstance(row[24], (int, float)) and not np.isnan(row[24]) else None
+                porc_multa = float(row[26]) if isinstance(row[26], (int, float)) and not np.isnan(row[26]) else None
+                porc_juros = float(row[28]) if isinstance(row[28], (int, float)) and not np.isnan(row[28]) else None
+                porc_pro_rata = float(row[30]) if isinstance(row[30], (int, float)) and not np.isnan(row[30]) else None
+                multa = float(row[31]) if isinstance(row[31], (int, float)) and not np.isnan(row[31]) else None
+                juros = float(row[33]) if isinstance(row[33], (int, float)) and not np.isnan(row[33]) else None
+                pro_rata = float(row[34]) if isinstance(row[34], (int, float)) and not np.isnan(row[34]) else None
+                total = (row[36]) if isinstance(row[36], (int, float)) and not np.isnan(row[36]) else None
+                valor_devido = float(row[37]) if isinstance(row[37], (int, float)) and not np.isnan(row[37]) else None
+                dias = row[40]
+                dt_recto = format_date(str(row[42])) if isinstance(row[42], str) else None
+                valor_pago = float(row[43]) if isinstance(row[43], (int, float)) and not np.isnan(row[43]) else None
+                if par is not None:
+                    lista_comercial.append(DadosComercial(par=par, data_vcto = data_vcto, tipo_condicao = tipo_condicao, 
+                                                      id = id, vl_original = vl_original, ind_dt_base = ind_dt_base, 
+                                                      ind_dt_calc = ind_dt_calc, correcao = correcao, 
+                                                      porc_juro_contr = porc_juro_contr, dt_base_juro = dt_base_juro, 
+                                                      dt_calc_juro = dt_calc_juro, juro_contr = juro_contr, porc_multa = porc_multa,
+                                                       porc_juros = porc_juros, porc_pro_rata = porc_pro_rata, multa = multa, 
+                                                      juros = juros, pro_rata = pro_rata, total = total, valor_devido = valor_devido, 
+                                                      dias = dias, dt_recto = dt_recto, valor_pago = valor_pago, empresa = empresa, 
+                                                      centro_custo = centro_custo, titulo_cliente = titulo_cliente, cliente = cliente, 
+                                                      data_emissão = data_emissão, limite_correcao = limite_correcao, 
+                                                      ultimo_reajuste = ultimo_reajuste, documento = documento, 
+                                                      unidades = unidades, total_lanc = total_lanc))
+                #elif par is None and valor_pago:
+                #    lista_comercial.append(DadosComercial( dt_recto = dt_recto, valor_pago = valor_pago))
+
+        else:
+            break
+    DadosComercial.objects.bulk_create(lista_comercial) 
+
+def comercial(request):
+    first = DadosComercial.objects.first()
+    return render(request, 'comercial.html', {'dados': DadosComercial.objects.all(), 'first': first, 'total_lanc': formatar_real(first.total_lanc)})
+
+def upload_comercial(request):
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            arquivo = request.FILES['arquivo']
+            with tempfile.NamedTemporaryFile(delete=False) as tmp:
+                for chunk in arquivo.chunks():
+                    tmp.write(chunk)
+            dados_xls = pd.read_excel(tmp.name)
+            os.unlink(tmp.name)
+            dados_comercial(dados_xls, request)
+            return(redirect('comercial'))
+
+        else:
+            return(redirect('upload-page-comercial'))
+    else:
+        return(redirect('upload-page-comercial'))
     

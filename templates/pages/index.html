@@ -16,9 +16,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">    <title id="titulo">Início</title>
 </head>
 {% include "header.html" %}
+<body class="bg-dark">
 <div id="background">
 </div>
-<div class="container-xxl p-2 col-md-12">
+<div class="container-xxl p-2 col-md-12" style="max-width: 1900px;">
     <h1 style="font-size: 100px; font-family: 'Nanum Gothic Coding', monospace; letter-spacing: 30px; color: #fb8306; text-align: center;">BREVE</h1>
     <h3 style="font-size: 25px; font-family: 'Nanum Gothic Coding', monospace; letter-spacing: 7.5px; color: #fb8306; text-align: center;">O SITE ESTÁ QUASE PRONTO</h3>
 </div>
@@ -26,7 +27,7 @@
 {% include "footer.html" %}
 <style>
     #background {
-    height: 569px;
+    height: 930px;
     background-image: url("https://stanza.com.br/wp-content/uploads/2022/07/FACHADA-NOTURNA.png");
     background-repeat: no-repeat;
     background-size: 100%;
@@ -60,9 +61,15 @@
     
     </style>
 <script>
+    var footer = document.querySelector(".footer-container")
     var textFooter = document.querySelector(".footer-text");
     var iconFooter = document.querySelector(".footer-icon");
-    textFooter.style.color = '#fb8306'
-    iconFooter.style.color = '#fb8306'
+    textFooter.style.color = '#fb8306';
+    iconFooter.style.color = '#fb8306';
+    footer.style.bottom = '';
+    footer.style.position = '';
+    footer.style.transform = '';
+    footer.style.marginBottom = '15px';
+
 </script>
 </html>

@@ -10,109 +10,121 @@
           <table class="table table-dark">
             <thead>
               <tr>
-                {% for dado in dados %}
-                {% if dado.titles != None and dado.titles != 'nan' %}
-                <th scope="col" style="font-size: 12px;">{{dado.titles}}</th>
-                {% endif %}
-                {% endfor %}
-                <th scope="col" style="font-size: 12px;">Data de previsão final</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Item</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Nº SC</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Cód. Obra</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Cód. insumo</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Descrição do insumo</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Qt. solicitada</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data SC</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Prev. chegada à obra</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Nº PC</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data PC</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Prev. entrega</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Quant. entregue</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Saldo</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data NF</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Nº NF</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Entrada na obra</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data vencimento</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Prev. final</th>
               </tr>
             </thead>
             <tbody>
               {% for atrasado in atrasados %}
               <tr>
                 {% if atrasado.item is not none %}
-                  <th scope="row">{{atrasado.item}}</th>
+                  <th scope="row" style="border: 1px white dotted;">{{atrasado.item}}</th>
                 {% else %}
                   <th></th>
                 {% endif %}
                 {% if atrasado.cod_sol_compra is not none %}
-                  <td style="font-size: 11px;">{{atrasado.cod_sol_compra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.cod_sol_compra }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.cod_obra is not none %}
-                  <td style="font-size: 11px;">{{atrasado.cod_obra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.cod_obra }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.cod_insumo is not none %}
-                  <td style="font-size: 11px;">{{atrasado.cod_insumo }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.cod_insumo }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.desc_insumo is not none %}
-                  <td style="font-size: 11px;">{{atrasado.desc_insumo }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.desc_insumo }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.quant_sol is not none %}
-                  <td style="font-size: 11px;">{{atrasado.quant_sol }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.quant_sol }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_sol is not none %}
-                  <td style="font-size: 11px;">{{atrasado.data_sol }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_sol }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_sol_cheg_obra is not none %}
-                  <td style="font-size: 11px;">{{atrasado.data_sol_cheg_obra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_sol_cheg_obra }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.num_ped_compra is not none %}
-                  <td style="font-size: 11px;">{{atrasado.num_ped_compra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.num_ped_compra }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_emissao_pc is not none %}
-                  <td style="font-size: 11px;">{{atrasado.data_emissao_pc }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_emissao_pc }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.prev_entrega is not none %}
-                  <td style="font-size: 11px;">{{atrasado.prev_entrega }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.prev_entrega }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.quant_entregue is not none %}
-                  <td style="font-size: 11px;">{{atrasado.quant_entregue }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.quant_entregue }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.saldo is not none %}
-                  <td style="font-size: 11px;">{{atrasado.saldo }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.saldo }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_NF is not none %}
-                  <td style="font-size: 11px;">{{atrasado.data_NF }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_NF }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.cod_NF is not none %}
-                  <td style="font-size: 11px;">{{atrasado.cod_NF }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.cod_NF }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_entrada_obra is not none %}
-                  <td style="font-size: 11px;">{{atrasado.data_entrada_obra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_entrada_obra }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_vencimento is not none %}
-                  <td style="font-size: 11px;">{{atrasado.data_vencimento }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_vencimento }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_prev_final is not none %}
-                <td style="font-size: 11px;">{{atrasado.data_prev_final }}</td>
+                <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_prev_final }}</td>
                 {% else %}
                   {% if atrasado.prev_entrega is not none %}
-                    <td style="font-size: 11px;">{{atrasado.prev_entrega}}</td>
+                    <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.prev_entrega}}</td>
                   {% else %}
-                    <td style="font-size: 11px;"></td>
+                    <td style="font-size: 11px;border: 1px white dotted;"></td>
                   {% endif %} 
                 {% endif %} 
               </tr>

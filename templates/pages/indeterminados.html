@@ -10,12 +10,24 @@
           <table class="table table-dark">
             <thead>
               <tr>
-                {% for dado in dados %}
-                {% if dado.titles != None and dado.titles != 'nan' %}
-                <th scope="col" style="font-size: 12px;">{{dado.titles}}</th>
-                {% endif %}
-                {% endfor %}
-                <th scope="col" style="font-size: 12px;">Data de previsão final</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Item</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Nº SC</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Cód. Obra</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Cód. insumo</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Descrição do insumo</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Qt. solicitada</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data SC</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Prev. chegada à obra</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Nº PC</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data PC</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Prev. entrega</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Quant. entregue</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Saldo</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data NF</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Nº NF</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Entrada na obra</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data vencimento</th>
+                <th scope="col" style="font-size: 12px;border: 1px white dotted;">Prev. final</th>
               </tr>
             </thead>
             <tbody>
@@ -23,97 +35,97 @@
               {% for indeterminado in sliced_data %}
               <tr>
                 {% if indeterminado.item is not none %}
-                  <th scope="row">{{indeterminado.item}}</th>
+                  <th scope="row" style="border: 1px white dotted;">{{indeterminado.item}}</th>
                 {% else %}
                   <th></th>
                 {% endif %}
                 {% if indeterminado.cod_sol_compra is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.cod_sol_compra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.cod_sol_compra }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.cod_obra is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.cod_obra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.cod_obra }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.cod_insumo is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.cod_insumo }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.cod_insumo }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.desc_insumo is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.desc_insumo }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.desc_insumo }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.quant_sol is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.quant_sol }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.quant_sol }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_sol is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.data_sol }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_sol }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_sol_cheg_obra is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.data_sol_cheg_obra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_sol_cheg_obra }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.num_ped_compra is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.num_ped_compra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.num_ped_compra }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_emissao_pc is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.data_emissao_pc }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_emissao_pc }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.prev_entrega is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.prev_entrega }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.prev_entrega }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.quant_entregue is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.quant_entregue }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.quant_entregue }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.saldo is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.saldo }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.saldo }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_NF is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.data_NF }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_NF }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.cod_NF is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.cod_NF }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.cod_NF }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_entrada_obra is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.data_entrada_obra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_entrada_obra }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_vencimento is not none %}
-                  <td style="font-size: 11px;">{{indeterminado.data_vencimento }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_vencimento }}</td>
                 {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_prev_final is not none %}
-                <td style="font-size: 11px;">{{indeterminado.data_prev_final }}</td>
+                <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_prev_final }}</td>
                 {% else %}
                   {% if indeterminado.prev_entrega is not none %}
-                    <td style="font-size: 11px;">{{indeterminado.prev_entrega}}</td>
+                    <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.prev_entrega}}</td>
                   {% else %}
-                  <td style="font-size: 11px;"></td>
+                  <td style="font-size: 11px;border: 1px white dotted;"></td>
                   {% endif %} 
                 {% endif %} 
               </tr>

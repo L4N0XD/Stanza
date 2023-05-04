@@ -24,16 +24,16 @@
 <div class="container col-md-2" style="position: fixed; margin-top: -10px;" id="divSidebar">
     <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
         <li>
-            <a href="/upload-page-rh" style="font-size: 16px; width: 100%; margin-top: 35px;" class="btn btn-outline-light mb-5" >Nova consulta</a>
+            <a href="/upload-page-rh" style="font-size: 16px; width: 100%; margin-top: 35px;" class="btn btn-outline-info mb-5" >Nova consulta</a>
         </li>
         <li>
-            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-info mb-5" >Total: <br> {{total}}</p>
-        </li>
-        <li>
-            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-danger mb-5">Total a pagar: <br> {{total_pagar}}</p>
+            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-primary mb-5" >Total: <br> {{total}}</p>
         </li>
         <li>
             <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-success mb-5">Total Descontos: <br> {{total_descontos}}</p>
+        </li>
+        <li>
+            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-danger mb-5">Total a pagar: <br> {{total_pagar}}</p>
         </li>
         <li>
             <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-light mb-5">Data da Planilha: <br> {{data_planilha}}</p>
@@ -47,7 +47,7 @@
     <button  class="btn btn-secondary dropdown-toggle my-auto" type="button" data-bs-toggle="dropdown" aria-expanded="false">
       Exportar para:
     </button>
-    <ul class="dropdown-menu dropdown-menu-dark bg-dark" style="border: gray solid 1px;">
+    <ul class="dropdown-menu dropdown-menu-dark bg-dark" style="border: gray dotted 1px;">
       <li><a class="dropdown-item text-white" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLS</a></li>
       <li><a class="dropdown-item text-white" href="{% url 'download_txt' nome_obra=nome_obra %}">Baixar como txt</a></li>
     </ul>
@@ -58,40 +58,40 @@
     <table class="table">
         <thead>
             <tr>
-                <th style="text-align: center; color: white; width: 70px;" scope="col"  >CPF</th>
-                <th style="color: white;text-align: center; " scope="col">Nome</th>
-                <th style="color: white;text-align: center; " scope="col">Dias</th>
-                <th style="color: white;text-align: center; " scope="col">Dias 2</th>
-                <th style="color: white;text-align: center; " scope="col">Valor a pagar</th>
-                <th style="color: white;text-align: center; " scope="col">Saldo</th>
-                <th style="color: white;text-align: center; " scope="col">Saldo atualizado</th>
+                <th style="text-align: center; color: white; width: 70px;border: 1px white dotted;" scope="col"  >CPF</th>
+                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Nome</th>
+                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Dias</th>
+                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Dias 2</th>
+                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Valor a pagar</th>
+                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Saldo</th>
+                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Saldo atualizado</th>
             </tr>
         </thead>
         <tbody>
             {% for real in reais %}
             <tr>
-                <th style="text-align: center; font-size: 14px; color: white;">{{real.cpf}}</th>
-                <td style="text-align: center; font-size: 14px; color: white;">{{real.nome}}</td>
-                <td style="text-align: center; font-size: 14px; color: white;">{{real.dias_trabalhados}}</td>
+                <th style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.cpf}}</th>
+                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.nome}}</td>
+                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.dias_trabalhados}}</td>
             {% if real.dias_contabilizados is not none %}
-                <td style="text-align: center; font-size: 14px; color: white;">{{real.dias_contabilizados}}</td>
+                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.dias_contabilizados}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: white;">{{real.dias_trabalhados}}</td>
+                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.dias_trabalhados}}</td>
             {% endif %}
             {% if real.pagar is not none %}
-                <td style="text-align: center; font-size: 14px; color: white;">{{real.pagar}}</td>
+                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.pagar}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: white;">Sem informações</td>
+                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">Sem informações</td>
             {% endif %}
             {% if real.total is not none %}
-                <td style="text-align: center; font-size: 14px; color: white;">{{real.total}}</td>
+                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.total}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: white;">0.00</td>
+                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">0.00</td>
             {% endif %}
             {% if real.total_atualizado is not none %}
-                <td style="text-align: center; font-size: 14px; color: white;">{{real.total_atualizado}}</td>
+                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.total_atualizado}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: white;">0.00</td>
+                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">0.00</td>
             {% endif %}
             </tr>
             {% endfor %}
@@ -102,9 +102,21 @@
 </div>
 </body>
 {% include "footer.html" %}
+<style>
+    @media (max-width: 768px) {
+        #divSidebar{
+
+            width: 12%;
+        }
+    }
+</style>
 <script>
     var footer = document.querySelector(".footer-container")
     footer.style.bottom = 'auto'
     footer.style.marginTop = '15px'
+    footer.style.bottom = '';
+    footer.style.position = '';
+    footer.style.transform = '';
+    footer.style.marginBottom = '15px';
 </script>
 </html>
