@@ -18,7 +18,85 @@
 </head>
 {% include "header.html" %}
 <body class="bg-dark">
-
+<div class="modal fade" id="detalhamento" tabindex="-1" aria-labelledby="detalhamentoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
+      <div class="modal-content bg-dark">
+        <div class="modal-header bg-dark">
+          <h1 class="modal-title fs-5 text-white" id="detalhamentoLabel">Entregues no Prazo</h1>
+          <button type="button" style="background: transparent; border: 0;" data-bs-dismiss="modal" aria-label="Close"><span class="material-symbols-outlined" style="color:white">close</span></button>
+        </div>
+        <div class="modal-body bg-dark">
+            <div class="mx-auto mt-3">
+                <table class="table" style="border: 1px white dotted;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center; color: white;font-size: 12px;border: 1px white dotted;" scope="col">Par</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Data Vcto.</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Tipo Condição</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Id</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Vl original</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Ind. dt base</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Ind. dt calc</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Correção</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Juro contr.%</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Dt. base juro</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Dt. calc juro</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Juro contr.</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">% Multa</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">% Juros</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">% Pró-rata</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Multa</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Juros</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Pró-rata</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Total</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Valor devido</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Dias</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Dt. recto.</th>
+                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Valor pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dado in dados %}
+                                <tr>
+                                    <th style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.par}}</th>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.data_vcto}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.tipo_condicao}}</td> 
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.id}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.vl_original}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.ind_dt_base}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.ind_dt_calc}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.correcao}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_juro_contr}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_base_juro}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_calc_juro}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.juro_contr}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_multa}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_juros}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_pro_rata}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.multa}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.juros}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.pro_rata}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.total}}</td>
+                                    {% if dado.valor_devido > 0 %}
+                                        <td style="text-align: center; font-size: 10px; color: rgb(255, 0, 0);border: 1px white dotted;">{{dado.valor_devido}}</td>
+                                    {% else %}
+                                        <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_devido}}</td>
+                                    {% endif %}
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dias}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_recto}}</td>
+                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_pago}}</td>
+                                </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> 
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
     <a href="/upload-page-comercial" style="font-size: 14px;position: absolute; margin-left: 15px; border-radius: 50px;" class="btn btn-outline-info mb-5 mt-4" >Nova consulta</a>
 
       <div class="col-md-8 d-flex mx-auto mt-4">
@@ -32,7 +110,13 @@
         <p style="font-size: 14px; cursor: context-menu; width: 50%;" class="btn btn-outline-light ">Cliente: {{first.cliente}}</p>
         <p style="font-size: 14px; cursor: context-menu; width: 25%;" class="btn btn-outline-light">Documento: {{first.documento}}</p>
         <p style="font-size: 14px; cursor: context-menu; width: 20%;" class="btn btn-outline-light">Unidades: {{first.unidades}}</p>
+        <div style="position: absolute;right: 2%;top: 12.3%;">
+                <a id="modalBtn" type="button" class="btn btn-outline-stanza" href="#" role="button" data-bs-toggle="modal" data-bs-target="#detalhamento" style="font-size: 14px;border-radius: 50px;" >
+                    Detalhamento
+                </a>
+        </div>
     </div>
+
     <div class="mx-auto mt-3">
         <table class="table" style="border: 1px white dotted;">
             <thead>
@@ -64,34 +148,43 @@
             </thead>
             <tbody>
                 {% for dado in dados %}
-                <tr>
-                    <th style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.par}}</th>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.data_vcto}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.tipo_condicao}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.id}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.vl_original}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.ind_dt_base}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.ind_dt_calc}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.correcao}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_juro_contr}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_base_juro}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_calc_juro}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.juro_contr}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_multa}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_juros}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_pro_rata}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.multa}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.juros}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.pro_rata}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.total}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_devido}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dias}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_recto}}</td>
-                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_pago}}</td>
-                </tr>
+                    {% if dado.valor_devido > 0 %}
+                        <tr>
+                            <th style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.par}}</th>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.data_vcto}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.tipo_condicao}}</td> 
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.id}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.vl_original}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.ind_dt_base}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.ind_dt_calc}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.correcao}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_juro_contr}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_base_juro}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_calc_juro}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.juro_contr}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_multa}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_juros}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_pro_rata}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.multa}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.juros}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.pro_rata}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.total}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_devido}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dias}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_recto}}</td>
+                            <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_pago}}</td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table> 
+    </div>
+    <div class="col-md-11 mx-auto bg-secondary mt-5" style=" border: 3px #fb8306 solid;">
+        {% for condicao in condicoes %}
+        <p  style="margin: 10px; font-size: 14px; color: white; font-weight: bold;">{{condicao}}</p>
+        <br>
+        {% endfor %}
+
     </div>
     </div>
     </div>
