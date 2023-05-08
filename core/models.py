@@ -103,5 +103,9 @@ class DadosComercial(models.Model):
     unidades = models.CharField(max_length=100, null=True, blank=True)
     total_lanc = models.DecimalField(null=True,blank=True, max_digits=10, decimal_places=2)
 
-
+class ClientesComercial(models.Model):
+    nome = models.CharField(max_length=50, null=True, blank=True)
+    tituloID = models.IntegerField(null=True, blank=True)
+    id = models.AutoField(primary_key=True)
+    condicoes = models.CharField(max_length=150)
 
