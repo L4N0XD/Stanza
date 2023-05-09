@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Sum
-from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial
+from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial, DadosVT
 from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH
 from datetime import datetime, timedelta
-import tempfile, os, math, time, locale, numero_por_extenso
+import tempfile, os, math, time, locale, numero_por_extenso, collections
 import pandas as pd
 import numpy as np
 
@@ -169,8 +169,8 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
 #Formata os valores para uma string em Real
 def formatar_real(value):
     try:
-        formatar = '{:,.0f}'.format(value).replace(',','.')
-        total = (f'R${formatar},00')
+        formatar = '{:,.2f}'.format(value).replace(',', 'X').replace('.', ',').replace('X', '.')
+        total = (f'R${formatar}')
         return total
     except TypeError:
         return None
@@ -486,13 +486,117 @@ def save_data(request):
                 anterior = dado.nome_obra
 
         return HttpResponse('success')
-  
+
+def upload_import_vt(request):
+    DadosVT.objects.all().delete()
+    print('Dados Excluídos!')
+    return render(request, 'upload-import-vt.html')
+
+def upload_vt(request):
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            arquivo = request.FILES['arquivo']
+            with tempfile.NamedTemporaryFile(delete=False) as tmp:
+                for chunk in arquivo.chunks():
+                    tmp.write(chunk)
+            dados_xls = pd.read_excel(tmp.name)
+            os.unlink(tmp.name)
+            dados_vt(dados_xls, request)
+            return(redirect('import-vt'))
+        else:
+            return(redirect('upload-import-vt'))
+    else:
+        return(redirect('upload-import-vt'))
+    
+def dados_vt(dados_xls, request):
+    start = time.time()
+    lista_vt = []
+    for index, row in dados_xls.iterrows():
+        empresa = row['Empresa']
+        admissao = row['Admissão']
+        nome = row['Nome do Funcionário']
+        cpf = str(row['CPF']).zfill(11)
+        print(cpf)
+        id = row['Identidade']
+        mae = row['Mãe']
+        nasc = row['Nascimento']
+        cep = row['CEP']
+        endereco = row['Endereço'] 
+        numero_endereco = row['Número Endereço'] if not pd.isna(row['Número Endereço']) else None
+        cidade = row['Cidade']
+        bairro = row['Bairro']
+        lista_vt.append(DadosVT( empresa =  empresa ,admissao =  admissao ,nome =  nome ,cpf =  cpf ,id =  id ,mae =  mae ,nasc =  nasc ,cep =  cep ,endereco =  endereco ,numero_endereco =  numero_endereco ,cidade =  cidade ,bairro =  bairro ))    
+    DadosVT.objects.bulk_create(lista_vt)
+    end = time.time()
+    print(f"Tempo total de leitura: {end - start}")
+
+def import_vt(request):
+    return render(request, 'import-vt.html', {'dados': DadosVT.objects.all()})
+
+def download_txt_vt(request):
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition'] = f'attachment; filename="Resultado da Consulta.txt"'
+
+    dados = DadosVT.objects.all()
+    response.write(' 0700\n')
+    for dado in dados:
+        id_numbers = [int(num)for num in dado.id.split() if num.isdigit()]
+        id_str = ','.join(map(str, id_numbers))
+        cpf = dado.cpf.ljust(26)
+        nome = dado.nome.ljust(100)
+        nasc = (str(dado.nasc.strftime("%d/%m/%Y"))).ljust(31)
+        mae = dado.mae.ljust(50)
+        zero = '0000000000'.ljust(23)
+        endereco = f'SE{dado.endereco.upper()}'.ljust(202)
+        numero_endereco = str(dado.numero_endereco).ljust(65)
+        bairro = dado.bairro.ljust(100)
+        cidade = dado.cidade.ljust(100)
+        cep_id = f'{dado.cep.replace("-", "")}{id_str}'.ljust(29)
+        print(cep_id)
+        linha = f'{cpf}{nome}{nasc}{mae}{zero}{endereco}{numero_endereco}{bairro}{cidade}{cep_id} 04'.ljust(729)
+        response.write(linha + '\n')
+
+    return response
+
 def upload_page_comercial(request):
     DadosComercial.objects.all().delete()
     ClientesComercial.objects.all().delete()
     print('Dados excluidos!')
     return render(request, 'upload-page-comercial.html')
 
+def calcular_parcelas(lista, valor, vcto, texto, vencimentos):
+
+    # contador dos valores em Mensal
+    contagem = collections.Counter(lista)
+
+    # gera uma lista com a quantidade e valor de cada parcela
+    parcelas = []
+    for valor, qtd in contagem.items():
+        valor_extenso = numero_por_extenso.monetario(valor)
+        valor_formatado = formatar_real(valor)
+        if texto == 'MENSAL' or texto == 'SEMESTRAL' or texto == 'INTERMEDIÁRIA' or texto == 'INTERMEDIÁRIA 2' or texto == 'CARTÃO DE CREDITO' or texto == 'ANUAL':
+            data_vencimento = vencimentos[0]  # pega a primeira data de vencimento da lista
+            parcela = f" {texto}: {qtd} ({numero_por_extenso.real(qtd)}) parcela(s) de {valor_formatado} ({valor_extenso}), com primeiro vencimento em {data_vencimento} sem juros e com reajuste a partir da data desse instrumento."
+            for u in range (qtd):
+                print(vencimentos[0])
+                vencimentos.pop(0)  # remove a primeira data de vencimento da lista
+
+
+        elif texto == 'SINAL ATO' or texto == 'TRANSFERENCIA DE CREDITO':
+            parcela = f" {texto}: {qtd} ({numero_por_extenso.real(qtd)}) parcela(s) de {valor_formatado} ({valor_extenso}, com primeiro vencimento em {vcto} sem juros e sem reajuste a partir da data desse instrumento."
+        elif texto == 'BIMESTRAL' or texto == 'CHAVESL' or texto == 'RESIDUO':
+            parcela = f" {texto}: {qtd} ({numero_por_extenso.real(qtd)}) parcela(s) de {valor_formatado} ({valor_extenso}, com primeiro vencimento em {vcto} a ser acrescido de juros a partir da data do Habite-se e com reajuste a partir da data desse instrumento."
+        elif texto == 'MENSAL 2':
+            parcela = f" {texto}: {qtd} ({numero_por_extenso.real(qtd)}) parcela(s) de {valor_formatado} ({valor_extenso}, com primeiro vencimento em {vcto} a ser acrescido de juros a partir da data do Habite-se e com correção monetária a partir da data desse instrumento."
+        elif texto == 'SINAL' or texto == 'SINAL CARTÃO' or texto == 'PARCELA CARTÃO' or texto == 'FINANCIAMENTO ASSOCIATIVO' or texto == 'FINANCIAMENTO':
+            parcela = f" {texto}: {qtd} ({numero_por_extenso.real(qtd)}) parcela(s) de {valor_formatado} ({valor_extenso}, com primeiro vencimento em {vcto} sem juros e sem reajuste."
+        elif texto == 'FINANCIAMENTO':
+            parcela = f" {texto}: {qtd} ({numero_por_extenso.real(qtd)}) parcela(s) de {valor_formatado} ({valor_extenso}, com vencimento em {vcto} sem juros e sem reajuste."
+        elif texto == 'FGTS':
+            parcela = f" {texto}: {valor_formatado} ({valor_extenso}), com primeiro vencimento em {vcto} sem juros e sem reajuste."
+        parcelas.append(parcela)
+    return (parcelas)
 
 def dados_comercial(dados_xls, request):
     locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
@@ -512,10 +616,9 @@ def dados_comercial(dados_xls, request):
     documento = str(dados_xls.iloc[8, 5])
     if str(dados_xls.iloc[8, 25]) != 'nan':
         unidades = str(dados_xls.iloc[8, 25])
-        print(unidades)
     else:
         unidades = str(dados_xls.iloc[8,27])
-
+    vcto_mensal = []
     condicoes = []    
     lista_comercial = []
     Financiamento = []
@@ -539,9 +642,9 @@ def dados_comercial(dados_xls, request):
     par2 = 0
     lista_comercial_condicoes = []
 
+    
+
     for index, row in dados_xls.iterrows():
-        if index <= 11:
-            print (row)
         if index == 11:
             for x in range (len(row)):
                 if row[x] and row[x] == 'Par':
@@ -619,92 +722,93 @@ def dados_comercial(dados_xls, request):
             par2 = par
             if valor_devido and valor_devido > 0:
                 if tipo_condicao == "Parcela Mensais 2":
-                    Mensal2.append(tipo_condicao)
+                    Mensal2.append(valor_devido)
                     VctoMensais2 = data_vcto.strftime("%d/%m/%Y")
                     ValorMensais2 = valor_devido
 
                 elif tipo_condicao == "Ato":
-                    Ato.append(tipo_condicao)
+                    Ato.append(valor_devido)
                     VctoAto = data_vcto.strftime("%d/%m/%Y")
                     ValorAto = valor_devido
 
                 elif tipo_condicao == "Parcelas Mensais":
-                    Mensal.append(tipo_condicao)
+                    Mensal.append(valor_devido)
                     VctoMensal = data_vcto.strftime("%d/%m/%Y")
+                    vcto_mensal.append(VctoMensal)
                     ValorMensal = valor_devido
 
                 elif tipo_condicao == "Parcelas Semestrais":
-                    Semestrais.append(tipo_condicao)
+                    Semestrais.append(valor_devido)
                     VctoSemestrais = data_vcto.strftime("%d/%m/%Y")
                     ValorSemestrais = valor_devido
 
                 elif tipo_condicao == "Parcelas Bimestrais":
-                    Bimestral.append(tipo_condicao)
+                    Bimestral.append(valor_devido)
                     VctoBimestral = data_vcto.strftime("%d/%m/%Y")
                     ValorBimestral = valor_devido
 
                 elif tipo_condicao == "Entrega das chaves":
-                    Chaves.append(tipo_condicao)
+                    Chaves.append(valor_devido)
                     VctoChaves = data_vcto.strftime("%d/%m/%Y")
                     ValorChaves = valor_devido
 
                 elif tipo_condicao == "Resíduo":
-                    Residuo.append(tipo_condicao)
+                    Residuo.append(valor_devido)
                     VctoResiduo = data_vcto.strftime("%d/%m/%Y")
                     ValorResiduo = valor_devido
 
                 elif tipo_condicao == "Sinal":
-                    Sinal.append(tipo_condicao)
+                    Sinal.append(valor_devido)
                     VctoSinal = data_vcto.strftime("%d/%m/%Y")
                     ValorSinal = valor_devido
 
                 elif tipo_condicao == "Parcelas Intermediária":
-                    Parc_inter.append(tipo_condicao)
+                    Parc_inter.append(valor_devido)
                     VctoIntermediaria = data_vcto.strftime("%d/%m/%Y")
                     ValorIntermediaria = valor_devido
 
                 elif tipo_condicao == "Parcelas Intermediária 2":
-                    Parc_interm2.append(tipo_condicao)
+                    Parc_interm2.append(valor_devido)
                     VctoIntermediaria2 = data_vcto.strftime("%d/%m/%Y")
                     ValorIntermediaria2 = valor_devido
 
                 elif tipo_condicao == "Sinal Cartão":
-                    Sinal_cart.append(tipo_condicao)
+                    Sinal_cart.append(valor_devido)
                     VctoSinalCartao = data_vcto.strftime("%d/%m/%Y")
                     ValorSinalCartao = valor_devido
 
                 elif tipo_condicao == "Parcela Cartão":
-                    Parcela_cart.append(tipo_condicao)
+                    Parcela_cart.append(valor_devido)
                     VctoParcelaCartao = data_vcto.strftime("%d/%m/%Y")
                     ValorParcelaCartao = valor_devido
 
                 elif tipo_condicao == "Carta de Crédito":
-                    cartao_cred.append(tipo_condicao)
+                    cartao_cred.append(valor_devido)
                     VctoCartaCredito = data_vcto.strftime("%d/%m/%Y")
                     ValorCartaCredito = valor_devido
 
                 elif tipo_condicao == "Transferencia Crédito":
-                    trans_cred.append(tipo_condicao)
+                    trans_cred.append(valor_devido)
                     VctoTransferenciaCredito = data_vcto.strftime("%d/%m/%Y")
                     ValorTransferenciaCredito = valor_devido
 
                 elif tipo_condicao == "Financiamento Associativo":
-                    FinAss.append(tipo_condicao)
+                    FinAss.append(valor_devido)
                     VctoFinanciamentoAss = data_vcto.strftime("%d/%m/%Y")
                     ValorFinanciamentoAss = valor_devido
 
                 elif tipo_condicao == "Anual":
-                    Anual.append(tipo_condicao)
+                    Anual.append(valor_devido)
                     VctoAnual = data_vcto.strftime("%d/%m/%Y")
                     ValorAnual = valor_devido
 
                 elif tipo_condicao == "FGTS":
-                    Fgts.append(tipo_condicao)
+                    Fgts.append(valor_devido)
                     VctoFgts = data_vcto.strftime("%d/%m/%Y")
                     ValorFgts = valor_devido
 
                 elif tipo_condicao == "Financiamento":
-                    Financiamento.append(tipo_condicao)
+                    Financiamento.append(valor_devido)
                     VctoFinanciamento = data_vcto.strftime("%d/%m/%Y")
                     ValorFinanciamento = valor_devido
 
@@ -723,45 +827,100 @@ def dados_comercial(dados_xls, request):
                                                   unidades = unidades, total_lanc = total_lanc))
 
     if len(Ato) > 0:
-        condicoes.append(f"SINAL ATO: {len(Ato)} ({numero_por_extenso.real(len(Ato))}) parcela(s) de R$ {locale.currency(ValorAto)} ({numero_por_extenso.monetario(ValorAto)}), com primeiro vencimento em {VctoAto} sem juros e sem reajuste.")   
+        
+        parcelas = (calcular_parcelas(Ato, ValorAto,VctoAto, 'SINAL ATO', []))   
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Mensal) > 0:
-        condicoes.append(f"MENSAL: {len(Mensal)} ({numero_por_extenso.real(len(Mensal))}) parcela(s) de R$ {locale.currency(ValorMensal)} ({numero_por_extenso.monetario(ValorMensal)}), com primeiro vencimento em {VctoMensal} sem juros e com reajuste a partir da data desse instrumento.")  
+        print(vcto_mensal)
+        parcelas = (calcular_parcelas(Mensal, ValorMensal, VctoMensal, 'MENSAL', vcto_mensal))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Semestrais) > 0:
-        condicoes.append(f"SEMESTRAL: {len(Semestrais)} ({numero_por_extenso.real(len(Semestrais))}) parcela(s) de R$ {locale.currency(ValorSemestrais)} ({numero_por_extenso.monetario(ValorSemestrais)}), com primeiro vencimento em {VctoSemestrais} sem juros e com reajuste a partir da data desse instrumento.")
+        
+        parcelas = (calcular_parcelas(Semestrais, ValorSemestrais, VctoSemestrais, "SEMESTRAL", []))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Bimestral) > 0:
-        condicoes.append(f"BIMESTRAL: {len(Bimestral)} ({numero_por_extenso.real(len(Bimestral))}) parcela(s) de R$ {locale.currency(ValorBimestral)} ({numero_por_extenso.monetario(ValorBimestral)}), com primeiro vencimento em {VctoBimestral} a ser acrescido de juros a partir da data do Habite-se e com reajuste a partir da data desse instrumento.")
+        
+        parcelas = (calcular_parcelas(Bimestral, ValorBimestral, VctoBimestral,"BIMESTRAL", [] ))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Chaves) > 0:
-        condicoes.append(f"CHAVESL: {len(Chaves)} ({numero_por_extenso.real(len(Chaves))}) parcela(s) de R$ {locale.currency(ValorChaves)} ({ numero_por_extenso.monetario(ValorChaves)}), com primeiro vencimento em {VctoChaves} a ser acrescido de juros a partir da data do Habite-se e com reajuste a partir da data desse instrumento.")
+        
+        parcelas = (calcular_parcelas(Chaves, ValorChaves, VctoChaves, 'CHAVESL', []))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Residuo) > 0:
-        condicoes.append(f"RESIDUO: {len(Residuo)} ({numero_por_extenso.real(len(Residuo))}) parcela(s) de R$ {locale.currency(ValorResiduo)} ({numero_por_extenso.monetario(ValorResiduo)}), com primeiro vencimento em {VctoResiduo} a ser acrescido de juros a partir da data do Habite-se e com reajuste a partir da data desse instrumento.")
+        
+        parcelas = ( calcular_parcelas(Residuo,ValorResiduo,VctoResiduo,"RESIDUO", [] ))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Mensal2) > 0:
-        condicoes.append(f"MENSAL 2: {len(Mensal2)} ({numero_por_extenso.real(ValorMensais2)}) parcela(s) de R$ {locale.currency(ValorMensais2)} ({numero_por_extenso.monetario(ValorMensais2)}), com primeiro vencimento em { VctoMensais2}a ser acrescido de juros a partir da data do Habite-se e com correção monetária a partir da data desse instrumento.")
+        
+        parcelas = ( calcular_parcelas(Mensal2,ValorMensais2,VctoMensais2, "MENSAL 2", []))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Sinal) > 0:
-        condicoes.append(f"SINAL: {len(Sinal)} ({numero_por_extenso.real(len(Sinal))}) parcela(s) de R$ {locale.currency(ValorSinal)} ({numero_por_extenso.monetario(ValorSinal)}), com primeiro vencimento em {VctoSinal} sem juros e sem reajuste.")
+        
+        parcelas = ( calcular_parcelas(Sinal,ValorSinal,VctoSinal,"SINAL", [] ))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Parc_inter) > 0:
-        condicoes.append(f"INTERMEDIÁRIA: {len(Parc_inter)} ({numero_por_extenso.real(len(Parc_inter))}) parcela(s) de R$ {locale.currency(ValorIntermediaria)} ({numero_por_extenso.monetario(ValorIntermediaria)}), com primeiro vencimento em {VctoIntermediaria} sem juros e com reajuste a partir da data desse instrumento.")
+        
+        parcelas = ( calcular_parcelas(Parc_inter,ValorIntermediaria,VctoIntermediaria,"INTERMEDIÁRIA", [] ))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Parc_interm2) > 0:
-        condicoes.append(f"INTERMEDIÁRIA 2: {len(Parc_interm2)} ({numero_por_extenso.real(len(Parc_interm2))}) parcela(s) de R$ {locale.currency( ValorIntermediaria2)} ({ numero_por_extenso.monetario(ValorIntermediaria2)}), com primeiro vencimento em {VctoIntermediaria2} sem juros e com reajuste a partir da data desse instrumento.")
+        
+        parcelas = ( calcular_parcelas(Parc_interm2,ValorIntermediaria2,VctoIntermediaria2,"INTERMEDIÁRIA 2", [] ))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Sinal_cart) > 0:
-        condicoes.append(f"SINAL CARTÃO: {len(Sinal_cart)} ({numero_por_extenso.real(len(Sinal_cart))}) parcela(s) de R$ {locale.currency(ValorSinalCartao)} ({ numero_por_extenso.monetario(ValorSinalCartao)}), com primeiro vencimento em {VctoSinalCartao} sem juros e sem reajuste.")  
+        
+        parcelas = ( calcular_parcelas(Sinal_cart,ValorSinalCartao,VctoSinalCartao, "SINAL CARTÃO", [])  )
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Parcela_cart) > 0:
-        condicoes.append(f"PARCELA CARTÃO: {len(Parcela_cart)} ({numero_por_extenso.real(len(Parcela_cart))}) parcela(s) de R$ {locale.currency(ValorParcelaCartao)} ({numero_por_extenso.monetario(ValorParcelaCartao)}), com primeiro vencimento em {VctoParcelaCartao} sem juros e sem reajuste.")
+        
+        parcelas = ( calcular_parcelas(Parcela_cart,ValorParcelaCartao,VctoParcelaCartao, "PARCELA CARTÃO", []))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(cartao_cred) > 0:
-        condicoes.append(f"CARTÃO DE CREDITO: {len(cartao_cred)} ({numero_por_extenso.real(len(cartao_cred))}) parcela(s) de R$ {locale.currency(ValorCartaCredito)} ({numero_por_extenso.monetario(ValorCartaCredito)}), com primeiro vencimento em {VctoCartaCredito} sem juros e com reajuste a partir da data desse instrumento.")
+        
+        parcelas = ( calcular_parcelas(cartao_cred,ValorCartaCredito,VctoCartaCredito,"CARTÃO DE CREDITO", [] ))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(trans_cred) > 0:
-        condicoes.append(f"TRANSFERENCIA DE CREDITO: {len(trans_cred)} ({numero_por_extenso.real(len(trans_cred))}) parcela(s) de R$ {locale.currency(ValorTransferenciaCredito)} ({numero_por_extenso.monetario(ValorTransferenciaCredito)}), com primeiro vencimento em {VctoTransferenciaCredito} sem juros e sem reajuste.")
+        
+        parcelas = ( calcular_parcelas(trans_cred,ValorTransferenciaCredito,VctoTransferenciaCredito,"TRANSFERENCIA DE CREDITO", [] ))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(FinAss) > 0:
-        condicoes.append(f"FINANCIAMENTO ASSOCIATIVO: {len(FinAss)} ({numero_por_extenso.real(len(FinAss))}) parcela(s) de R$ {locale.currency(ValorFinanciamentoAss)} ({numero_por_extenso.monetario(ValorFinanciamentoAss)}), com primeiro vencimento em {VctoFinanciamentoAss} sem juros e sem reajuste.")
+        
+        parcelas = ( calcular_parcelas(FinAss,ValorFinanciamentoAss,VctoFinanciamentoAss,"FINANCIAMENTO ASSOCIATIVO", []))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Anual) > 0:
-        condicoes.append(f"ANUAL: {len(Anual)} ({numero_por_extenso.real(len(Anual))}) parcela(s) de R${locale.currency(ValorAnual)} ({numero_por_extenso.monetario(ValorAnual)}), com primeiro vencimento em {VctoAnual} sem juros e com reajuste a partir da data desse instrumento.")
+        
+        parcelas = ( calcular_parcelas(Anual,ValorAnual,VctoAnual,"ANUAL", []))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Fgts) > 0:
-        condicoes.append(f"FGTS: R$ {locale.currency(ValorFgts)} ({numero_por_extenso.monetario(ValorFgts)}), com vencimento em {VctoFgts}, sem juros e sem reajuste.")
+        
+        parcelas = ( calcular_parcelas(Fgts,ValorFgts,VctoFgts,"FGTS", []))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     if len(Financiamento) > 0:
-        condicoes.append(f"FINANCIAMENTO: {len(Financiamento)} ({numero_por_extenso.real(len(Financiamento))}) parcela(s) de R$ {locale.currency(ValorFinanciamento)} ({numero_por_extenso.monetario(ValorFinanciamento)}), com vencimento em {VctoFinanciamento}, sem juros e sem reajuste. ")
+        
+        parcelas = ( calcular_parcelas(Financiamento,ValorFinanciamento,VctoFinanciamento,"FINANCIAMENTO", []))
+        for parcela in parcelas:
+            condicoes.append(parcela)
     for condicao in condicoes:
         lista_comercial_condicoes.append(ClientesComercial(nome=cliente, tituloID = titulo_cliente, condicoes = condicao ))
     DadosComercial.objects.bulk_create(lista_comercial) 
     ClientesComercial.objects.bulk_create(lista_comercial_condicoes)                                     
+
 def comercial(request):
     first = DadosComercial.objects.first()
 
@@ -783,10 +942,12 @@ def comercial(request):
     Soma_Anual = DadosComercial.objects.filter(tipo_condicao="Anual").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
     Soma_FGTS = DadosComercial.objects.filter(tipo_condicao="FGTS").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
     Soma_Financiamento = DadosComercial.objects.filter(tipo_condicao="Financiamento").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
-    print(Soma_Ato)
+    teste = DadosComercial.objects.exclude(total_lanc=None)
+    for test in teste:
+        total_lanc = test.total_lanc
 
 
-    return render(request, 'comercial.html', {'dados': DadosComercial.objects.all(), 'first': first, 'total_lanc': formatar_real(first.total_lanc), 
+    return render(request, 'comercial.html', {'dados': DadosComercial.objects.all(), 'first': first, 'total_lanc': formatar_real(total_lanc), 
                                               'condicoes': ClientesComercial.objects.all(),'Total_Par_Men2': formatar_real(Soma_Par_Men2 ),'Total_Ato': formatar_real(Soma_Ato ),
                                               'Total_Par_Mensais': formatar_real(Soma_Par_Mensais ),'Total_Par_Semestrais': formatar_real(Soma_Par_Semestrais ),
                                               'Total_Par_Bimestrais': formatar_real(Soma_Par_Bimestrais ),'Total_Ent_chave': formatar_real(Soma_Ent_chaves),

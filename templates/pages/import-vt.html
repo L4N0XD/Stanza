@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Taylan Noronha">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="icon" href="https://stanza.com.br/wp-content/uploads/2021/09/cropped-ms-icon-310x310-1-32x32.png" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">    
+    <title id="titulo">Resultados comercial</title>
+</head>
+{% include "header.html" %}
+<body class="bg-dark">
+  <a href="/upload-import-vt" style="font-size: 14px;position: absolute; margin-left: 15px; border-radius: 50px;" class="btn btn-outline-info mb-5 mt-4" >Nova consulta</a>
+  
+
+  <div class="container row-md-10 mt-4">
+        <div class="dropdown" style="width: 150px;left: 87%;">
+        <button  class="btn btn-secondary dropdown-toggle my-auto" style="border-radius: 50px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Exportar para:
+        </button>
+        <ul class="dropdown-menu dropdown-menu-dark bg-dark" style="border: gray dotted 1px;">
+          <li><a class="dropdown-item text-white" href="{% url 'download_txt_vt'  %}">Baixar como txt</a></li>
+        </ul>
+    </div>
+    </div>
+    </div>
+        
+
+    <div class="mx-auto mt-3 col-md-10">
+        <table class="table" style="border: 1px white dotted;">
+            <thead>
+                <tr>
+                    <th style="text-align: center; color: white;font-size: 12px;border: 1px white dotted;" scope="col">Empresa</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Admissão</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Nome</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">CPF</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Identidade</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Nome da Mãe</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Data de Nascimento</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">CEP</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Endereço</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Número</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Cidade</th>
+                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Bairro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dado in dados %}
+                        <tr>
+                            <th class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.empresa}}</th>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.admissao}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.nome}}</td> 
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.cpf}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.id}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.mae}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.nasc}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.cep}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.endereco}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.numero_endereco}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.cidade}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.bairro}}</td>
+                        </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+    </div>
+    
+    </div>
+    </div>
+    </body>
+    {% include "footer.html" %}
+    <style>
+        @media (max-width: 768px) {
+            #divSidebar{
+    
+                width: 12%;
+            }
+        }
+    </style>
+    <script>
+        var footer = document.querySelector(".footer-container")
+        footer.style.bottom = 'auto'
+        footer.style.marginTop = '15px'
+        footer.style.bottom = '';
+        footer.style.position = '';
+        footer.style.transform = '';
+        footer.style.marginBottom = '15px';
+        dados = document.querySelectorAll('.dadosTabela');
+        dados.forEach(function(dado) {
+          if (dado.textContent === 'None') {
+            dado.textContent = '';
+          }
+        });
+
+
+
+    </script>
+    </html>

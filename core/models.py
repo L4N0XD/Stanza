@@ -68,6 +68,20 @@ class DadosAjuCard(models.Model):
     data_planilha = models.DateField(null=True, blank=True)
     nome_obra = models.CharField(max_length=100, null=True)
 
+class DadosVT(models.Model):
+        empresa = models.IntegerField(null=True, blank=True)
+        admissao =models.DateField(null=True, blank=True)
+        nome = models.CharField(max_length=150, null=True, blank=True)
+        cpf = models.CharField(max_length=50, primary_key=True)
+        id = models.CharField(max_length=150, null=True, blank=True)
+        mae =models.CharField(max_length=150, null=True, blank=True)
+        nasc = models.DateField(null=True, blank=True)
+        cep = models.CharField(max_length=150, null=True, blank=True)
+        endereco = models.CharField(max_length=150, null=True, blank=True)
+        numero_endereco = models.IntegerField(null=True, blank=True)
+        cidade =models.CharField(max_length=150, null=True, blank=True)
+        bairro = models.CharField(max_length=150, null=True, blank=True)
+
 class DadosComercial(models.Model):
     par = models.CharField(primary_key=True, max_length=10)
     data_vcto = models.DateField(null=True, blank=True)

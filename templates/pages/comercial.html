@@ -100,112 +100,111 @@
   <a href="/upload-page-comercial" style="font-size: 14px;position: absolute; margin-left: 15px; border-radius: 50px;" class="btn btn-outline-info mb-5 mt-4" >Nova consulta</a>
   
 
-    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample" style="height: 40px;width: 40px;position: fixed;margin-top: 20%;margin-left: -1%;z-index: 4;">      
-    </button>
 
-    <div class="collapse collapse-horizontal" id="collapseWidthExample">
-        <div class="container col-md-2" style="position: fixed;margin-top: 10.5%;" id="divSidebar">
-            <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
-                <li>
-                {% if Total_Par_Men2 is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%;" class="btn btn-outline-info ">MENSAL 2: {{Total_Par_Men2}}</p>
-                {% endif %}
-                </li>
-                <li>
-                {% if Total_Ato is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">ATO: {{Total_Ato}}</p>
-                {% endif %}        
-                </li>
-                <li>
-                {% if Total_Par_Mensais is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">MENSAL: {{Total_Par_Mensais}}</p>
-                {% endif %}
-                </li>
-                <li>
-                {% if Total_Par_Semestrais is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">SEMESTRAL: {{Total_Par_Semestrais}}</p>
-                {% endif %}
-                </li>
-                <li>
-                {% if Total_Par_Bimestrais is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">BIMESTRAL: {{Total_Par_Bimestrais}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_Ent_chave is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">ENTREGA DA CHAVE: {{Total_Ent_chave}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_Sinal is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">SINAL: {{Total_Sinal}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_Par_Inter_ is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">INTERMEDIARIA: {{Total_Par_Inter_}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_Par_Inter_2 is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">INTERMEDIARIA 2: {{Total_Par_Inter_2}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_Sin_Cartão is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">SINAL CARTÃO: {{Total_Sin_Cartão}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_Par_Cartão is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">PARCELAS CARTÃO: {{Total_Par_Cartão}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_Car_Credit is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">CARTÃO CRÉDITO: {{Total_Car_Credit}}</p>
-                {% endif %}
-                </li>
-                <li>
-        
-                    {% if Total_Transf_Credito is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">TRANSFERÊNCIA DE CRÉDITO: {{Total_Transf_Credito}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_Fin_Associativo is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">FINANCIAMENTO ASSOCIATIVO: {{Total_Fin_Associativo}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_Anual is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">ANUAL: {{Total_Anual}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_Financiamento is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">FINANCIAMENTO: {{Total_Financiamento}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if total_residuo is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">RESÍDUO: {{total_residuo}}</p>
-                {% endif %}
-                </li>
-                <li>
-                    {% if Total_FGTS is not none %}
-                    <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-info">BIMESTRAL: {{Total_FGTS}}</p>
-                {% endif %}
-                </li>
+
+    <div class="container col-md-2" style="position: absolute;margin-top: 10.5%;" id="divSidebar">
+        <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
+            <li>
+            {% if Total_Par_Men2 is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%;" class="btn btn-outline-stanza ">MENSAL 2: {{Total_Par_Men2}}</p>
+            {% endif %}
+            </li>
+            <li>
+            {% if Total_Ato is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">ATO: {{Total_Ato}}</p>
+            {% endif %}        
+            </li>
+            <li>
+            {% if Total_Par_Mensais is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">MENSAL: {{Total_Par_Mensais}}</p>
+            {% endif %}
+            </li>
+            <li>
+            {% if Total_Par_Semestrais is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">SEMESTRAL: {{Total_Par_Semestrais}}</p>
+            {% endif %}
+            </li>
+            <li>
+            {% if Total_Par_Bimestrais is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">BIMESTRAL: {{Total_Par_Bimestrais}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_Ent_chave is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">ENTREGA DA CHAVE: {{Total_Ent_chave}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_Sinal is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">SINAL: {{Total_Sinal}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_Par_Inter_ is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">INTERMEDIARIA: {{Total_Par_Inter_}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_Par_Inter_2 is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">INTERMEDIARIA 2: {{Total_Par_Inter_2}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_Sin_Cartão is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">SINAL CARTÃO: {{Total_Sin_Cartão}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_Par_Cartão is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">PARCELAS CARTÃO: {{Total_Par_Cartão}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_Car_Credit is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">CARTÃO CRÉDITO: {{Total_Car_Credit}}</p>
+            {% endif %}
+            </li>
+            <li>
+    
+                {% if Total_Transf_Credito is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">TRANSFERÊNCIA DE CRÉDITO: {{Total_Transf_Credito}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_Fin_Associativo is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">FINANCIAMENTO ASSOCIATIVO: {{Total_Fin_Associativo}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_Anual is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">ANUAL: {{Total_Anual}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_Financiamento is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">FINANCIAMENTO: {{Total_Financiamento}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if total_residuo is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">RESÍDUO: {{total_residuo}}</p>
+            {% endif %}
+            </li>
+            <li>
+                {% if Total_FGTS is not none %}
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">BIMESTRAL: {{Total_FGTS}}</p>
+            {% endif %}
+            </li>
+        </ul>
     </div>
-  </div>
+
 
 
   <div class="col-md-9 d-flex mx-auto mt-4 ">
-      <p style="font-size: 14px; cursor: context-menu; width: 11%;" class="btn btn-outline-light ">Titulo: {{first.titulo_cliente}} </p>
-      <p style="font-size: 14px; cursor: context-menu; width: 50%;" class="btn btn-outline-light ">Cliente: {{first.cliente}}</p>
-      <p style="font-size: 14px; cursor: context-menu; width: 25%;" class="btn btn-outline-light">Documento: {{first.documento}}</p>
-      <p style="font-size: 14px; cursor: context-menu; width: 20%;" class="btn btn-outline-light">Unidades: {{first.unidades}}</p>
+      <p style="font-size: 14px; cursor: context-menu; width: 11%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light ">Titulo: {{first.titulo_cliente}} </p>
+      <p style="font-size: 14px; cursor: context-menu; width: 50%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light ">Cliente: {{first.cliente}}</p>
+      <p style="font-size: 14px; cursor: context-menu; width: 25%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Documento: {{first.documento}}</p>
+      <p style="font-size: 14px; cursor: context-menu; width: 20%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Unidades: {{first.unidades}}</p>
       <div style="position: absolute;right: 2%;top: 12.3%;">
               <a id="modalBtn" type="button" class="btn btn-outline-stanza" href="#" role="button" data-bs-toggle="modal" data-bs-target="#detalhamento" style="font-size: 14px;border-radius: 50px;" >
                   Detalhamento
@@ -213,9 +212,9 @@
       </div>
   </div>
       <div class="col-md-8 d-flex mx-auto ">
-          <p style="font-size: 14px; cursor: context-menu; width: 27%;" class="btn btn-outline-light">Data de Emissão: {{first.data_emissão}}</p>
-          <p style="font-size: 14px; cursor: context-menu; width: 50%" class="btn btn-outline-light">Empresa: {{first.empresa}}</p>
-          <p style="font-size: 14px; cursor: context-menu; width: 18%;" class="btn btn-outline-light" >Total: {{total_lanc}}</p>
+          <p style="font-size: 14px; cursor: context-menu; width: 27%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Data de Emissão: {{first.data_emissão}}</p>
+          <p style="font-size: 14px; cursor: context-menu; width: 50%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Empresa: {{first.empresa}}</p>
+          <p style="font-size: 14px; cursor: context-menu; width: 18%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light" >Total: {{total_lanc}}</p>
 
       </div>
         
@@ -260,14 +259,14 @@
             </tbody>
         </table> 
     </div>
-    <div class="col-md-11 mx-auto bg-secondary mt-5" style=" border: 3px #fb8306 solid;">
+    <div class="col-md-11 mx-auto bg-white mt-5" style=" border: 3px #fb8306 solid;">
         {% if condicoes%}
             {% for condicao in condicoes %}
-                <p  style="margin: 10px; font-size: 14px; color: white; font-weight: bold;">{{condicao.condicoes}}</p>
+                <p  style="margin: 10px; font-size: 14px; color: rgb(0, 0, 0); font-weight: bold;">{{condicao.condicoes}}</p>
                 <br>
             {% endfor %}
         {% else %}
-            <p  style="margin: 10px; font-size: 14px; color: white; font-weight: bold;">Nenhuma condição encontrada...</p>
+            <p  style="margin: 10px; font-size: 14px; color: rgb(0, 0, 0); font-weight: bold;">Nenhuma condição encontrada...</p>
         {% endif %}
 
     </div>
