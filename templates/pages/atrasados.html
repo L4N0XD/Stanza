@@ -64,12 +64,12 @@
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_sol is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_sol }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_sol|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_sol_cheg_obra is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_sol_cheg_obra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_sol_cheg_obra|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
@@ -79,12 +79,12 @@
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_emissao_pc is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_emissao_pc }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_emissao_pc|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.prev_entrega is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.prev_entrega }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.prev_entrega|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
@@ -99,7 +99,7 @@
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_NF is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_NF }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_NF|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
@@ -109,20 +109,20 @@
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_entrada_obra is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_entrada_obra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_entrada_obra|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_vencimento is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_vencimento }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_vencimento|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if atrasado.data_prev_final is not none %}
-                <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_prev_final }}</td>
+                <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.data_prev_final|date:"d/m/Y" }}</td>
                 {% else %}
                   {% if atrasado.prev_entrega is not none %}
-                    <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.prev_entrega}}</td>
+                    <td style="font-size: 11px;border: 1px white dotted;">{{atrasado.prev_entrega|date:"d/m/Y"}}</td>
                   {% else %}
                     <td style="font-size: 11px;border: 1px white dotted;"></td>
                   {% endif %} 

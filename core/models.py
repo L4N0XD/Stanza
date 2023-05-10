@@ -83,7 +83,8 @@ class DadosVT(models.Model):
         bairro = models.CharField(max_length=150, null=True, blank=True)
 
 class DadosComercial(models.Model):
-    par = models.CharField(primary_key=True, max_length=10)
+    id_value = models.AutoField(primary_key=True)
+    par = models.CharField(max_length=10, null=True, blank=True)
     data_vcto = models.DateField(null=True, blank=True)
     tipo_condicao = models.CharField(max_length=50, null=True, blank=True)
     id = models.IntegerField(null=True, blank=True)
@@ -110,7 +111,7 @@ class DadosComercial(models.Model):
     centro_custo = models.CharField(max_length=100, null=True, blank=True)
     titulo_cliente = models.IntegerField(null=True, blank=True)
     cliente = models.CharField(max_length=100, null=True, blank=True)
-    data_emissão = models.DateField(null=True, blank=True)
+    data_emissao = models.DateField(null=True, blank=True)
     limite_correcao = models.DateField(null=True, blank=True)
     ultimo_reajuste = models.DateField(null=True, blank=True)
     documento = models.CharField(max_length=100, null=True, blank=True)

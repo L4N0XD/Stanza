@@ -65,12 +65,12 @@
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_sol is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_sol }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_sol|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_sol_cheg_obra is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_sol_cheg_obra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_sol_cheg_obra|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
@@ -80,12 +80,12 @@
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_emissao_pc is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_emissao_pc }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_emissao_pc|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.prev_entrega is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.prev_entrega }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.prev_entrega|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
@@ -100,7 +100,7 @@
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_NF is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_NF }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_NF|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
@@ -110,20 +110,20 @@
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_entrada_obra is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_entrada_obra }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_entrada_obra|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_vencimento is not none %}
-                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_vencimento }}</td>
+                  <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_vencimento|date:"d/m/Y" }}</td>
                 {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                 {% endif %}
                 {% if indeterminado.data_prev_final is not none %}
-                <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_prev_final }}</td>
+                <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.data_prev_final|date:"d/m/Y" }}</td>
                 {% else %}
                   {% if indeterminado.prev_entrega is not none %}
-                    <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.prev_entrega}}</td>
+                    <td style="font-size: 11px;border: 1px white dotted;">{{indeterminado.prev_entrega|date:"d/m/Y"}}</td>
                   {% else %}
                   <td style="font-size: 11px;border: 1px white dotted;"></td>
                   {% endif %} 

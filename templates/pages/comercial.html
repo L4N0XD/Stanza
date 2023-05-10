@@ -212,8 +212,8 @@
       </div>
   </div>
       <div class="col-md-8 d-flex mx-auto ">
-          <p style="font-size: 14px; cursor: context-menu; width: 27%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Data de Emissão: {{first.data_emissão}}</p>
-          <p style="font-size: 14px; cursor: context-menu; width: 50%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Empresa: {{first.empresa}}</p>
+        <p style="font-size: 14px; cursor: context-menu; width: 27%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Data de Emissão: {{first.data_emissao|date:"d/m/Y"}}</p>
+        <p style="font-size: 14px; cursor: context-menu; width: 50%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Empresa: {{first.empresa}}</p>
           <p style="font-size: 14px; cursor: context-menu; width: 18%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light" >Total: {{total_lanc}}</p>
 
       </div>
@@ -242,7 +242,7 @@
                     {% if dado.valor_devido and dado.valor_devido > 0 and dado.tipo_condicao is not none %}
                         <tr>
                             <th class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.par}}</th>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.data_vcto}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.data_vcto|date:"d/m/Y"}}</td>
                             <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.tipo_condicao}}</td> 
                             <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.id}}</td>
                             <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.vl_original}}</td>
@@ -251,7 +251,7 @@
                             <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.correcao}}</td>
                             <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_devido}}</td>
                             <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dias}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_recto}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_recto|date:"d/m/Y"}}</td>
                             <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_pago}}</td>
                         </tr>
                     {% endif %}
