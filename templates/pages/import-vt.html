@@ -17,8 +17,8 @@
     <title id="titulo">Resultados comercial</title>
 </head>
 {% include "header.html" %}
-<body class="bg-dark">
-  <a href="/upload-import-vt" style="font-size: 14px;position: absolute; margin-left: 15px; border-radius: 50px;" class="btn btn-outline-info mb-5 mt-4" >Nova consulta</a>
+<body class="bg-light">
+  <a href="/upload-import-vt" style="font-size: 14px;position: absolute; margin-left: 15px; border-radius: 50px;" class="btn btn-roxo mb-5 mt-4" >Nova consulta</a>
   
 
   <div class="container row-md-10 mt-4">
@@ -27,7 +27,7 @@
           Exportar para:
         </button>
         <ul class="dropdown-menu dropdown-menu-dark bg-dark" style="border: gray dotted 1px;">
-          <li><a class="dropdown-item text-white" href="{% url 'download_txt_vt'  %}">Baixar como txt</a></li>
+          <li><a class="dropdown-item text-black" href="{% url 'download_txt_vt'  %}">Baixar como txt</a></li>
         </ul>
     </div>
     </div>
@@ -35,38 +35,38 @@
         
 
     <div class="mx-auto mt-3 col-md-10">
-        <table class="table" style="border: 1px white dotted;">
+        <table class="table" style="border: 1px black dotted; background: rgb(230, 230, 230);">
             <thead>
                 <tr>
-                    <th style="text-align: center; color: white;font-size: 12px;border: 1px white dotted;" scope="col">Empresa</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Admissão</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Nome</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">CPF</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Identidade</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Nome da Mãe</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Data de Nascimento</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">CEP</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Endereço</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Número</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Cidade</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Bairro</th>
+                    <th style="text-align: center; color: black;font-size: 12px;border: 1px black dotted;" scope="col">Empresa</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Admissão</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Nome</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">CPF</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Identidade</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Nome da Mãe</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Data de Nascimento</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">CEP</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Endereço</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Número</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Cidade</th>
+                    <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Bairro</th>
                 </tr>
             </thead>
             <tbody>
                 {% for dado in dados %}
                         <tr>
-                            <th class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.empresa}}</th>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.admissao}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.nome}}</td> 
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.cpf}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.id}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.mae}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.nasc}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.cep}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.endereco}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.numero_endereco}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.cidade}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.bairro}}</td>
+                            <th class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.empresa}}</th>
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.admissao|date:"d/m/Y"}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.nome}}</td> 
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.cpf}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.id}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.mae}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.nasc|date:"d/m/Y"}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.cep}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.endereco}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.numero_endereco}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.cidade}}</td>
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.bairro}}</td>
                         </tr>
                 {% endfor %}
             </tbody>

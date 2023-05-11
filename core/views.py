@@ -631,6 +631,7 @@ def dados_comercial(dados_xls, request):
     Ato = []
     FinAss = []
     par2 = []
+    debitos = []
     lista_comercial_condicoes = []
     empresa = str(dados_xls.iloc[3, 5])
     centro_custo = str(dados_xls.iloc[4, 5])
@@ -706,6 +707,7 @@ def dados_comercial(dados_xls, request):
                 par = str(row[i_par]) if isinstance(row[i_data_vcto], str) else None
                 id = int(row[i_id]) if str(row[i_dias]) != 'nan' else None 
                 total_lanc = row[9] if str(row[0]) == 'Total lanc.'  and not np.isnan(row[9])else None
+                total_debitos = row[i_valor_devido] if str(row[0]) == 'Total lanc.'  and not np.isnan(row[i_valor_devido])else None
                 data_vcto = format_date(str(row[i_data_vcto])) if isinstance(row[i_data_vcto], str) and str(row[i_data_vcto]) != 'nan' else None
                 tipo_condicao = str(row[i_tipo_condicao]) if isinstance(row[i_tipo_condicao], str) and str(row[i_tipo_condicao]) != 'nan' else None
                 vl_original = float(row[i_vl_original]) if isinstance(row[i_vl_original], (int, float)) and not np.isnan(row[i_vl_original]) else None
@@ -727,10 +729,15 @@ def dados_comercial(dados_xls, request):
                 dias = row[i_dias] if str(row[i_dias]) != 'nan' else None
                 dt_recto = format_date(str(row[i_dt_recto])) if isinstance(row[i_dt_recto], str) else None
                 valor_pago = float(row[i_valor_pago]) if isinstance(row[i_valor_pago], (int, float)) and not np.isnan(row[i_valor_pago]) else None
+                reparcelamento = True if str(row[i_dt_recto]) == '*** Reparcelamento ***' else False
+
                 if par is not None:
                     par2 = par
+                if tipo_condicao is not None:
+                    ti_co = tipo_condicao
                 
-
+                if total_debitos is not None:
+                    debitos.append(total_debitos)
                 if valor_devido and valor_devido > 0:
                     if tipo_condicao == "Parcela Mensais 2":
                         Mensal2.append(valor_devido)
@@ -840,25 +847,28 @@ def dados_comercial(dados_xls, request):
                         lista_vcto_financiamento.append(VctoFinanciamento)
                         ValorFinanciamento = valor_devido
                 
-                if index < (len(dados_xls)-1) and str(dados_xls.iloc[index+1, i_tipo_condicao]) == 'nan' and str(dados_xls.iloc[index+1, i_valor_pago]) != 'nan':
-                    par = par2
+                if index < (len(dados_xls)-1) and str(dados_xls.iloc[index+1, i_tipo_condicao]) == 'nan' and str(dados_xls.iloc[index+1, i_valor_pago]) != 'nan' or par is None and valor_pago is not None and dt_recto is not None:
+                    if (dados_xls.iloc[index+1, 0]) != '(C) - Parcela enviada para a cobrança escritural.' :
+                        par = par2
+                        tipo_condicao = ti_co
 
-                #print(par is None,  data_vcto  is not None,  tipo_condicao  is not None,  id is not None,  vl_original  is not None,  ind_dt_base  is not None,  ind_dt_calc  is not None,  correcao is not None,  porc_juro_contr != 0,   dt_base_juro  != 0,  dt_calc_juro  != 0,  juro_contr  is not None,  porc_multa is not None,   porc_juros  is not None,  porc_pro_rata  is not None,  multa  is not None,  juros  is not None,  pro_rata  is not None,  total  is not None,  valor_devido is not None,  dias is not None,  dt_recto  is not None,  valor_pago  is not None,  empresa  is None,  centro_custo  is None,  titulo_cliente  is None,  cliente is None,  data_emissao is None,  limite_correcao is None,  ultimo_reajuste is None,  documento  is None,  unidades is None,)   
-                print(par is not None)
-                if str(row[0]) != '(C) - Parcela enviada para a cobrança escritural.' :
-                    lista_comercial.append(DadosComercial(par=par, data_vcto = data_vcto, tipo_condicao = tipo_condicao, 
-                                                      id = id, vl_original = vl_original, ind_dt_base = ind_dt_base, 
-                                                      ind_dt_calc = ind_dt_calc, correcao = correcao, 
-                                                      porc_juro_contr = porc_juro_contr, dt_base_juro = dt_base_juro, 
-                                                      dt_calc_juro = dt_calc_juro, juro_contr = juro_contr, porc_multa = porc_multa,
-                                                       porc_juros = porc_juros, porc_pro_rata = porc_pro_rata, multa = multa, 
-                                                      juros = juros, pro_rata = pro_rata, total = total, valor_devido = valor_devido, 
-                                                      dias = dias, dt_recto = dt_recto, valor_pago = valor_pago, empresa = empresa, 
-                                                      centro_custo = centro_custo, titulo_cliente = titulo_cliente, cliente = cliente, 
-                                                      data_emissao = data_emissao, limite_correcao = limite_correcao, 
-                                                      ultimo_reajuste = ultimo_reajuste, documento = documento, 
-                                                      unidades = unidades, total_lanc = total_lanc))
-                            
+                if total_lanc is not None:
+                    lista_comercial.append(DadosComercial(total_lanc = total_lanc))
+                if (par is not None and str(row[0]) != 'Total lanc.'):
+                    if str(row[0]) != '(C) - Parcela enviada para a cobrança escritural.' :
+                        lista_comercial.append(DadosComercial(par=par, data_vcto = data_vcto, tipo_condicao = tipo_condicao, 
+                                                          id = id, vl_original = vl_original, ind_dt_base = ind_dt_base, 
+                                                          ind_dt_calc = ind_dt_calc, correcao = correcao, 
+                                                          porc_juro_contr = porc_juro_contr, dt_base_juro = dt_base_juro, 
+                                                          dt_calc_juro = dt_calc_juro, juro_contr = juro_contr, porc_multa = porc_multa,
+                                                           porc_juros = porc_juros, porc_pro_rata = porc_pro_rata, multa = multa, 
+                                                          juros = juros, pro_rata = pro_rata, total = total, valor_devido = valor_devido, 
+                                                          dias = dias, dt_recto = dt_recto, valor_pago = valor_pago, empresa = empresa, 
+                                                          centro_custo = centro_custo, titulo_cliente = titulo_cliente, cliente = cliente, 
+                                                          data_emissao = data_emissao, limite_correcao = limite_correcao, 
+                                                          ultimo_reajuste = ultimo_reajuste, documento = documento, 
+                                                          unidades = unidades, total_lanc = total_lanc, reparcelamento=reparcelamento))
+
             except ValueError:
                 pass
     if len(Ato) > 0:
@@ -945,15 +955,20 @@ def dados_comercial(dados_xls, request):
         parcelas = ( calcular_parcelas(Fgts,ValorFgts, "FGTS", lista_vcto_fgts) )
         for parcela in parcelas:
             condicoes.append(parcela)
-    if len(Financiamento) > 0:
-        
+    if len(Financiamento) > 0:   
         parcelas = ( calcular_parcelas(Financiamento,ValorFinanciamento, "FINANCIAMENTO", lista_vcto_financiamento))
         for parcela in parcelas:
             condicoes.append(parcela)
+    if len(debitos) > 0:
+        debito = round(sum(debitos), 2)
+        condicoes.append(f"TOTAL DÉBITOS: {formatar_real(debito)} ({numero_por_extenso.monetario(debito)})")
+    
     for condicao in condicoes:
         lista_comercial_condicoes.append(ClientesComercial(nome=cliente, tituloID = titulo_cliente, condicoes = condicao ))
+
     DadosComercial.objects.bulk_create(lista_comercial) 
-    ClientesComercial.objects.bulk_create(lista_comercial_condicoes)                                     
+    ClientesComercial.objects.bulk_create(lista_comercial_condicoes)    
+
 #Renderiza a página de resultados de Comercial
 def comercial(request):
     first = DadosComercial.objects.first()
@@ -976,7 +991,11 @@ def comercial(request):
     Soma_FGTS = DadosComercial.objects.filter(tipo_condicao="FGTS").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
     Soma_Financiamento = DadosComercial.objects.filter(tipo_condicao="Financiamento").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
     teste = DadosComercial.objects.exclude(total_lanc=None)
-    total_lanc = teste[0].total_lanc
+    total_lanc = (teste[0].total_lanc)
+    try:
+        Soma_Financiamento_pago = round(DadosComercial.objects.filter(tipo_condicao="Financiamento").exclude(valor_pago=0).aggregate(Sum('valor_pago'))['valor_pago__sum'], 2)
+    except TypeError:
+        Soma_Financiamento_pago = None
 
 
     return render(request, 'comercial.html', {'dados': DadosComercial.objects.all(), 'first': first, 'total_lanc': formatar_real(total_lanc), 
@@ -986,7 +1005,8 @@ def comercial(request):
                                               'Total_Sinal': formatar_real(Soma_Sinal ),'Total_Par_Inter': formatar_real(Soma_Par_Inter ),'Total_Par_Inter_2': formatar_real(Soma_Par_Inter_2 ),
                                               'Total_Sin_Cartão': formatar_real(Soma_Sin_Cartão ),'Total_Par_Cartão': formatar_real(Soma_Par_Cartão ),'Total_Car_Credit': formatar_real(Soma_Car_Crédito),
                                               'Total_Transf_Credito': formatar_real(Soma_Transf_Crédito ),'Total_Fin_Associativo': formatar_real(Soma_Fin_Associativo ),'Total_Anual': formatar_real(Soma_Anual),
-                                              'Total_FGTS': formatar_real(Soma_FGTS ),'Total_Financiamento': formatar_real(Soma_Financiamento), 'total_residuo': formatar_real(Soma_Resíduo)})
+                                              'Total_FGTS': formatar_real(Soma_FGTS ),'Total_Financiamento': formatar_real(Soma_Financiamento), 'total_residuo': formatar_real(Soma_Resíduo), 
+                                              'finan_pago': Soma_Financiamento_pago, })
 #Upload dos arquivos de Comercial
 def upload_comercial(request):
     if request.method == 'POST':

@@ -17,81 +17,81 @@
     <title id="titulo">Resultados VT</title>
 </head>
 {% include "header.html" %}
-<body class="bg-dark">
+<body class="bg-light">
 <div class="container-xxl col-md-12">
 <div class="row">
 
 <div class="container col-md-2" style="position: fixed; margin-top: -10px;" id="divSidebar">
     <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
         <li>
-            <a href="/upload-page-rh" style="font-size: 16px; width: 100%; margin-top: 35px;" class="btn btn-outline-info mb-5" >Nova consulta</a>
+            <a href="/upload-page-rh" style="font-size: 16px; width: 100%; margin-top: 35px;" class="btn btn-roxo mb-5" >Nova consulta</a>
         </li>
         <li>
-            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-primary mb-5" >Total: <br> {{total}}</p>
+            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-primary mb-5" >Total: <br> {{total}}</p>
         </li>
         <li>
-            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-success mb-5">Total Descontos: <br> {{total_descontos}}</p>
+            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-success mb-5">Total Descontos: <br> {{total_descontos}}</p>
         </li>
         <li>
-            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-danger mb-5">Total a pagar: <br> {{total_pagar}}</p>
+            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-danger mb-5">Total a pagar: <br> {{total_pagar}}</p>
         </li>
         <li>
-            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-outline-light mb-5">Data da Planilha: <br> {{data_planilha|date:"d/m/Y"}}</p>
+            <p style="font-size: 16px; cursor: context-menu; width: 100%;" class="btn btn-secondary mb-5">Data da Planilha: <br> {{data_planilha|date:"d/m/Y"}}</p>
         </li>
   </div>
 
 <div class="container row mt-4">
 <div class="col-md-11 d-flex mx-auto" >
-    <p style="font-size: 16px; cursor: context-menu;" class="btn btn-outline-light mx-auto my-auto">Obra: {{nome_obra}}</p>
+    <p style="font-size: 16px; cursor: context-menu;" class="btn btn-rosa mx-auto my-auto">Obra: {{nome_obra}}</p>
     <div class="dropdown" >
     <button  class="btn btn-secondary dropdown-toggle my-auto" type="button" data-bs-toggle="dropdown" aria-expanded="false">
       Exportar para:
     </button>
     <ul class="dropdown-menu dropdown-menu-dark bg-dark" style="border: gray dotted 1px;">
-      <li><a class="dropdown-item text-white" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLS</a></li>
-      <li><a class="dropdown-item text-white" href="{% url 'download_txt' nome_obra=nome_obra %}">Baixar como txt</a></li>
+      <li><a class="dropdown-item text-dark" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLS</a></li>
+      <li><a class="dropdown-item text-dark" href="{% url 'download_txt' nome_obra=nome_obra %}">Baixar como txt</a></li>
     </ul>
 </div>
 </div>
 </div>
 <div class="col-md-9 container mt-3" style=" margin-right: 6%;">
-    <table class="table">
+    <table class="table" style="background: rgb(230, 230, 230);">
         <thead>
             <tr>
-                <th style="text-align: center; color: white; width: 70px;border: 1px white dotted;" scope="col"  >CPF</th>
-                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Nome</th>
-                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Dias</th>
-                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Dias 2</th>
-                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Valor a pagar</th>
-                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Saldo</th>
-                <th style="color: white;text-align: center;border: 1px white dotted; " scope="col">Saldo atualizado</th>
+                <th style="text-align: center; color: black; width: 70px;border: 1px black dotted;" scope="col"  >CPF</th>
+                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Nome</th>
+                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Dias</th>
+                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Dias 2</th>
+                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Valor a pagar</th>
+                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Saldo</th>
+                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Saldo atualizado</th>
             </tr>
         </thead>
         <tbody>
             {% for real in reais %}
             <tr>
-                <th style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.cpf}}</th>
-                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.nome}}</td>
-                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.dias_trabalhados}}</td>
+                <th style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.cpf}}</th>
+                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.nome}}</td>
+                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.dias_trabalhados}}</td>
             {% if real.dias_contabilizados is not none %}
-                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.dias_contabilizados}}</td>
+                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.dias_contabilizados}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.dias_trabalhados}}</td>
+                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.dias_trabalhados}}</td>
             {% endif %}
             {% if real.pagar is not none %}
-                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.pagar}}</td>
+                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.pagar}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">Sem informações</td>
+                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">Sem informações</td>
             {% endif %}
             {% if real.total is not none %}
-                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.total}}</td>
+                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.total}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">0.00</td>
+                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">0.00</td>
             {% endif %}
             {% if real.total_atualizado is not none %}
-                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">{{real.total_atualizado}}</td>
+                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.total_atualizado}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: white;border: 1px white dotted;">0.00</td>
+                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">0.00</td>
             {% endif %}
             </tr>
             {% endfor %}

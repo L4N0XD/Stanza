@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">    <title id="titulo">Início</title>
 </head>
 {% include "header.html" %}
-<body class="bg-dark">
+<body class="bg-light">
   <div class="container-xxl col-md-12">
     <div class="row">
     <button id="startProgress"  onclick="startProgressBar()" style="display: none;">comecar</button>
@@ -28,19 +28,19 @@
         <p id="text_progress" style="position: absolute; z-index: 1; text-align: center; left: 50%; transform: translateX(-50%); color: black"></p>
       </div>
       <div style="display: grid;top: 30%;position: fixed;" id="uploadRH">   
-        <div  class="divInput form-group mb-4"style="width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
-            <p class="text-dark" style="width:50%; text-align: center;">Dias a contar</p>
+        <div  class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid; width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
+            <spam class="text-dark" style="width:50%; text-align: center;">Dias a contar</spam>
               <input type="number" required class="form-control" id="diasUteis" name="diasUteis">
           </div>
-        <div  class="divInput form-group mb-4"style="width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
-            <p class="text-dark input-label" style="width:50%; text-align: center;">Planilha Real</p>
-            <input type="file" required class="form-control input-file" id="arquivo1" name="arquivo1">
+        <div  class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid; width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
+            <spam class="text-dark input-label" style="width:50%; text-align: center;">Planilha Real</spam>
+            <input type="file" required  class="form-control input-file"  id="arquivo1" name="arquivo1">
         </div>
-        <div class="divInput form-group mb-4"style="width:500px; height:40px; display:flex; border-radius: 6px; align-items: baseline;">
-          <p class="text-dark input-label" style="width:50%; text-align: center;">Planilha AracajuCard</p>
-          <input type="file" required class="form-control input-file" id="arquivo2" name="arquivo2">
+        <div class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid; width:500px; height:40px; display:flex; border-radius: 6px; align-items: baseline;">
+          <spam class="text-dark input-label" style="width:50%; text-align: center;">Planilha AracajuCard</spam>
+          <input type="file" required  class="form-control input-file"  id="arquivo2" name="arquivo2">
         </div>
-        <button id="startUpload" class="btn btn-outline-stanza d-flex mb-4" style="justify-content: center;" type="submit">Upload</button>
+        <button id="startUpload" class="btn btn-stanza d-flex mb-4" style="justify-content: center;" type="submit">Upload</button>
       </div>
     </div>
   </div>

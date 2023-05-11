@@ -117,6 +117,7 @@ class DadosComercial(models.Model):
     documento = models.CharField(max_length=100, null=True, blank=True)
     unidades = models.CharField(max_length=100, null=True, blank=True)
     total_lanc = models.DecimalField(null=True,blank=True, max_digits=10, decimal_places=2)
+    reparcelamento = models.BooleanField(default=False)
 
 class ClientesComercial(models.Model):
     nome = models.CharField(max_length=50, null=True, blank=True)

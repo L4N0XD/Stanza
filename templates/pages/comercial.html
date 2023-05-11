@@ -1,3 +1,4 @@
+{% load l10n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,75 +18,81 @@
     <title id="titulo">Resultados comercial</title>
 </head>
 {% include "header.html" %}
-<body class="bg-dark">
+<body class="bg-light">
 <div class="modal fade" id="detalhamento" tabindex="-1" aria-labelledby="detalhamentoLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
-      <div class="modal-content bg-dark">
-        <div class="modal-header bg-dark">
-          <h1 class="modal-title fs-5 text-white" id="detalhamentoLabel">Detalhamento</h1>
-          <button type="button" style="background: transparent; border: 0;" data-bs-dismiss="modal" aria-label="Close"><span class="material-symbols-outlined" style="color:white">close</span></button>
+      <div class="modal-content bg-light">
+        <div class="modal-header bg-light">
+          <h1 class="modal-title fs-5 text-black" id="detalhamentoLabel">Detalhamento</h1>
+          <button type="button" style="background: transparent; border: 0;" data-bs-dismiss="modal" aria-label="Close"><span class="material-symbols-outlined" style="color:black">close</span></button>
         </div>
-        <div class="modal-body bg-dark">
+        <div class="modal-body bg-light">
             <div class="mx-auto mt-3">
-                <table class="table" style="border: 1px white dotted;">
+                <table class="table" style="border: 1px black dotted;">
                     <thead>
                         <tr>
-                            <th style="text-align: center; color: white;font-size: 12px;border: 1px white dotted;" scope="col">Par</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Data Vcto.</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Tipo Condição</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Id</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Vl original</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Ind. dt base</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Ind. dt calc</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Correção</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Juro contr.%</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Dt. base juro</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Dt. calc juro</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Juro contr.</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">% Multa</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">% Juros</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">% Pró-rata</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Multa</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Juros</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Pró-rata</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Total</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Valor devido</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Dias</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Dt. recto.</th>
-                            <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Valor pago</th>
+                            <th style="text-align: center; color: black;font-size: 12px;border: 1px black dotted;" scope="col">Par</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Data Vcto.</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Tipo Condição</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Id</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Vl original</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Ind. dt base</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Ind. dt calc</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Correção</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Juro contr.%</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Dt. base juro</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Dt. calc juro</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Juro contr.</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">% Multa</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">% Juros</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">% Pró-rata</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Multa</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Juros</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Pró-rata</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Total</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Valor devido</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Dias</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Dt. recto.</th>
+                            <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Valor pago</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for dado in dados %}
+                            {% if dado.par is not none %}
                                 <tr>
-                                    <th style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.par}}</th>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.data_vcto}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.tipo_condicao}}</td> 
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.id}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.vl_original}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.ind_dt_base}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.ind_dt_calc}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.correcao}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_juro_contr}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_base_juro}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_calc_juro}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.juro_contr}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_multa}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_juros}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.porc_pro_rata}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.multa}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.juros}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.pro_rata}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.total}}</td>
+                                    <th style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.par}}</th>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.data_vcto is not none %}{{dado.data_vcto|date:"d/m/Y"}}{% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.tipo_condicao is not none %}{{dado.tipo_condicao}} {% else %} {% endif %}</td> 
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.id is not none %} {{dado.id}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.vl_original is not none %} {{dado.vl_original}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.ind_dt_base is not none %} {{dado.ind_dt_base|localize}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.ind_dt_calc is not none %} {{dado.ind_dt_calc}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.correcao is not none %} {{dado.correcao}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.correcao is not none %} {{dado.porc_juro_contr}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.correcao is not none %} {{dado.dt_base_juro}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.correcao is not none %} {{dado.dt_calc_juro}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.juro_contr is not none %} {{dado.juro_contr}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.porc_multa is not none %} {{dado.porc_multa}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.porc_juros is not none %} {{dado.porc_juros}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.porc_pro_rata is not none %} {{dado.porc_pro_rata}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.multa is not none %} {{dado.multa}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.juros is not none %} {{dado.juros}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.pro_rata is not none %} {{dado.pro_rata}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.total is not none %} {{dado.total}} {% else %} {% endif %}</td>
                                     {% if dado.valor_devido > 0 %}
-                                        <td style="text-align: center; font-size: 10px; color: rgb(255, 0, 0);border: 1px white dotted;">{{dado.valor_devido}}</td>
+                                        <td style="text-align: center; font-size: 11px; color: rgb(255, 0, 0);border: 1px black dotted;">{% if dado.valor_devido is not none %} {{dado.valor_devido|localize}} {% else %} {% endif %}</td>
                                     {% else %}
-                                        <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_devido}}</td>
+                                        <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.valor_devido is not none %} {{dado.valor_devido|localize}} {% else %} {% endif %}</td>
                                     {% endif %}
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dias}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_recto}}</td>
-                                    <td style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_pago}}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.dias is not none %} {{dado.dias}} {% else %} {% endif %}</td>
+                                    <td style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{% if dado.dt_recto is not none %} {{dado.dt_recto|date:"d/m/Y"}} {% else %} {% endif %}</td>
+                                    {% if dado.tipo_condicao == 'Financiamento' and dado.reparcelamento == True %}
+                                    <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">*** Reparcelamento ***</td>
+                                    {% else %}
+                                    <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.valor_pago}}</td>
+                                    {% endif %}
                                 </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table> 
@@ -96,208 +103,204 @@
         </div>
       </div>
     </div>
-  </div>
-  <a href="/upload-page-comercial" style="font-size: 14px;position: absolute; margin-left: 15px; border-radius: 50px;" class="btn btn-outline-info mb-5 mt-4" >Nova consulta</a>
-  
-
-
-
-    <div class="container col-md-2" style="position: absolute;margin-top: 10.5%;" id="divSidebar">
+</div>
+<a href="/upload-page-comercial" style="font-size: 14px;position: absolute; margin-left: 15px; border-radius: 50px;" class="btn btn-roxo mb-5 mt-4" >Nova consulta</a> 
+<div class="container col-md-2" style="position: absolute;margin-top: 10.5%;" id="divSidebar">
         <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
             <li>
             {% if Total_Par_Men2 is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%;" class="btn btn-outline-stanza ">MENSAL 2: {{Total_Par_Men2}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%;" class="btn btn-stanza ">MENSAL 2: {{Total_Par_Men2}}</p>
             {% endif %}
             </li>
             <li>
             {% if Total_Ato is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">ATO: {{Total_Ato}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">ATO: {{Total_Ato}}</p>
             {% endif %}        
             </li>
             <li>
             {% if Total_Par_Mensais is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">MENSAL: {{Total_Par_Mensais}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">MENSAL: {{Total_Par_Mensais}}</p>
             {% endif %}
             </li>
             <li>
             {% if Total_Par_Semestrais is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">SEMESTRAL: {{Total_Par_Semestrais}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">SEMESTRAL: {{Total_Par_Semestrais}}</p>
             {% endif %}
             </li>
             <li>
             {% if Total_Par_Bimestrais is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">BIMESTRAL: {{Total_Par_Bimestrais}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">BIMESTRAL: {{Total_Par_Bimestrais}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_Ent_chave is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">ENTREGA DA CHAVE: {{Total_Ent_chave}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">ENTREGA DA CHAVE: {{Total_Ent_chave}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_Sinal is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">SINAL: {{Total_Sinal}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">SINAL: {{Total_Sinal}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_Par_Inter_ is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">INTERMEDIARIA: {{Total_Par_Inter_}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">INTERMEDIARIA: {{Total_Par_Inter_}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_Par_Inter_2 is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">INTERMEDIARIA 2: {{Total_Par_Inter_2}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">INTERMEDIARIA 2: {{Total_Par_Inter_2}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_Sin_Cartão is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">SINAL CARTÃO: {{Total_Sin_Cartão}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">SINAL CARTÃO: {{Total_Sin_Cartão}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_Par_Cartão is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">PARCELAS CARTÃO: {{Total_Par_Cartão}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">PARCELAS CARTÃO: {{Total_Par_Cartão}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_Car_Credit is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">CARTÃO CRÉDITO: {{Total_Car_Credit}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">CARTÃO CRÉDITO: {{Total_Car_Credit}}</p>
             {% endif %}
             </li>
             <li>
     
                 {% if Total_Transf_Credito is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">TRANSFERÊNCIA DE CRÉDITO: {{Total_Transf_Credito}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">TRANSFERÊNCIA DE CRÉDITO: {{Total_Transf_Credito}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_Fin_Associativo is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">FINANCIAMENTO ASSOCIATIVO: {{Total_Fin_Associativo}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">FINANCIAMENTO ASSOCIATIVO: {{Total_Fin_Associativo}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_Anual is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">ANUAL: {{Total_Anual}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">ANUAL: {{Total_Anual}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_Financiamento is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">FINANCIAMENTO: {{Total_Financiamento}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">FINANCIAMENTO: {{Total_Financiamento}}</p>
             {% endif %}
             </li>
             <li>
                 {% if total_residuo is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">RESÍDUO: {{total_residuo}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">RESÍDUO: {{total_residuo}}</p>
             {% endif %}
             </li>
             <li>
                 {% if Total_FGTS is not none %}
-                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-outline-stanza">BIMESTRAL: {{Total_FGTS}}</p>
+                <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">BIMESTRAL: {{Total_FGTS}}</p>
             {% endif %}
             </li>
         </ul>
-    </div>
-
-
-
-  <div class="col-md-9 d-flex mx-auto mt-4 ">
-      <p style="font-size: 14px; cursor: context-menu; width: 11%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light ">Titulo: {{first.titulo_cliente}} </p>
-      <p style="font-size: 14px; cursor: context-menu; width: 50%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light ">Cliente: {{first.cliente}}</p>
-      <p style="font-size: 14px; cursor: context-menu; width: 25%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Documento: {{first.documento}}</p>
-      <p style="font-size: 14px; cursor: context-menu; width: 20%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Unidades: {{first.unidades}}</p>
-      <div style="position: absolute;right: 2%;top: 12.3%;">
-              <a id="modalBtn" type="button" class="btn btn-outline-stanza" href="#" role="button" data-bs-toggle="modal" data-bs-target="#detalhamento" style="font-size: 14px;border-radius: 50px;" >
-                  Detalhamento
-              </a>
-      </div>
-  </div>
-      <div class="col-md-8 d-flex mx-auto ">
-        <p style="font-size: 14px; cursor: context-menu; width: 27%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Data de Emissão: {{first.data_emissao|date:"d/m/Y"}}</p>
-        <p style="font-size: 14px; cursor: context-menu; width: 50%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light">Empresa: {{first.empresa}}</p>
-          <p style="font-size: 14px; cursor: context-menu; width: 18%; display: flex;justify-content: center;align-items: center;" class="btn btn-outline-light" >Total: {{total_lanc}}</p>
-
-      </div>
-        
-
-    <div class="mx-auto mt-3 col-md-8">
-        <table class="table" style="border: 1px white dotted;">
-            <thead>
-                <tr>
-                    <th style="text-align: center; color: white;font-size: 12px;border: 1px white dotted;" scope="col">Par</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Data Vcto.</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Tipo Condição</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Id</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Vl original</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Ind. dt base</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Ind. dt calc</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Correção</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Valor devido</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Dias</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Dt. recto.</th>
-                    <th style="color: white;text-align: center; font-size: 12px;border: 1px white dotted;" scope="col">Valor pago</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for dado in dados %}
-                    {% if dado.valor_devido and dado.valor_devido > 0 and dado.tipo_condicao is not none %}
-                        <tr>
-                            <th class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.par}}</th>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.data_vcto|date:"d/m/Y"}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.tipo_condicao}}</td> 
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.id}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.vl_original}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.ind_dt_base}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.ind_dt_calc}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.correcao}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_devido}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dias}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.dt_recto|date:"d/m/Y"}}</td>
-                            <td class="dadosTabela" style="text-align: center; font-size: 10px; color: white;border: 1px white dotted;">{{dado.valor_pago}}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </tbody>
-        </table> 
-    </div>
-    <div class="col-md-11 mx-auto bg-white mt-5" style=" border: 3px #fb8306 solid;">
-        {% if condicoes%}
-            {% for condicao in condicoes %}
-                <p  style="margin: 10px; font-size: 14px; color: rgb(0, 0, 0); font-weight: bold;">{{condicao.condicoes}}</p>
-                <br>
-            {% endfor %}
-        {% else %}
-            <p  style="margin: 10px; font-size: 14px; color: rgb(0, 0, 0); font-weight: bold;">Nenhuma condição encontrada...</p>
-        {% endif %}
-
-    </div>
-    </div>
-    </div>
-    </body>
-    {% include "footer.html" %}
-    <style>
-        @media (max-width: 768px) {
-            #divSidebar{
+</div>
+<div class="col-md-9 d-flex mx-auto mt-4 ">
+    <p style="font-size: 14px; cursor: context-menu; display: flex; justify-content: space-between; align-items: center; width: 100%;" class="btn btn-rosa">
+        <span>Titulo: {{first.titulo_cliente}}</span>
+        <span>Cliente: {{first.cliente}}</span>
+        <span>Documento: {{first.documento}}</span>
+        <span>Unidades: {{first.unidades}}</span>
+    </p>
     
-                width: 12%;
-            }
+    <div style="position: absolute;right: 2%;top: 12.3%;">
+            <a id="modalBtn" type="button" class="btn btn-stanza" href="#" role="button" data-bs-toggle="modal" data-bs-target="#detalhamento" style="font-size: 14px;border-radius: 50px;" >
+                Detalhamento
+            </a>
+    </div>
+</div>
+<div class="col-md-10 mx-auto ">
+    <p style="font-size: 14px; cursor: context-menu; display: flex; justify-content: space-between; align-items: center;" class="btn btn-rosa">
+        <span> Data de Emissão: {{first.data_emissao|date:"d/m/Y"}} </span>
+        <span> Empresa: {{first.empresa}} </span>
+        <span> Total Lanc: {{total_lanc}} </span>
+    </p>    
+</div>
+<div class="mx-auto mt-3 col-md-8">
+    <table class="table" style="border: 1px black dotted; background: rgb(230, 230, 230);">
+        <thead>
+            <tr>
+                <th style="text-align: center; color: black;font-size: 12px;border: 1px black dotted;" scope="col">Par</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Data Vcto.</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Tipo Condição</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Id</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Vl original</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Ind. dt base</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Ind. dt calc</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Correção</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Valor devido</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Dias</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Dt. recto.</th>
+                <th style="color: black;text-align: center; font-size: 12px;border: 1px black dotted;" scope="col">Valor pago</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dado in dados %}
+                {% if dado.valor_devido and dado.valor_devido > 0 and dado.tipo_condicao is not none  %}
+                    <tr>
+                        <th class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.par}}</th>
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.data_vcto|date:"d/m/Y"}}</td>
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.tipo_condicao}}</td> 
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.id}}</td>
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.vl_original}}</td>
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.ind_dt_base}}</td>
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.ind_dt_calc}}</td>
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.correcao}}</td>
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.valor_devido}}</td>
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.dias}}</td>
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.dt_recto|date:"d/m/Y"}}</td>
+                        {% if dado.tipo_condicao == 'Financiamento' and dado.reparcelamento == False %}
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{finan_pago}}</td>
+                        {% elif dado.tipo_condicao == 'Financiamento' and dado.reparcelamento == True %}
+                        <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">*** Reparcelamento ***</td>
+                        {% else %}
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.valor_pago}}</td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table> 
+</div>
+<div class="col-md-11 mx-auto mt-5" style="background-color: rgb(230, 230, 230);border: 3px #fb8306 solid;border-radius: 20px;">
+    {% if condicoes%}
+        {% for condicao in condicoes %}
+            <p  style="margin: 10px; font-size: 14px; color: rgb(0, 0, 0); font-weight: bold;">{{condicao.condicoes}}</p>
+            <br>
+        {% endfor %}
+    {% else %}
+        <p  style="margin: 10px; font-size: 14px; color: rgb(0, 0, 0); font-weight: bold;">Nenhuma condição encontrada...</p>
+    {% endif %}
+</div>
+</body>
+
+{% include "footer.html" %}
+<style>
+    @media (max-width: 768px) {
+        #divSidebar{
+
+            width: 12%;
         }
-    </style>
-    <script>
-        var footer = document.querySelector(".footer-container")
-        footer.style.bottom = 'auto'
-        footer.style.marginTop = '15px'
-        footer.style.bottom = '';
-        footer.style.position = '';
-        footer.style.transform = '';
-        footer.style.marginBottom = '15px';
-        dados = document.querySelectorAll('.dadosTabela');
-        dados.forEach(function(dado) {
-          if (dado.textContent === 'None') {
-            dado.textContent = '';
-          }
-        });
-
-
-
-    </script>
-    </html>
+    }
+</style>
+<script>
+    var footer = document.querySelector(".footer-container")
+    footer.style.bottom = 'auto'
+    footer.style.marginTop = '15px'
+    footer.style.bottom = '';
+    footer.style.position = '';
+    footer.style.transform = '';
+    footer.style.marginBottom = '15px';
+    dados = document.querySelectorAll('.dadosTabela');
+    dados.forEach(function(dado) {
+      if (dado.textContent === 'None') {
+        dado.textContent = '';
+      }
+    });
+</script>
+</html>

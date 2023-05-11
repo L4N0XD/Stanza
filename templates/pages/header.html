@@ -1,12 +1,12 @@
 <section id="header">
      <!-- Modal Insumos-->
      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog bg-dark">
-        <div class="modal-content bg-dark">
-          <div class="modal-header bg-dark mb-3" style="border-bottom: #fb8306 solid; border-radius: 20px;">
+      <div class="modal">
+        <div class="modal-">
+          <div class="modal mb-3" style="border-bottom: #fb8306 solid; border-radius: 20px;">
             <h1 class="modal-title fs-5 mx-auto" style="color:#fb8306;" id="exampleModalLabel">Adicionar Insumo</h1>
           </div>
-          <div class="modal-body bg-dark">
+          <div class="mod">
             <form id='novoInsumo' method="POST" action="{% url 'insumos' %}" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="input-group mb-3" style="justify-content: center;">                            
@@ -26,12 +26,12 @@
                   </div>
                 </div>
               </div>
-              <div class="modal-footer bg-dark" style="border-top: #fb8306 solid; border-radius: 20px;">
+              <div class="modal" style="border-top: #fb8306 solid; border-radius: 20px;">
                 <div class="dropdown">
                   <button style="width: 90%; margin-right: 55px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                     Insumos cadastrados
                   </button>
-                  <ul class="dropdown-menu dropdown-menu-dark bg-dark" aria-labelledby="dropdownMenuButton2">
+                  <ul class="dropdown-menu dropdown-me" aria-labelledby="dropdownMenuButton2">
                     <li>
                       <table class="table table-dark dropdown-item">
                           {% for insumo in insumos %}
@@ -53,16 +53,18 @@
         </div>
       </div>
     </div>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " style="background-color: #fb8306;" data-bs-theme="dark">
         <div class="container-fluid position-relative">
-          <a class="navbar-brand" style="margin-right: 10%;" href="/index">Stanza</a>
+          <a class="navbar-brand" style="margin-right: 10%;" href="/index">
+            <img src="https://stanza.com.br/wp-content/themes/stanza/assets/img/laranja-stanza-marca.png" width="100px" alt="Marca da Stanza Branca" style="filter: brightness(0) invert(1); display: flex;">
+          </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a class="nav-link " aria-current="page" href="/index">Home</a>
+                    <a class="nav-link" aria-current="page" href="/index">Home</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -89,7 +91,7 @@
                     <a class="nav-link" href="/upload-page-comercial">Comercial</a>
                   </li>
                 </ul>
-                <form class="d-flex" role="search">
+                <form class="" role="search" style="display: none;">
                   <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search">
                   <button class="btn btn-outline-light" type="submit">P</button>
                 </form>
