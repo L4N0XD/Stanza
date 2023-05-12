@@ -12,6 +12,7 @@ class UploadForm(forms.Form):
 class UploadRH(forms.Form):
     arquivo1 = forms.FileField(required=True)
     arquivo2 = forms.FileField(required=True)
+    diasUteis = forms.IntegerField(label='')
 
 class AddInsumoForm(forms.Form):
     codigo_insumo = forms.IntegerField(label='', required=True)

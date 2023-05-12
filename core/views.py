@@ -46,7 +46,6 @@ def upload(request):
             os.unlink(tmp.name)
             dados_obras(dados_xls, request)
             return(redirect('graphic'))
-
         else:
             return(redirect('upload-page-obras'))
     else:
@@ -73,9 +72,9 @@ def upload_rh(request):
             dados_rh(dados_xls, dados_xls2, (int(dias_uteis)))
             return(redirect('results-rh'))
         else:
-            return(redirect('upload-page-rh'))
+            return render(request, 'upload-page-rh.html')
     else:
-        return(redirect('upload-page-rh'))
+        return render(request, 'upload-page-rh.html')
 #Define e salva os dados dos arquivos de VT    
 def dados_rh(dados_xls, dados_xls2, dias_uteis):
     start = time.time()
@@ -150,7 +149,6 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
             else: 
                 valor_desconto_colaborador = int(0)
                 dias_list.append(DadosRH(pk=dado.cpf, pagar=obj_rh.pagar, dias_contabilizados=int(0)))
-            print(valor_desconto_colaborador)
         ctrl_total += obj_rh.dias_trabalhados
         if obj_rh.pagar:
             ctrl_total_pagar += obj_rh.pagar
@@ -304,8 +302,6 @@ def dados_obras(dados_xls, request):
         data_entrada_obra = None if pd.isna(row[21]) else row[21] if isinstance(row[21], str) else None
         data_vencimento = None if pd.isna(row[22]) else row[22] if isinstance(row[22], str) else None
         status = 'Total'
-        if cod_insumo == 5444:
-            print(cod_insumo)
         insumos = Insumos.objects.filter(codigo_insumo=cod_insumo)
         if insumos.exists() and data_emissao_pc:
             insumo = insumos.first()

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,7 +17,7 @@
     <title id="titulo">Início</title>
 </head>
 {% include "header.html" %}
-<body class="bg-dark">
+<body class="bg-dark" style="background-image: radial-gradient(circle, #3a3a3a 1px, transparent 1px)">
 <div id="background">
 </div>
 <div class="container-xxl p-2 col-md-12" style="max-width: 1900px;">
@@ -59,18 +59,19 @@
     transform: translate(-50%, -50%);
 }
      }
-    
+
     </style>
 <script>
     var footer = document.querySelector(".footer-container")
-    var textFooter = document.querySelector(".footer-text");
-    var iconFooter = document.querySelector(".footer-icon");
+    var textFooter = document.querySelectorAll('.footer-text')[0];
+    var textFooter2 = document.querySelectorAll('.footer-text')[1];
     textFooter.style.color = '#fb8306';
-    iconFooter.style.color = '#fb8306';
+    textFooter2.style.color = '#fb8306';
     footer.style.bottom = '';
     footer.style.position = '';
     footer.style.transform = '';
     footer.style.marginBottom = '15px';
+    footer.style.width = '100%';
 
 </script>
 </html>

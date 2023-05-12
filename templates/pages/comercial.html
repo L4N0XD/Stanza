@@ -1,6 +1,6 @@
 {% load l10n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -200,27 +200,29 @@
             </li>
         </ul>
 </div>
-<div class="col-md-9 d-flex mx-auto mt-4 ">
-    <p style="font-size: 14px; cursor: context-menu; display: flex; justify-content: space-between; align-items: center; width: 100%;" class="btn btn-rosa">
-        <span>Titulo: {{first.titulo_cliente}}</span>
-        <span>Cliente: {{first.cliente}}</span>
-        <span>Documento: {{first.documento}}</span>
-        <span>Unidades: {{first.unidades}}</span>
-    </p>
+    <div>
+        <p style="font-size: 14px; cursor: context-menu; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0;" class="btn btn-rosa col-md-8 mx-auto mt-3">
+            <span>Titulo: {{first.titulo_cliente}}</span>
+            <span>Cliente: {{first.cliente}}</span>
+            <span>Documento: {{first.documento}}</span>
+            <span>Unidades: {{first.unidades}}</span>
+        </p>
+    </div>
+    <div>
+        <p style="font-size: 14px; cursor: context-menu; display: flex; justify-content: space-between; align-items: center; margin-top: 0;" class="btn btn-rosa col-md-8 mx-auto">
+            <span> Data de Emissão: {{first.data_emissao|date:"d/m/Y"}} </span>
+            <span> Empresa: {{first.empresa}} </span>
+            <span> Total Lanc: {{total_lanc}} </span>
+        </p>
+    </div>
+    
     
     <div style="position: absolute;right: 2%;top: 12.3%;">
             <a id="modalBtn" type="button" class="btn btn-stanza" href="#" role="button" data-bs-toggle="modal" data-bs-target="#detalhamento" style="font-size: 14px;border-radius: 50px;" >
                 Detalhamento
             </a>
     </div>
-</div>
-<div class="col-md-10 mx-auto ">
-    <p style="font-size: 14px; cursor: context-menu; display: flex; justify-content: space-between; align-items: center;" class="btn btn-rosa">
-        <span> Data de Emissão: {{first.data_emissao|date:"d/m/Y"}} </span>
-        <span> Empresa: {{first.empresa}} </span>
-        <span> Total Lanc: {{total_lanc}} </span>
-    </p>    
-</div>
+
 <div class="mx-auto mt-3 col-md-8">
     <table class="table" style="border: 1px black dotted; background: rgb(230, 230, 230);">
         <thead>
@@ -245,6 +247,11 @@
                     <tr>
                         <th class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.par}}</th>
                         <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.data_vcto|date:"d/m/Y"}}</td>
+                        {% if dado.tipo_condicao == "Financiamento" %}
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;"><button style="background-color: transparent;border: 0;margin: 0;" >{{dado.tipo_condicao}}</button></td>
+                        {% else %}
+                            <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.tipo_condicao}}</td>
+                        {% endif %}
                         <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.tipo_condicao}}</td> 
                         <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.id}}</td>
                         <td class="dadosTabela" style="text-align: center; font-size: 11px; color: black;border: 1px black dotted;">{{dado.vl_original}}</td>
@@ -267,8 +274,12 @@
         </tbody>
     </table> 
 </div>
-<div class="col-md-11 mx-auto mt-5" style="background-color: rgb(230, 230, 230);border: 3px #fb8306 solid;border-radius: 20px;">
+
+<div class="col-md-11 mx-auto" id="divCondicoes" style="background-color: rgb(230, 230, 230);border: 3px #fb8306 solid;border-radius: 20px; position: relative;">
+        <button onclick="copyParagraphs()" id="btn-copiar" class="btn btn-stanza" type="button" data-bs-toggle="popover"  data-bs-custom-class="custom-popover" data-bs-trigger="hover focus" data-bs-content="Copiar" style="justify-content: center;display: flex;width: 45px;position: absolute;top: 0;right: 0;border-radius: 30px 20px 0px;" alt="Copiar">
+            <span class="material-symbols-outlined">content_paste</span></button>
     {% if condicoes%}
+    <br>
         {% for condicao in condicoes %}
             <p  style="margin: 10px; font-size: 14px; color: rgb(0, 0, 0); font-weight: bold;">{{condicao.condicoes}}</p>
             <br>
@@ -302,5 +313,37 @@
         dado.textContent = '';
       }
     });
+    document.querySelector('.col-2.footer-container').style.width = '100%';
+    function copyParagraphs() {
+  // Seleciona a div
+  var div = document.getElementById("divCondicoes");
+  
+  // Inicializa a variável de texto
+  var text = "";
+  
+  // Percorre todos os elementos filho da div
+  for (var i = 0; i < div.children.length; i++) {
+    var child = div.children[i];
+    
+    // Verifica se o elemento é um parágrafo
+    if (child.tagName == "P") {
+      // Adiciona o texto do parágrafo à variável de texto
+      text += child.textContent + "\n\n";
+    }
+  }
+  
+  // Copia o conteúdo da variável de texto para a área de transferência
+  var textarea = document.createElement("textarea");
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
+}
+
+
+</script>
+
+
 </script>
 </html>

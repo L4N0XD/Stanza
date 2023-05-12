@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -47,9 +47,9 @@
     <button  class="btn btn-secondary dropdown-toggle my-auto" type="button" data-bs-toggle="dropdown" aria-expanded="false">
       Exportar para:
     </button>
-    <ul class="dropdown-menu dropdown-menu-dark bg-dark" style="border: gray dotted 1px;">
-      <li><a class="dropdown-item text-dark" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLS</a></li>
-      <li><a class="dropdown-item text-dark" href="{% url 'download_txt' nome_obra=nome_obra %}">Baixar como txt</a></li>
+    <ul class="dropdown-menu dropdown-menu-secondary bg-secondary" style="border: gray dotted 1px;">
+      <li><a class="dropdown-item filter text-dark" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLS</a></li>
+      <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt' nome_obra=nome_obra %}">Baixar como txt</a></li>
     </ul>
 </div>
 </div>

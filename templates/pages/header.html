@@ -1,59 +1,5 @@
 <section id="header">
-     <!-- Modal Insumos-->
-     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal">
-        <div class="modal-">
-          <div class="modal mb-3" style="border-bottom: #fb8306 solid; border-radius: 20px;">
-            <h1 class="modal-title fs-5 mx-auto" style="color:#fb8306;" id="exampleModalLabel">Adicionar Insumo</h1>
-          </div>
-          <div class="mod">
-            <form id='novoInsumo' method="POST" action="{% url 'insumos' %}" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="input-group mb-3" style="justify-content: center;">                            
-                <div class="form-group"style="width:80%; " >
-                  
-                  <div class="input-group mb-3">
-                    <span class="input-group-text material-symbols-outlined" id="basic-addon1">123</span>
-                    <input  type="number" required name="codigo_insumo" class="form-control" placeholder="Código do Insumo" aria-label="Código do Insumo" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text material-symbols-outlined" id="basic-addon1">abc</span>
-                    <input type="text" name="nome_do_insumo" class="form-control" placeholder="Descrição do Insumo" aria-label="Descrição do Insumo" aria-describedby="basic-addon1" >
-                  </div>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text material-symbols-outlined" id="basic-addon1">123</span>
-                    <input type="number" name="qtd_dias" class="form-control" placeholder="Quantidade de dias" aria-label="Quantidade de dias" aria-describedby="basic-addon1" >   
-                  </div>
-                </div>
-              </div>
-              <div class="modal" style="border-top: #fb8306 solid; border-radius: 20px;">
-                <div class="dropdown">
-                  <button style="width: 90%; margin-right: 55px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                    Insumos cadastrados
-                  </button>
-                  <ul class="dropdown-menu dropdown-me" aria-labelledby="dropdownMenuButton2">
-                    <li>
-                      <table class="table table-dark dropdown-item">
-                          {% for insumo in insumos %}
-                          <tr style="border-color: black;">
-                            <th scope="row" style="font-size: 12px;">{{insumo.codigo_insumo}}</th>
-                            <td> {{insumo.nome_do_insumo}} </td>
-                            <td> {{insumo.qtd_dias}} dias </td>
-                          </tr>
-                          {% endfor %}
-                      </table>
-                    </li>
-                  </ul>
-                </div>
-                <button id="salvarInsumo"class="btn btn-outline-stanza" type="submit">Salvar</button>
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <nav class="navbar navbar-expand-lg " style="background-color: #fb8306;" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " style="background-color: #fb8306; z-index: 3;" data-bs-theme="light">
         <div class="container-fluid position-relative">
           <a class="navbar-brand" style="margin-right: 10%;" href="/index">
             <img src="https://stanza.com.br/wp-content/themes/stanza/assets/img/laranja-stanza-marca.png" width="100px" alt="Marca da Stanza Branca" style="filter: brightness(0) invert(1); display: flex;">
@@ -71,9 +17,9 @@
                       Suprimentos
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="/upload-page-obras">Analisar SC</a></li>
-                      <li><a class="dropdown-item" href="#">Outro</a></li>
-                      <li><a class="dropdown-item" href="#">Outro</a></li>
+                      <li><a class="dropdown-item navdrop" href="/upload-page-obras">Analisar SC</a></li>
+                      <li><a class="dropdown-item navdrop" href="#">Outro</a></li>
+                      <li><a class="dropdown-item navdrop" href="#">Outro</a></li>
                     </ul>
                   </li>
                   <li class="nav-item dropdown">
@@ -81,9 +27,9 @@
                       RH
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="/upload-page-rh">Analise de VT</a></li>
-                      <li><a class="dropdown-item" href="/upload-import-vt">Importar VT</a></li>
-                      <li><a class="dropdown-item" href="#">Outro</a></li>
+                      <li><a class="dropdown-item navdrop" href="/upload-page-rh">Analise de VT</a></li>
+                      <li><a class="dropdown-item navdrop" href="/upload-import-vt">Importar VT</a></li>
+                      <li><a class="dropdown-item navdrop" href="#">Outro</a></li>
                     </ul>
                   </li>
 
