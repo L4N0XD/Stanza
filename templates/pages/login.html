@@ -18,6 +18,29 @@
 </head>
 {% include "header.html" %}
 <body class="bg-light">
+    {% if Sucesso or msg %}
+<!-- Button trigger modal -->
+<button type="button" style="display: none;" class="btn btn-primary" id="sucesso" data-bs-toggle="modal" data-bs-target="#modalSucesso">
+    Abrir
+  </button>
+  <!-- Modal -->
+  <div class="modal fade" id="modalSucesso" tabindex="-1" aria-labelledby="modalSucessoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background-color: #f7f7f7;background-image: radial-gradient(  circle,  #ddd 1px,  transparent 1px);background-size: 10px 10px;background-position: 0 0, 5px 5px;">
+        <div class="modal-header" style="border-bottom: #fb8306 solid; border-radius: 20px;">
+          <h1 class="modal-title fs-5 text-dark d-flex justify-content-center" style="width: 100%;" id="modalSucessoLabel">Informações</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="font-size: 20px;justify-content: center;display: flex;">
+            {% if Sucesso %}{{Sucesso}}{% elif msg %}{{msg}}{% endif %}
+        </div>
+        <div class="modal-footer" style="border-top: #fb8306 solid; border-radius: 20px;">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 <section id="login">
     <div class="container-fluid" style="margin-top: 5%;" >
         <div class="row justify-content-center">
@@ -26,16 +49,20 @@
                         Login
                     </div>
                     <div class="card-body" style="padding-top: 0;">
-                        <form method="POST" style="display: grid;" >
+                        <form method="POST" action="{% url 'entrar' %}" style="display: grid;" >
                             {% csrf_token %}
                             <div class="mb-3">
-                                <label for="username" class="form-label text-dark">E-mail</label>
-                                <input type="text"style="font-size: 12px;"  class="form-control" id="username" name="username" placeholder="exemplo@stanza.com.br">
+                                <label for="email" class="form-label text-dark">E-mail</label>
+                                <input type="text"style="font-size: 12px;"  class="form-control" id="email" name="email" placeholder="exemplo@stanza.com.br">
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label text-dark">Senha</label>
                                 <input type="password" style="font-size: 12px;" class="form-control" onchange="checkPassword()" id="password" name="password">
+                                {% if request.GET.invalido %}
+                                    <p class="mt-1" style="color:red;">Usuário ou senha inválidos!</p>
+                                {% endif %}
                             </div>
+                            
                             <button type="submit" disabled id="entrar" class="btn btn-stanza">Entrar</button>
                         </form>
                             <button id="cadastro" class="btn btn-stanza mt-2 mb-3" style="width: 100%;">Cadastrar</button>
@@ -87,6 +114,7 @@
     const footer = document.querySelector(".footer-container")
     const enable = document.querySelector('#entrar')
     const password = document.querySelector('#password')
+    var emailInput = document.getElementById("email");
     var password1Input = document.getElementById("password1");
     var password2Input = document.getElementById("password2");
     var texto_erro = document.getElementById("senhasDiferentes");
@@ -135,6 +163,10 @@
         cadastroButton.disabled = true;
         texto_erro.style.display = 'none'; 
     }
+};
+
+if (document.getElementById("sucesso") !== null) {
+    document.getElementById("sucesso").click();
 };
     
 </script>

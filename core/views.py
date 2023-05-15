@@ -1,8 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_POST
 from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial, DadosVT
 from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH
@@ -15,21 +19,37 @@ import numpy as np
 #cadastra novo usuario
 def cadastro(request):
     try:
-        usuario_aux = User.objects.get(email=request.POST['campo-email'])
+        usuario_aux = User.objects.get(email=request.POST['emailRegister'])
         if usuario_aux:
             return render(request, 'login.html', {'msg': 'Erro! Já existe um usuário com o mesmo e-mail'})
 
     except User.DoesNotExist:
         email = request.POST['emailRegister']
         senha = request.POST['password1']
-        nome_usuario = request.POST['Nome']
-        novoUsuario = User.objects.create_user(email=email, password=senha, nome = nome_usuario)
+        nome_usuario = request.POST['nomeUsuario']
+        novoUsuario = User.objects.create_user(email=email, password=senha, username = nome_usuario)
         novoUsuario.save()
-        return render(request, 'login.html', {'Sucesso': 'Cadastrado com sucesso!'})
+        return render(request, 'login.html', {'Sucesso': 'Cadastro efetuado com sucesso!'})
+#Efetua o login
+@require_POST
+def entrar(request):
+    try:
+        usuario_aux = User.objects.get(email=request.POST['email'])
+        usuario = authenticate(username=usuario_aux.username,
+                               password=request.POST["password"])
+        if usuario is not None:
+            login(request, usuario)
+            return HttpResponseRedirect('/index/')
+    except User.DoesNotExist:
+        return redirect(reverse('logar') + '?invalido=True')
+#Efetua o logout
+@login_required
+def sair(request):
+    logout(request)
+    return HttpResponseRedirect('/')
 #Retorna página de login
-def login(request):
+def logar(request):
     return render(request, 'login.html')
-
 #calcula o valor a ser pago no VT
 def calcular_pagar(cpf):
     try:
@@ -75,9 +95,15 @@ def upload_rh(request):
     if request.method == 'POST':
         form = UploadRH(request.POST, request.FILES)
         if form.is_valid():
+            arquivo0 = request.FILES['arquivo0']
             arquivo1 = request.FILES['arquivo1']
             arquivo2 = request.FILES['arquivo2']
             dias_uteis = request.POST['diasUteis']
+            with tempfile.NamedTemporaryFile(delete=False) as tmp:
+                for chunk in arquivo0.chunks():
+                    tmp.write(chunk)
+            dados_xls0 = pd.read_excel(tmp.name, dtype={'CPF': str})
+            os.unlink(tmp.name)
             with tempfile.NamedTemporaryFile(delete=False) as tmp:
                 for chunk in arquivo1.chunks():
                     tmp.write(chunk)
@@ -89,14 +115,14 @@ def upload_rh(request):
             dados_xls2 = pd.read_excel(tmp.name)
             os.unlink(tmp.name)
 
-            dados_rh(dados_xls, dados_xls2, (int(dias_uteis)))
+            dados_rh(dados_xls, dados_xls2, (int(dias_uteis)), dados_xls0)
             return(redirect('results-rh'))
         else:
             return render(request, 'upload-page-rh.html')
     else:
         return render(request, 'upload-page-rh.html')
 #Define e salva os dados dos arquivos de VT    
-def dados_rh(dados_xls, dados_xls2, dias_uteis):
+def dados_rh(dados_xls, dados_xls2, dias_uteis, dados_xls0):
     start = time.time()
     nome_obra = str(dados_xls2.iloc[8, 1])
     data = str(dados_xls2.iloc[1, 17])
@@ -104,10 +130,10 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
     data_sem_horas = str(datetime.strptime(data, formato).date())
     lista_real = []
     lista_aju = []
-    dados_rh_update = []
+    dados_rh_update = []   
 
     
-    
+
 
     for index, row in dados_xls.iterrows():
         
@@ -121,7 +147,6 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
                 lista_real.append(DadosRH(cpf=cpf, dias_trabalhados=dias_trabalhados, valor=valor, nome=nome, nome_obra=nome_obra))
     DadosRH.objects.bulk_create(lista_real) 
     
-
     for index, row in dados_xls2.iterrows():
         if index == 1:
             data = str(row[17])
@@ -148,26 +173,23 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
                                           data_planilha=data_sem_horas, nome_obra=nome_obra))
             
             dados_rh_update.append(DadosRH(pk=cpf2, total=total, total_atualizado=total_atualizado))
-
     DadosRH.objects.bulk_update(dados_rh_update, ['total', 'total_atualizado'])
     DadosAjuCard.objects.bulk_create(lista_aju) 
-    salario_base = 2000
+    
     dados = DadosRH.objects.filter(nome_obra=nome_obra)   
     ctrl_total = int(0)
     ctrl_total_pagar = int(0)
     dias_list = []
+    salario_list = []
+    
     for dado in dados:
         obj_rh = DadosRH.objects.get(pk=dado.cpf)
         obj_rh.pagar = calcular_pagar(dado.cpf)
         if obj_rh.pagar is not None:
             if obj_rh.pagar != 0:
                 dias_contabilizados=(obj_rh.pagar/9)
-                desconto_vt = (salario_base*0.06)
-                porcentagem = (dias_contabilizados/obj_rh.dias_trabalhados)
-                valor_desconto_colaborador = math.ceil((desconto_vt*porcentagem)*10)/10
                 dias_list.append(DadosRH(pk=dado.cpf, pagar=obj_rh.pagar, dias_contabilizados=dias_contabilizados))
             else: 
-                valor_desconto_colaborador = int(0)
                 dias_list.append(DadosRH(pk=dado.cpf, pagar=obj_rh.pagar, dias_contabilizados=int(0)))
         ctrl_total += obj_rh.dias_trabalhados
         if obj_rh.pagar:
@@ -179,6 +201,23 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis):
     total_descontos = formatar_real(ctrl_total - ctrl_total_pagar)
     
     DadosRH.objects.bulk_update(dias_list, ['pagar','dias_contabilizados'])
+    for index, row in dados_xls0.iterrows():
+        if not pd.isna(row['CPF']):
+            cpf_base = row['CPF']
+            salario_base = row['Salário Base']
+            try:
+                update = DadosRH.objects.get(pk=cpf_base)
+                if (update.pagar and update.pagar > (0.06 * salario_base)):
+                    valor_desconto_colaborador = (0.06*salario_base)
+                    salario_list.append(DadosRH(pk=cpf_base, valor_desconto_colaborador=valor_desconto_colaborador, salario=salario_base))
+                    print(cpf_base, valor_desconto_colaborador)
+                else:
+                    valor_desconto_colaborador = update.pagar
+                    salario_list.append(DadosRH(pk=cpf_base, valor_desconto_colaborador=valor_desconto_colaborador, salario=salario_base))
+                    print(cpf_base, valor_desconto_colaborador)
+            except ObjectDoesNotExist:
+                pass
+    DadosRH.objects.bulk_update(salario_list, ['valor_desconto_colaborador', 'salario'])
     salvar = Totais(total=total, total_descontos=total_descontos, total_pagar=total_pagar, nome_obra=nome_obra)
     salvar.save()
 

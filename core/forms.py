@@ -10,6 +10,7 @@ class UploadForm(forms.Form):
     arquivo = forms.FileField(required=True)
 
 class UploadRH(forms.Form):
+    arquivo0 = forms.FileField(required=True)
     arquivo1 = forms.FileField(required=True)
     arquivo2 = forms.FileField(required=True)
     diasUteis = forms.IntegerField(label='')

@@ -35,6 +35,10 @@
               <input type="number" class="form-control" id="diasUteis" name="diasUteis" onchange="checkFile()">
           </div>
         <div  class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid; width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
+            <spam class="text-dark input-label" style="width:50%; text-align: center;">Planilha de Salários</spam>
+            <input type="file"  class="form-control input-file"  id="arquivo0" name="arquivo0" onchange="checkFile()">
+        </div>
+        <div  class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid; width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
             <spam class="text-dark input-label" style="width:50%; text-align: center;">Planilha Real</spam>
             <input type="file"  class="form-control input-file"  id="arquivo1" name="arquivo1" onchange="checkFile()">
         </div>
@@ -55,6 +59,7 @@
           width: 40%;
       }
 
+    #arquivo0::-webkit-file-upload-button {display: none;}
     #arquivo1::-webkit-file-upload-button {display: none;}
     #arquivo2::-webkit-file-upload-button {display: none;}
     .divInput {background-color:white;}
@@ -98,16 +103,17 @@
     <script>
       inputLabel = document.querySelectorAll('.input-label')
       inputFile = document.querySelectorAll('.input-file')
-      inputLabel
       inputLabel[0].addEventListener('click', () => inputFile[0].click())
       inputLabel[1].addEventListener('click', () => inputFile[1].click())
+      inputLabel[2].addEventListener('click', () => inputFile[2].click())
       
       function checkFile() {
+    const input0 = document.querySelector('#arquivo0');
     const input1 = document.querySelector('#arquivo1');
     const input2 = document.querySelector('#arquivo2');
     const input3 = document.querySelector('#diasUteis');
     const btn = document.querySelector('#startUpload');
-    if (input1.value && input2.value && input3.value) {
+    if (input1.value && input2.value && input3.value && input0.value) {
         btn.disabled = false;
     } else {
         btn.disabled = true;

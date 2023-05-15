@@ -38,7 +38,7 @@ class Insumos(models.Model):
     qtd_dias = models.IntegerField(null=True, blank=True)
 
 class DadosRH(models.Model):
-
+    valor_desconto_colaborador = models.DecimalField(null=True, max_digits=10, decimal_places=2)
     cpf = models.CharField(primary_key=True, max_length=100)
     nome = models.CharField(max_length=100)
     dias_trabalhados = models.IntegerField()
@@ -48,6 +48,7 @@ class DadosRH(models.Model):
     total = models.DecimalField(null=True,max_digits=10, decimal_places=2)
     total_atualizado = models.DecimalField(null=True,max_digits=10, decimal_places=2)
     nome_obra = models.CharField(max_length=100, null=True)
+    salario = models.DecimalField(null=True, max_digits=10, decimal_places=2)
 
 class Totais(models.Model):
     nome_obra = models.CharField(primary_key=True, max_length=100)

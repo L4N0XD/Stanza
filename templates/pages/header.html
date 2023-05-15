@@ -37,10 +37,20 @@
                     <a class="nav-link" href="/upload-page-comercial">Comercial</a>
                   </li>
                 </ul>
-                <form class="" role="search" style="display: none;">
-                  <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search">
-                  <button class="btn btn-outline-light" type="submit">P</button>
-                </form>
+                <div class="" >
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item d-flex">
+                      {% if user.is_authenticated %}
+                        <img class="" src="https://thumbs.dreamstime.com/b/linha-%C3%ADcone-do-preto-avatar-perfil-de-usu%C3%A1rio-121102131.jpg" width="50px" height="50px" style="border-radius: 50%;">
+                        <a class="nav-link" aria-current="page" href="/sair">Fazer logout</a>
+                        {% else %}
+                        <ul class="dropdown-menu" id="perfil">
+                        <li><a class="nav-link" aria-current="page" href="/logar">Fazer login</a></li>
+                        </ul>
+                      {% endif %}
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </nav>

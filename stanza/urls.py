@@ -22,7 +22,9 @@ from core import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index, name='index'),
-    path('login/', views.login, name='login'),
+    path('logar/', views.logar, name='logar'),
+    path('entrar/', views.entrar, name='entrar'),
+    path('sair/', views.sair, name='sair'),
     path('cadastro/', views.cadastro, name='cadastro'),
     path('graphic/', views.graphic, name='graphic'),
     path('upload-page-obras/', views.upload_page_obras, name='upload-page-obras'),
