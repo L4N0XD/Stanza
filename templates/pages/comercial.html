@@ -133,70 +133,71 @@
             {% endif %}
             </li>
             <li>
-                {% if Total_Ent_chave is not none %}
+            {% if Total_Ent_chave is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">ENTREGA DA CHAVE: {{Total_Ent_chave}}</p>
             {% endif %}
             </li>
             <li>
-                {% if Total_Sinal is not none %}
+            {% if Total_Sinal is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">SINAL: {{Total_Sinal}}</p>
             {% endif %}
             </li>
             <li>
-                {% if Total_Par_Inter_ is not none %}
+            {% if Total_Par_Inter_ is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">INTERMEDIARIA: {{Total_Par_Inter_}}</p>
             {% endif %}
             </li>
             <li>
-                {% if Total_Par_Inter_2 is not none %}
+            {% if Total_Par_Inter_2 is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">INTERMEDIARIA 2: {{Total_Par_Inter_2}}</p>
             {% endif %}
             </li>
             <li>
-                {% if Total_Sin_Cartão is not none %}
+            {% if Total_Sin_Cartão is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">SINAL CARTÃO: {{Total_Sin_Cartão}}</p>
             {% endif %}
             </li>
             <li>
-                {% if Total_Par_Cartão is not none %}
+            {% if Total_Par_Cartão is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">PARCELAS CARTÃO: {{Total_Par_Cartão}}</p>
             {% endif %}
             </li>
             <li>
-                {% if Total_Car_Credit is not none %}
+            {% if Total_Car_Credit is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">CARTÃO CRÉDITO: {{Total_Car_Credit}}</p>
             {% endif %}
             </li>
             <li>
     
-                {% if Total_Transf_Credito is not none %}
+            {% if Total_Transf_Credito is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">TRANSFERÊNCIA DE CRÉDITO: {{Total_Transf_Credito}}</p>
             {% endif %}
             </li>
             <li>
-                {% if Total_Fin_Associativo is not none %}
+            {% if Total_Fin_Associativo is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">FINANCIAMENTO ASSOCIATIVO: {{Total_Fin_Associativo}}</p>
             {% endif %}
             </li>
             <li>
-                {% if Total_Anual is not none %}
+            {% if Total_Anual is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">ANUAL: {{Total_Anual}}</p>
             {% endif %}
             </li>
             <li>
-                {% if Total_Financiamento is not none %}
+            {% if Total_Financiamento is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">FINANCIAMENTO: {{Total_Financiamento}}</p>
             {% endif %}
             </li>
             <li>
-                {% if total_residuo is not none %}
+            {% if total_residuo is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">RESÍDUO: {{total_residuo}}</p>
             {% endif %}
             </li>
             <li>
-                {% if Total_FGTS is not none %}
+            {% if Total_FGTS is not none %}
                 <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">BIMESTRAL: {{Total_FGTS}}</p>
-            {% endif %}
+                {% endif %}
+            <p style="font-size: 14px; cursor: context-menu; width: 100%; " class="btn btn-stanza">TOTAL DEVIDO: {{total_devido}}</p>
             </li>
         </ul>
 </div>

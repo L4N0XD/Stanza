@@ -17,28 +17,28 @@
     <title id="titulo">Login</title>
 </head>
 {% include "header.html" %}
-<body class="bg-dark">
+<body class="bg-light">
 <section id="login">
     <div class="container-fluid" style="margin-top: 5%;" >
         <div class="row justify-content-center">
-                <div class="card bg-dark" style="width: 500px;border: 1px solid #fb8306;box-shadow: 0px 0px 30px 1px #fb8306; border-radius: 30px;">
-                    <div class="card-header text-white mt-2" style="border-bottom: 0;font-size: 20px;justify-content: center;display: flex; letter-spacing: 3px;">
+                <div class="card bg-light" style="width: 500px;border: 1px solid #fb8306;box-shadow: 0px 0px 30px 1px #fb8306; border-radius: 30px;">
+                    <div class="card-header text-dark mt-2 bg-light" style="border-bottom: 0;font-size: 20px;justify-content: center;display: flex; letter-spacing: 3px;">
                         Login
                     </div>
                     <div class="card-body" style="padding-top: 0;">
                         <form method="POST" style="display: grid;" >
                             {% csrf_token %}
                             <div class="mb-3">
-                                <label for="username" class="form-label text-white">Nome de usuário</label>
-                                <input type="text"style="font-size: 12px;"  class="form-control" id="username" name="username">
+                                <label for="username" class="form-label text-dark">E-mail</label>
+                                <input type="text"style="font-size: 12px;"  class="form-control" id="username" name="username" placeholder="exemplo@stanza.com.br">
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label text-white">Senha</label>
-                                <input type="password" style="font-size: 12px;" class="form-control" id="password" name="password">
+                                <label for="password" class="form-label text-dark">Senha</label>
+                                <input type="password" style="font-size: 12px;" class="form-control" onchange="checkPassword()" id="password" name="password">
                             </div>
-                            <button type="submit" class="btn btn-outline-stanza">Entrar</button>
+                            <button type="submit" disabled id="entrar" class="btn btn-stanza">Entrar</button>
                         </form>
-                            <button id="cadastro" class="btn btn-outline-stanza mt-2 mb-3" style="width: 100%;">Cadastrar</button>
+                            <button id="cadastro" class="btn btn-stanza mt-2 mb-3" style="width: 100%;">Cadastrar</button>
                     </div>
             </div>
         </div>
@@ -46,48 +46,99 @@
 </section>
 
 <section id="signup">
-    <div class="container-fluid" style="margin-top: 5%;" >
+    <div class="container-fluid" style="margin-top: 2%;" >
         <div class="row justify-content-center">
-            <div class="card bg-dark" style="width: 500px;border: 1px solid #fb8306;box-shadow: 0px 0px 30px 1px #fb8306; border-radius: 30px;">
-                <div class="card-header text-white mt-2" style="border-bottom: 0;font-size: 20px;justify-content: center;display: flex; letter-spacing: 3px;">
+            <div class="card bg-light" style="width: 500px;border: 1px solid #fb8306;box-shadow: 0px 0px 30px 1px #fb8306; border-radius: 30px;">
+                <div class="card-header text-dark mt-2 bg-light" style="border-bottom: 0;font-size: 20px;justify-content: center;display: flex; letter-spacing: 3px;">
                     Cadastro
                     </div>
                     <div class="card-body" style="padding-top: 0;">
-                        <form method="POST" >
+                        <form method="POST" action=" {% url 'cadastro' %}">
                             {% csrf_token %}
                             <div class="mb-3">
-                                <label for="username" class="form-label text-white">Nome de usuário</label>
-                                <input type="text" style="font-size: 12px;" class="form-control" id="usernameRegister" name="usernameRegister">
+                                <label for="username" class="form-label text-dark">E-mail</label>
+                                <input type="text" style="font-size: 12px;" class="form-control" id="emailRegister" name="emailRegister" placeholder="exemplo@stanza.com.br">
+                                {% if msg %}
+                                <p  class="mt-0 mb-0 justify-content-center" style="color: red; display: none;">E-mail já cadastrado!</p>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
-                                <label for="password1" class="form-label text-white">Senha</label>
-                                <input type="password" style="font-size: 12px;" class="form-control" id="password1" name="password1">
+                                <label for="username" class="form-label text-dark">Nome</label>
+                                <input type="text" style="font-size: 12px;" class="form-control" id="nomeUsuario" name="nomeUsuario" placeholder="Como deseja ser chamado(a)?">
                             </div>
                             <div class="mb-3">
-                                <label for="password2" class="form-label text-white">Confirme a senha</label>
-                                <input type="password" style="font-size: 12px;" class="form-control" id="password2" name="password2">
+                                <label for="password1" class="form-label text-dark">Senha</label>
+                                <input type="password" onchange="empty_erro()" style="font-size: 12px;" class="form-control" id="password1" name="password1">
                             </div>
-                            <button id="cadastro" type="submit" class="btn btn-outline-stanza mt-2 mb-3" style="width: 100%;">Cadastrar</button>
+                            <div class="mb-3">
+                                <label for="password2" class="form-label text-dark">Confirme a senha</label>
+                                <input type="password" onchange="empty_erro()" style="font-size: 12px;" class="form-control" id="password2" name="password2">
+                                <p id="senhasDiferentes" class="mt-2 mb-0 justify-content-center" style="color: red; display: none;">Senhas não conferem</p>
+                            </div>
+                            <button id="cadastrar" type="submit" disabled class="btn btn-stanza mt-2 mb-3" style="width: 100%;">Cadastrar</button>
                         </form>
                     </div>
             </div>
         </div>
     </div>
 </section>
+{% include "footer.html" %}
 <script>
+    const footer = document.querySelector(".footer-container")
+    const enable = document.querySelector('#entrar')
+    const password = document.querySelector('#password')
+    var password1Input = document.getElementById("password1");
+    var password2Input = document.getElementById("password2");
+    var texto_erro = document.getElementById("senhasDiferentes");
+    var cadastroButton = document.getElementById("cadastrar");
+    var emailInput = document.getElementById("emailRegister");
+    footer.style.width = '100%';
     cadastro = document.querySelector('#cadastro')
     registro = document.getElementById("signup");
     login = document.getElementById("login");
     cadastro.addEventListener('click', () => registrar())
+    
     function registrar () {
         document.getElementById("titulo").text = 'Cadastro',
         login.style.display = 'none',
         registro.style.display = 'flex'
     }
+
+
+    password.addEventListener("input", function() {
+        if (password.value) {
+            enable.disabled = false;
+        } else {
+            enable.disabled = true;
+        }
+    });
+    
+    
+
+        password2Input.addEventListener("input", function() {
+            if (password1Input.value === password2Input.value) {
+                cadastroButton.disabled = false;
+                texto_erro.style.display = 'none'; 
+            } else {
+                cadastroButton.disabled = true;
+                texto_erro.style.display = 'flex'; 
+            }
+                
+    });
+
+    function empty_erro() {
+    if (password1Input.value == '') {
+        cadastroButton.disabled = true;
+        texto_erro.style.display = 'none'; 
+    }
+    else if (password2Input.value == '') {
+        cadastroButton.disabled = true;
+        texto_erro.style.display = 'none'; 
+    }
+};
     
 </script>
     </body>
-    {% include "footer.html" %}
 <style>
     #login {
         display: flex;
@@ -95,8 +146,12 @@
     #signup {
         display: none;
     }
-    
-    </style>
+    .form-control::placeholder {
+        color: #c8c8c8;
+    }
+
+
+</style>
 
     
 </html>

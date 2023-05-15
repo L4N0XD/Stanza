@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index, name='index'),
     path('login/', views.login, name='login'),
+    path('cadastro/', views.cadastro, name='cadastro'),
     path('graphic/', views.graphic, name='graphic'),
     path('upload-page-obras/', views.upload_page_obras, name='upload-page-obras'),
     path('upload-import-vt/', views.upload_import_vt, name='upload-import-vt'),

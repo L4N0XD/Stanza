@@ -2,13 +2,33 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Sum
+from django.contrib.auth.models import User
+from django.views.decorators.http import require_POST
 from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial, DadosVT
 from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH
 from datetime import datetime, timedelta
 import tempfile, os, math, time, locale, numero_por_extenso, collections
 import pandas as pd
 import numpy as np
-from random import randint
+
+@require_POST
+#cadastra novo usuario
+def cadastro(request):
+    try:
+        usuario_aux = User.objects.get(email=request.POST['campo-email'])
+        if usuario_aux:
+            return render(request, 'login.html', {'msg': 'Erro! Já existe um usuário com o mesmo e-mail'})
+
+    except User.DoesNotExist:
+        email = request.POST['emailRegister']
+        senha = request.POST['password1']
+        nome_usuario = request.POST['Nome']
+        novoUsuario = User.objects.create_user(email=email, password=senha, nome = nome_usuario)
+        novoUsuario.save()
+        return render(request, 'login.html', {'Sucesso': 'Cadastrado com sucesso!'})
+#Retorna página de login
+def login(request):
+    return render(request, 'login.html')
 
 #calcula o valor a ser pago no VT
 def calcular_pagar(cpf):
@@ -463,9 +483,6 @@ def filtrar(request):
 #Retorna Index.html
 def index(request):
     return render(request, 'index.html')
-#Retorna página de login
-def login(request):
-    return render(request, 'login.html')
 #Salva os dados
 def save_data(request):
     if request.method == 'POST':
@@ -964,7 +981,6 @@ def dados_comercial(dados_xls, request):
 
     DadosComercial.objects.bulk_create(lista_comercial) 
     ClientesComercial.objects.bulk_create(lista_comercial_condicoes)    
-
 #Renderiza a página de resultados de Comercial
 def comercial(request):
     first = DadosComercial.objects.first()
@@ -986,6 +1002,10 @@ def comercial(request):
     Soma_Anual = DadosComercial.objects.filter(tipo_condicao="Anual").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
     Soma_FGTS = DadosComercial.objects.filter(tipo_condicao="FGTS").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
     Soma_Financiamento = DadosComercial.objects.filter(tipo_condicao="Financiamento").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
+    valores = [Soma_Par_Men2,Soma_Ato,Soma_Par_Mensais,Soma_Par_Semestrais,Soma_Par_Bimestrais,Soma_Ent_chaves,Soma_Resíduo,Soma_Sinal,Soma_Par_Inter,Soma_Par_Inter_2,Soma_Sin_Cartão,Soma_Par_Cartão,Soma_Car_Crédito,Soma_Transf_Crédito,Soma_Fin_Associativo,Soma_Anual,Soma_FGTS,Soma_Financiamento]
+    valores_nao_nulos = [valor for valor in valores if valor is not None]
+    total_devido = sum(valores_nao_nulos)
+
     teste = DadosComercial.objects.exclude(total_lanc=None)
     total_lanc = (teste[0].total_lanc)
     try:
@@ -1002,7 +1022,7 @@ def comercial(request):
                                               'Total_Sin_Cartão': formatar_real(Soma_Sin_Cartão ),'Total_Par_Cartão': formatar_real(Soma_Par_Cartão ),'Total_Car_Credit': formatar_real(Soma_Car_Crédito),
                                               'Total_Transf_Credito': formatar_real(Soma_Transf_Crédito ),'Total_Fin_Associativo': formatar_real(Soma_Fin_Associativo ),'Total_Anual': formatar_real(Soma_Anual),
                                               'Total_FGTS': formatar_real(Soma_FGTS ),'Total_Financiamento': formatar_real(Soma_Financiamento), 'total_residuo': formatar_real(Soma_Resíduo), 
-                                              'finan_pago': Soma_Financiamento_pago, })
+                                              'finan_pago': Soma_Financiamento_pago, 'total_devido': formatar_real(total_devido)})
 #Upload dos arquivos de Comercial
 def upload_comercial(request):
     if request.method == 'POST':
