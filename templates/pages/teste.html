@@ -1,59 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sistema de Gestão de RH e Atividades Administrativas</title>
-    <!-- Estilos do Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities',
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+      }
+    </script>
   </head>
   <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="#">Logo da Empresa</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Início</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Gestão de Pessoas</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Departamentos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Benefícios</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Férias</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Desempenho</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Relatórios</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <!-- Jumbotron -->
-    <div class="jumbotron">
-      <h1 class="display-4">Bem-vindo ao Sistema de Gestão de RH e Atividades Administrativas</h1>
-      <p class="lead">Aqui você poderá gerenciar todas as informações relacionadas aos colaboradores da empresa e às atividades administrativas. </p>
-      <hr class="my-4">
-      <p>Use a barra de navegação acima para acessar as diferentes seções do sistema.</p>
-    </div>
-
-    <!-- Scripts do Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-7UOStXlFpzzWnWksKX9T0QLrz7MkPbT" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
-      </body>
-    </html>
+    <div id="donutchart" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>

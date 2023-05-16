@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_POST
 from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial, DadosVT
 from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import tempfile, os, math, time, locale, numero_por_extenso, collections
 import pandas as pd
 import numpy as np
@@ -685,6 +685,8 @@ def dados_comercial(dados_xls, request):
     par2 = []
     debitos = []
     lista_comercial_condicoes = []
+    juros_de_obra = []
+    lista_juros_de_obra = []
     empresa = str(dados_xls.iloc[3, 5])
     centro_custo = str(dados_xls.iloc[4, 5])
     try:
@@ -898,6 +900,12 @@ def dados_comercial(dados_xls, request):
                         VctoFinanciamento = data_vcto.strftime("%d/%m/%Y")
                         lista_vcto_financiamento.append(VctoFinanciamento)
                         ValorFinanciamento = valor_devido
+                    
+                    elif tipo_condicao == "Juros de Obra":
+                        juros_de_obra.append(valor_devido)
+                        Vcto_juros_de_obr = data_vcto.strftime("%d/%m/%Y")
+                        lista_juros_de_obra.append(VctoFinanciamento)
+                        Valor_juros_de_obr = valor_devido
                 
                 if index < (len(dados_xls)-1) and str(dados_xls.iloc[index+1, i_tipo_condicao]) == 'nan' and str(dados_xls.iloc[index+1, i_valor_pago]) != 'nan' or par is None and valor_pago is not None and dt_recto is not None:
                     if (dados_xls.iloc[index+1, 0]) != '(C) - Parcela enviada para a cobrança escritural.' :
@@ -1011,6 +1019,10 @@ def dados_comercial(dados_xls, request):
         parcelas = ( calcular_parcelas(Financiamento,ValorFinanciamento, "FINANCIAMENTO", lista_vcto_financiamento))
         for parcela in parcelas:
             condicoes.append(parcela)
+    if len(juros_de_obra) > 0:
+        juros = round(sum(juros_de_obra), 2)
+        condicoes.append(f"JUROS DE OBRA: {formatar_real(juros)} ({numero_por_extenso.monetario(juros)})")
+    
     if len(debitos) > 0:
         debito = round(sum(debitos), 2)
         condicoes.append(f"TOTAL DÉBITOS: {formatar_real(debito)} ({numero_por_extenso.monetario(debito)})")
@@ -1020,6 +1032,22 @@ def dados_comercial(dados_xls, request):
 
     DadosComercial.objects.bulk_create(lista_comercial) 
     ClientesComercial.objects.bulk_create(lista_comercial_condicoes)    
+#Retorna os valores das quantidades de pagamentos em atraso para gerar o gráfico
+def dados_do_modelo_comercial(request):
+    operations = DadosComercial.objects.filter(status='No Prazo')
+    oper = DadosComercial.objects.filter(status='Atrasado')
+    nopr = []
+    atra = []
+    valores = []
+    for op in operations:
+        nopr.append(op.valor_devido)
+    for op in oper:
+        atra.append(op.valor_devido)
+    valores.append(len(nopr))
+    valores.append(len(atra))
+    valores.append(formatar_real(sum(nopr)))
+    valores.append(formatar_real(sum(atra)))
+    return JsonResponse({'valores': valores})
 #Renderiza a página de resultados de Comercial
 def comercial(request):
     first = DadosComercial.objects.first()
@@ -1041,7 +1069,8 @@ def comercial(request):
     Soma_Anual = DadosComercial.objects.filter(tipo_condicao="Anual").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
     Soma_FGTS = DadosComercial.objects.filter(tipo_condicao="FGTS").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
     Soma_Financiamento = DadosComercial.objects.filter(tipo_condicao="Financiamento").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
-    valores = [Soma_Par_Men2,Soma_Ato,Soma_Par_Mensais,Soma_Par_Semestrais,Soma_Par_Bimestrais,Soma_Ent_chaves,Soma_Resíduo,Soma_Sinal,Soma_Par_Inter,Soma_Par_Inter_2,Soma_Sin_Cartão,Soma_Par_Cartão,Soma_Car_Crédito,Soma_Transf_Crédito,Soma_Fin_Associativo,Soma_Anual,Soma_FGTS,Soma_Financiamento]
+    Soma_juros_de_obra = DadosComercial.objects.filter(tipo_condicao="Juros de Obra").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
+    valores = [Soma_juros_de_obra, Soma_Par_Men2,Soma_Ato,Soma_Par_Mensais,Soma_Par_Semestrais,Soma_Par_Bimestrais,Soma_Ent_chaves,Soma_Resíduo,Soma_Sinal,Soma_Par_Inter,Soma_Par_Inter_2,Soma_Sin_Cartão,Soma_Par_Cartão,Soma_Car_Crédito,Soma_Transf_Crédito,Soma_Fin_Associativo,Soma_Anual,Soma_FGTS,Soma_Financiamento]
     valores_nao_nulos = [valor for valor in valores if valor is not None]
     total_devido = sum(valores_nao_nulos)
 
@@ -1052,7 +1081,46 @@ def comercial(request):
     except TypeError:
         Soma_Financiamento_pago = None
 
+    listagem_prazos = []
+    listagem_atrasados = []
+    noprazo = []
+    atrasado = []
+    valor_prazo = []
+    valor_atraso = []
+    data_atual = date.today()
+    dados = DadosComercial.objects.all()
+    status_update = []
+    for dado in dados:
+        if dado.valor_devido and dado.valor_devido > 0 and dado.tipo_condicao is not None:
+            if dado.data_vcto and data_atual:
+                dado.data_vcto = datetime.strptime(str(dado.data_vcto), "%Y-%m-%d").date()
+                data_atual = datetime.strptime(str(data_atual), "%Y-%m-%d").date()
+                diferenca = (data_atual - dado.data_vcto).days
+                if diferenca <= 0:
+                    status = 'No Prazo'
+                    noprazo.append(status)
+                    valor_prazo.append(f'{dado.tipo_condicao}: {dado.valor_devido}')
+                else:
+                    status = 'Atrasado'
+                    atrasado.append(status)
+                    valor_atraso.append(f'{dado.tipo_condicao}: {dado.valor_devido}')
+                status_update.append(DadosComercial(pk=dado.id_value, status=status))
+    
 
+    DadosComercial.objects.bulk_update(status_update, ['status'])
+    contagem_prazo = collections.Counter(valor_prazo)
+    contagem_atrasado = collections.Counter(valor_atraso)
+    for valor, qtd in contagem_prazo.items():
+        listagem_prazos.append(f'{valor} x{qtd}')
+        #print(f'{valor} x{qtd}')
+    for valor, qtd in contagem_atrasado.items():
+        listagem_atrasados.append(f'{valor} x{qtd}')
+        print(f'{valor} x{qtd}')
+
+
+    
+
+    
     return render(request, 'comercial.html', {'dados': DadosComercial.objects.all(), 'first': first, 'total_lanc': formatar_real(total_lanc), 
                                               'condicoes': ClientesComercial.objects.all(),'Total_Par_Men2': formatar_real(Soma_Par_Men2 ),'Total_Ato': formatar_real(Soma_Ato ),
                                               'Total_Par_Mensais': formatar_real(Soma_Par_Mensais ),'Total_Par_Semestrais': formatar_real(Soma_Par_Semestrais ),
@@ -1061,7 +1129,8 @@ def comercial(request):
                                               'Total_Sin_Cartão': formatar_real(Soma_Sin_Cartão ),'Total_Par_Cartão': formatar_real(Soma_Par_Cartão ),'Total_Car_Credit': formatar_real(Soma_Car_Crédito),
                                               'Total_Transf_Credito': formatar_real(Soma_Transf_Crédito ),'Total_Fin_Associativo': formatar_real(Soma_Fin_Associativo ),'Total_Anual': formatar_real(Soma_Anual),
                                               'Total_FGTS': formatar_real(Soma_FGTS ),'Total_Financiamento': formatar_real(Soma_Financiamento), 'total_residuo': formatar_real(Soma_Resíduo), 
-                                              'finan_pago': Soma_Financiamento_pago, 'total_devido': formatar_real(total_devido)})
+                                              'finan_pago': Soma_Financiamento_pago, 'total_devido': formatar_real(total_devido), 'total_juros_obra': formatar_real(Soma_juros_de_obra), 'lista_atrasados': listagem_atrasados, 
+                                              'lista_prazos': listagem_prazos})
 #Upload dos arquivos de Comercial
 def upload_comercial(request):
     if request.method == 'POST':

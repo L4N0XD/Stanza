@@ -41,12 +41,15 @@
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item d-flex">
                       {% if user.is_authenticated %}
-                        <img class="" src="https://thumbs.dreamstime.com/b/linha-%C3%ADcone-do-preto-avatar-perfil-de-usu%C3%A1rio-121102131.jpg" width="50px" height="50px" style="border-radius: 50%;">
-                        <a class="nav-link" aria-current="page" href="/sair">Fazer logout</a>
-                        {% else %}
-                        <ul class="dropdown-menu" id="perfil">
-                        <li><a class="nav-link" aria-current="page" href="/logar">Fazer login</a></li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" aria-label="" style="width: 40px; height: 40px; border-radius: 50%; background-size: 40px; background-image: url('https://thumbs.dreamstime.com/b/linha-%C3%ADcone-do-preto-avatar-perfil-de-usu%C3%A1rio-121102131.jpg')" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        </a>
+                        <ul class="dropdown-menu user">
+                          <li><a class="dropdown-item navdrop" aria-current="page" href="/sair">Fazer logout</a></li>
                         </ul>
+                      </li>
+                      {% else %}
+                        <a class=" dropdown-item navdrop nav-link" style="color: white!important; border-radius: 0.375rem;" aria-current="page" href="/logar">Fazer login</a>
                       {% endif %}
                     </li>
                   </ul>
