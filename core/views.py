@@ -14,6 +14,7 @@ from datetime import datetime, timedelta, date
 import tempfile, os, math, time, locale, numero_por_extenso, collections
 import pandas as pd
 import numpy as np
+import re
 
 @require_POST
 #cadastra novo usuario
@@ -607,6 +608,17 @@ def download_txt_vt(request):
         response.write(linha + '\n')
 
     return response
+
+
+def formatar_lista_por_data(lista):
+    def extrair_data(item):
+        data_str = item.split("com primeiro vencimento em ")[1].split(" ", 1)[0]
+        data_str = data_str.replace(".", "").replace(",", "")
+        data = datetime.strptime(data_str, "%d/%m/%Y")
+        return data
+
+    lista_formatada = sorted(lista, key=extrair_data)
+    return lista_formatada
 #Renderiza a página de upload dos arquivos de importação de Comercial
 def upload_page_comercial(request):
     DadosComercial.objects.all().delete()
@@ -637,6 +649,8 @@ def calcular_parcelas(lista, valor, texto, vencimentos):
             parcela = f" {texto}: {qtd} ({numero_por_extenso.real(qtd)}) parcela(s) de {valor_formatado} ({valor_extenso}), com vencimento em {data_vencimento} sem juros e sem reajuste."
         elif texto == 'FGTS':
             parcela = f" {texto}: {valor_formatado} ({valor_extenso}), com primeiro vencimento em {data_vencimento} sem juros e sem reajuste."
+        elif texto == 'JUROS DE OBRA':
+            parcela = f" {texto}: {valor_formatado} ({valor_extenso}), com primeiro vencimento em {data_vencimento}."
         for u in range (qtd):
             vencimentos.pop(0) 
         parcelas.append(parcela)
@@ -754,8 +768,7 @@ def dados_comercial(dados_xls, request):
                 elif row[x] and row[x] == 'Dt. recto.':
                     i_dt_recto = x
                 elif row[x] and row[x] == 'Valor pago':
-                    i_valor_pago = x
-        
+                    i_valor_pago = x       
         if 11 < index:
             try:    
                 par = str(row[i_par]) if isinstance(row[i_data_vcto], str) else None
@@ -788,8 +801,7 @@ def dados_comercial(dados_xls, request):
                 if par is not None:
                     par2 = par
                 if tipo_condicao is not None:
-                    ti_co = tipo_condicao
-                
+                    ti_co = tipo_condicao             
                 if total_debitos is not None:
                     debitos.append(total_debitos)
                 if valor_devido and valor_devido > 0:
@@ -904,14 +916,12 @@ def dados_comercial(dados_xls, request):
                     elif tipo_condicao == "Juros de Obra":
                         juros_de_obra.append(valor_devido)
                         Vcto_juros_de_obr = data_vcto.strftime("%d/%m/%Y")
-                        lista_juros_de_obra.append(VctoFinanciamento)
-                        Valor_juros_de_obr = valor_devido
-                
+                        lista_juros_de_obra.append(Vcto_juros_de_obr)
+                        Valor_juros_de_obr = valor_devido                
                 if index < (len(dados_xls)-1) and str(dados_xls.iloc[index+1, i_tipo_condicao]) == 'nan' and str(dados_xls.iloc[index+1, i_valor_pago]) != 'nan' or par is None and valor_pago is not None and dt_recto is not None:
                     if (dados_xls.iloc[index+1, 0]) != '(C) - Parcela enviada para a cobrança escritural.' :
                         par = par2
                         tipo_condicao = ti_co
-
                 if total_lanc is not None:
                     lista_comercial.append(DadosComercial(total_lanc = total_lanc))
                 if (par is not None and str(row[0]) != 'Total lanc.'):
@@ -928,7 +938,6 @@ def dados_comercial(dados_xls, request):
                                                           data_emissao = data_emissao, limite_correcao = limite_correcao, 
                                                           ultimo_reajuste = ultimo_reajuste, documento = documento, 
                                                           unidades = unidades, total_lanc = total_lanc, reparcelamento=reparcelamento))
-
             except ValueError:
                 pass
     if len(Ato) > 0:
@@ -1021,12 +1030,14 @@ def dados_comercial(dados_xls, request):
             condicoes.append(parcela)
     if len(juros_de_obra) > 0:
         juros = round(sum(juros_de_obra), 2)
-        condicoes.append(f"JUROS DE OBRA: {formatar_real(juros)} ({numero_por_extenso.monetario(juros)})")
-    
+        parcelas = (calcular_parcelas(juros_de_obra, Valor_juros_de_obr, "JUROS DE OBRA",lista_juros_de_obra))
+        for parcela in parcelas:
+            condicoes.append(parcela)
+
+    condicoes = formatar_lista_por_data(condicoes)
     if len(debitos) > 0:
         debito = round(sum(debitos), 2)
-        condicoes.append(f"TOTAL DÉBITOS: {formatar_real(debito)} ({numero_por_extenso.monetario(debito)})")
-    
+        condicoes.append(f"TOTAL DÉBITOS: {formatar_real(debito)} ({numero_por_extenso.monetario(debito)})")  
     for condicao in condicoes:
         lista_comercial_condicoes.append(ClientesComercial(nome=cliente, tituloID = titulo_cliente, condicoes = condicao ))
 
