@@ -16,126 +16,125 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">    <title id="titulo">Início</title>
 </head>
 {% include "header.html" %}
-{% load custom_filters %}
 
-<body class="bg-dark">
-  <a href="/graphic" style="width: 70px;font-size: 16px;margin: 0;border-radius: 50px;justify-content: center;" class=" d-flex mt-2 mb-2 btn btn-outline-light" >Voltar</a>
+<body class="bg-light">
+  <a href="/graphic" style="width: 70px;font-size: 16px;margin: 0;border-radius: 50px;justify-content: center; margin-left: 0.5rem;" class=" d-flex mt-2 mb-2 btn btn-outline-secondary" >Voltar</a>
 
-<table class="table table-dark">
-  <thead>
+  <table class="table" style="border: 1px black dotted; background: rgb(230, 230, 230);">
+    <thead>
     <tr>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Item</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Nº SC</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Cód. Obra</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Cód. insumo</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Descrição do insumo</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Qt. solicitada</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data SC</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Prev. chegada à obra</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Nº PC</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data PC</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Prev. entrega</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Quant. entregue</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Saldo</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data NF</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Nº NF</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Entrada na obra</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Data vencimento</th>
-      <th scope="col" style="font-size: 12px;border: 1px white dotted;">Prev. final</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Item</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Nº SC</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Cód. Obra</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Cód. insumo</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Descrição do insumo</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Qt. solicitada</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Data SC</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Prev. chegada à obra</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Nº PC</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Data PC</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Prev. entrega</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Quant. entregue</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Saldo</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Data NF</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Nº NF</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Entrada na obra</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Data vencimento</th>
+      <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Prev. final</th>
     </tr>
   </thead>
   <tbody>
     {% for objeto in objetos %}
     <tr>
       {% if objeto.item is not none %}
-        <th scope="row" style="border: 1px white dotted;">{{objeto.item}}</th>
+        <th style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.item}}</th>
       {% else %}
         <th></th>
       {% endif %}
       {% if objeto.cod_sol_compra is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.cod_sol_compra }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.cod_sol_compra }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.cod_obra is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.cod_obra }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.cod_obra }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.cod_insumo is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.cod_insumo }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.cod_insumo }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.desc_insumo is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.desc_insumo }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.desc_insumo }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.quant_sol is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.quant_sol }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.quant_sol }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.data_sol is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.data_sol|date:"d/m/Y" }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.data_sol|date:"d/m/Y" }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.data_sol_cheg_obra is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.data_sol_cheg_obra|date:"d/m/Y" }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.data_sol_cheg_obra|date:"d/m/Y" }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.num_ped_compra is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.num_ped_compra }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.num_ped_compra }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.data_emissao_pc is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.data_emissao_pc|date:"d/m/Y" }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.data_emissao_pc|date:"d/m/Y" }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.prev_entrega is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.prev_entrega|date:"d/m/Y" }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.prev_entrega|date:"d/m/Y" }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.quant_entregue is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.quant_entregue }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.quant_entregue }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.saldo is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.saldo }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.saldo }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.data_NF is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.data_NF|date:"d/m/Y" }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.data_NF|date:"d/m/Y" }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.cod_NF is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.cod_NF }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.cod_NF }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.data_entrada_obra is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.data_entrada_obra|date:"d/m/Y" }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.data_entrada_obra|date:"d/m/Y" }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.data_vencimento is not none %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.data_vencimento|date:"d/m/Y" }}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.data_vencimento|date:"d/m/Y" }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;"></td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
       {% endif %}
       {% if objeto.data_prev_final is not none %}
-      <td style="font-size: 11px;border: 1px white dotted;">{{objeto.data_prev_final|date:"d/m/Y" }}</td>
+      <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.data_prev_final|date:"d/m/Y" }}</td>
       {% else %}
-        <td style="font-size: 11px;border: 1px white dotted;">{{objeto.prev_entrega|date:"d/m/Y"}}</td>
+        <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{objeto.prev_entrega|date:"d/m/Y"}}</td>
       {% endif %} 
     </tr>
   {% endfor %}
@@ -145,8 +144,8 @@
 </body>
 {% include "footer.html" %}
 <script>
-    
     var footer = document.querySelector(".footer-container")
+    footer.style.width = '100%'
     footer.style.bottom = '';
     footer.style.position = '';
     footer.style.transform = '';

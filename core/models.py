@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Dados(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -121,10 +122,12 @@ class DadosComercial(models.Model):
     reparcelamento = models.BooleanField(default=False)
     status = models.CharField(max_length=100, null=True, default=None)
 
-
 class ClientesComercial(models.Model):
     nome = models.CharField(max_length=50, null=True, blank=True)
     tituloID = models.IntegerField(null=True, blank=True)
     id = models.AutoField(primary_key=True)
     condicoes = models.CharField(max_length=150)
+
+class ExtendedUser(User):
+    aprovado = models.BooleanField(default=False)
 

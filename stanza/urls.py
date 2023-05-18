@@ -21,8 +21,9 @@ from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', views.index, name='index'),
     path('logar/', views.logar, name='logar'),
+    path('', RedirectView.as_view(url='/logar/', permanent=True)),
+    path('index/', views.index, name='index'),
     path('entrar/', views.entrar, name='entrar'),
     path('sair/', views.sair, name='sair'),
     path('cadastro/', views.cadastro, name='cadastro'),
@@ -42,7 +43,6 @@ urlpatterns = [
     path('upload-comercial/', views.upload_comercial, name='upload-comercial'),
     path('upload-vt/', views.upload_vt, name='upload-vt'),
     path('insumos/', views.cadastrar_insumo, name='insumos'),
-    path('', RedirectView.as_view(url='/logar/', permanent=True)),
     path('download_table/<str:nome_obra>/', views.download_table, name='download_table'),
     path('save_data/', views.save_data, name='save_data'),
     path('download_txt/<str:nome_obra>/', views.download_txt, name='download_txt'),

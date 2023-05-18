@@ -18,6 +18,28 @@
 </head>
 {% include "header.html" %}
 <body class="bg-dark" style="background-image: radial-gradient(circle, #3a3a3a 1px, transparent 1px)">
+    {% if request.GET.unauthorized %}
+    <button type="button" style="display: none;" class="btn btn-primary" id="error" data-bs-toggle="modal" data-bs-target="#modalError">
+        Abrir
+      </button>
+      <!-- Modal -->
+        <div class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modalErrorLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content" style="background-color: #f7f7f7;background-image: radial-gradient(  circle,  #ddd 1px,  transparent 1px);background-size: 10px 10px;background-position: 0 0, 5px 5px;">
+              <div class="modal-header" style="border-bottom: #fb8306 solid; border-radius: 20px;">
+                <h1 class="modal-title fs-5 text-dark d-flex justify-content-center" style="width: 100%;" id="modalErrorLabel">Informações</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" style="font-size: 20px;justify-content: center;display: flex;">
+                  Você não tem acesso a essa funcionalidade!
+              </div>
+              <div class="modal-footer" style="border-top: #fb8306 solid; border-radius: 20px;">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endif %}
 <div id="background">
 </div>
 <div class="container-xxl p-2 col-md-12" style="max-width: 1900px;">
@@ -72,6 +94,8 @@
     footer.style.transform = '';
     footer.style.marginBottom = '15px';
     footer.style.width = '100%';
-
+    if (document.getElementById("error") !== null) {
+    document.getElementById("error").click();
+};
 </script>
 </html>

@@ -61,6 +61,9 @@
                                 {% if request.GET.invalido %}
                                     <p class="mt-1" style="color:red;">Usuário ou senha inválidos!</p>
                                 {% endif %}
+                                {% if request.GET.unauthorized %}
+                                    <p class="mt-1 text-danger">Aguarde aprovação!</p>
+                                {% endif %}
                             </div>
                             
                             <button type="submit" disabled id="entrar" class="btn btn-stanza">Entrar</button>
