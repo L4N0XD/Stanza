@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
+
 
 class Dados(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -50,6 +52,8 @@ class DadosRH(models.Model):
     total_atualizado = models.DecimalField(null=True,max_digits=10, decimal_places=2)
     nome_obra = models.CharField(max_length=100, null=True)
     salario = models.DecimalField(null=True, max_digits=10, decimal_places=2)
+    matricula = models.CharField(max_length=30, null=True)
+    codigo_desconto_vt = models.CharField(max_length=100, null=True)
 
 class Totais(models.Model):
     nome_obra = models.CharField(primary_key=True, max_length=100)
@@ -130,4 +134,6 @@ class ClientesComercial(models.Model):
 
 class ExtendedUser(User):
     aprovado = models.BooleanField(default=False)
-
+    grupo_rh = models.BooleanField(default=False)
+    grupo_suprimentos = models.BooleanField(default=False)
+    grupo_comercial = models.BooleanField(default=False)

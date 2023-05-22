@@ -85,25 +85,39 @@
                     <div class="card-body" style="padding-top: 0;">
                         <form method="POST" action=" {% url 'cadastro' %}">
                             {% csrf_token %}
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="username" class="form-label text-dark">E-mail</label>
                                 <input type="text" style="font-size: 12px;" class="form-control" id="emailRegister" name="emailRegister" placeholder="exemplo@stanza.com.br">
                                 {% if msg %}
                                 <p  class="mt-0 mb-0 justify-content-center" style="color: red; display: none;">E-mail já cadastrado!</p>
                                 {% endif %}
                             </div>
-                            <div class="mb-3">
-                                <label for="username" class="form-label text-dark">Nome</label>
+                            <div class="mb-2">
+                                <label for="username" class="form-label text-dark">Nome completo</label>
                                 <input type="text" style="font-size: 12px;" class="form-control" id="nomeUsuario" name="nomeUsuario" placeholder="Como deseja ser chamado(a)?">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="password1" class="form-label text-dark">Senha</label>
                                 <input type="password" onchange="empty_erro()" style="font-size: 12px;" class="form-control" id="password1" name="password1">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="password2" class="form-label text-dark">Confirme a senha</label>
                                 <input type="password" onchange="empty_erro()" style="font-size: 12px;" class="form-control" id="password2" name="password2">
                                 <p id="senhasDiferentes" class="mt-2 mb-0 justify-content-center" style="color: red; display: none;">Senhas não conferem</p>
+                            </div>
+                            <div class="mb-2" style="justify-content: space-between;display: flex;">
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" name="checkSupr" id="checkSupr">
+                                    <label for="checkSupr" class="mb-0 form-label text-dark">Suprimentos</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" name="checkRh" id="checkRh">
+                                    <label for="checkRh" class="mb-0 form-label text-dark">RH</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" name="checkCom" id="checkCom">
+                                    <label for="checkCom" class="mb-0 form-label text-dark">Comercial</label>
+                                </div>
                             </div>
                             <button id="cadastrar" type="submit" disabled class="btn btn-stanza mt-2 mb-3" style="width: 100%;">Cadastrar</button>
                         </form>
@@ -175,16 +189,12 @@ if (document.getElementById("sucesso") !== null) {
 </script>
     </body>
 <style>
-    #login {
+#login {
         display: flex;
-    }
-    #signup {
+}
+#signup {
         display: none;
-    }
-    .form-control::placeholder {
-        color: #c8c8c8;
-    }
-
+}
 
 </style>
 

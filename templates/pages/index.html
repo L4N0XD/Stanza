@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,12 +18,46 @@
     <title id="titulo">Início</title>
 </head>
 {% include "header.html" %}
-<body class="bg-dark" style="background-image: radial-gradient(circle, #3a3a3a 1px, transparent 1px)">
+<body  id="background" class="bg-dark" style="background-image: radial-gradient(circle, #3a3a3a 1px, transparent 1px)">
     {% if request.GET.unauthorized %}
     <button type="button" style="display: none;" class="btn btn-primary" id="error" data-bs-toggle="modal" data-bs-target="#modalError">
-        Abrir
-      </button>
-      <!-- Modal -->
+      Abrir
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="modalSolicitar" tabindex="-1" aria-labelledby="modalSolicitarLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #f7f7f7;background-image: radial-gradient(  circle,  #ddd 1px,  transparent 1px);background-size: 10px 10px;background-position: 0 0, 5px 5px;">
+          <div class="modal-header" style="border-bottom: #fb8306 solid; border-radius: 20px;">
+            <h1 class="modal-title fs-5 text-dark d-flex justify-content-center" style="width: 100%;" id="modalSolicitarLabel">Confirmar Solicitação</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+              {% if request.GET.Comercial %}
+                <p id="grupoSolicitado" style="display: none;">Comercial</p>
+              {% elif request.GET.RH %}
+                <p id="grupoSolicitado" style="display: none;">RH</p>
+              {% elif request.GET.Suprimentos %}
+                <p id="grupoSolicitado" style="display: none;">Suprimentos</p>
+              {% endif %}
+              <div class="modal-body" style="font-size: 18px;justify-content: center;display: flex;">
+                <div style="width: 85%;">
+                  <p class="mb-0 mt-0">Até a autorização da solicitação você ficará impedido de acessar qualquer funcionalidade do site</p> 
+                </div>
+              </div>
+              <div class="modal-footer" style="border-top: #fb8306 solid; border-radius: 20px;">
+                  <form method="POST" action="{% url 'solicitacao' %}">
+                    {% csrf_token %}
+                    <input type="text" style="display: none;" id="solicitarAcesso" name="solicitarAcesso">
+                    <div class="form-check form-switch" style="left: 5%;position: absolute;">
+                      <input type="checkbox" id="confirmarSolicitacao" class="form-check-input" name="confirmarSolicitacao" id="confirmarSolicitacao" onchange="checkFile()">
+                      <label for="confirmarSolicitacao"  class="mb-0 form-label text-dark">Eu concordo</label>
+                    </div>
+                    <button id="solicitar" type="submit" disabled class="btn btn-roxo">Confirmar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modalErrorLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content" style="background-color: #f7f7f7;background-image: radial-gradient(  circle,  #ddd 1px,  transparent 1px);background-size: 10px 10px;background-position: 0 0, 5px 5px;">
@@ -34,6 +69,7 @@
                   Você não tem acesso a essa funcionalidade!
               </div>
               <div class="modal-footer" style="border-top: #fb8306 solid; border-radius: 20px;">
+                  <button type="button" class="btn btn-stanza" data-bs-toggle="modal" data-bs-target="#modalSolicitar">Solicitar Acesso</button>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
               </div>
             </div>
@@ -42,20 +78,135 @@
     {% endif %}
 <div id="background">
 </div>
-<div class="container-xxl p-2 col-md-12" style="max-width: 1900px;">
-    <h1 style="font-size: 100px; font-family: 'Nanum Gothic Coding', monospace; letter-spacing: 30px; color: #fb8306; text-align: center;">BREVE</h1>
-    <h3 style="font-size: 25px; font-family: 'Nanum Gothic Coding', monospace; letter-spacing: 7.5px; color: #fb8306; text-align: center;">O SITE ESTÁ QUASE PRONTO</h3>
+<div class="container-xxl p-2 col-md-12" style="height: 70%; top: 25%;">
+  <section id="projects" class="section" style="height:100%;">
+    <div class="container cards-container">
+      <h4 class="section-title text-white col-3 mx-auto" style="margin-top: 5px;">Como funciona?</h4>
+      <div id="carousel-cards" class="carousel slide col-md-12" data-ride="carousel">
+        <ol class="carousel-indicators projects col-2 mx-auto mb-1">
+          <li data-target="#carousel-cards" data-slide-to="0" class="active"></li>
+          <li data-target="#carousel-cards" data-slide-to="1" ></li>
+          <li class="controlRemove" data-target="#carousel-cards" data-slide-to="2" ></li>
+          <li class="controlRemove" data-target="#carousel-cards" data-slide-to="3" ></li>
+          <li class="controlRemove" data-target="#carousel-cards" data-slide-to="4" ></li>
+        </ol>
+        <a class="controlL" href="#carousel-cards" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Anterior</span>
+            </a> 
+            <a class="controlR" href="#carousel-cards" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Próximo</span>
+          </a>      
+        <div class="gallery-container carousel-inner" id="carousel-inner">             
+          <div class="card-complete full-card-mobile-1 full-card-web-1" id="full-card-1" id="">
+            <div class="card ">
+              <div class="card-body">
+                <h5 class="card-title mt-1 mb-0 underline text">Suprimentos</h5>
+                <p class="card-text text text-white"> Exibe um gráfico de barras com informações sobre o status das solicitações, também exibe a quantidade de solicitações de compra entregues no prazo, atrasadas e indeterminadas.
+Você pode clicar em uma das barras para obter mais informações sobre cada categoria de solicitação.É possível filtrar e visualizar os dados de forma mais clara e intuitiva.</p>
+                <a href="/upload-page-obras" target="_blank" class="btn cards-btn" id="see-more">Visitar</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-complete full-card-mobile-1 full-card-web-1" id="full-card-2">
+            <div class="card ">
+              <div class="card-body">
+                <h5 class="card-title mt-1 mb-0 underline text">RH - Analisar VT</h5>
+                <p class="card-text text text-white"> Exibe uma tabela na página que mostra os resultados do VT para cada funcionário e contém informações como matrícula, CPF, nome, dias trabalhados, valor a pagar, saldo, salário e desconto.
+                  Em resumo, essa página permite a visualização dos resultados do VT de forma organizada e a realização de ações relacionadas a esses resultados, como exportar dados para outros formatos. </p>
+                <a href="/upload-page-rh" target="_blank" class="btn cards-btn" id="see-more">Visitar</a>
+              </div>
+            </div>
+          </div>
+            <div class="card-complete full-card-mobile-2 full-card-web-1" id="full-card-3"> 
+              <div class="card ">
+                <div class="card-body">
+                  <h5 class="card-title mt-1 mb-0 underline text">RH - Importar VT</h5>
+                  <p class="card-text text text-white"> Gera uma tabela com  várias informações sobre os funcionários, a data de admissão, o nome, o CPF, a identidade, o nome da mãe, a data de nascimento, o CEP, o endereço, o número, 
+                    a cidade e o bairro e permite a expotação desses dados para um arquivo TXT que será importado.
+                    </p>
+                  <a href="/upload-import-vt" target="_blank" class="btn cards-btn" id="see-more">Visitar</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-complete full-card-mobile-2 full-card-web-1" id="full-card-4">
+              <div class="card ">
+                <div class="card-body">
+                  <h5 class="card-title mt-1 mb-0 underline text">Comercial</h5>
+                  <p class="card-text text text-white"> Ao abrir a página, verão uma lista de diferentes tipos de transações, como mensais, semestrais, bimestrais, entre outros. Cada tipo de transação é acompanhado por um valor correspondente.
+                    Além disso, a página também exibe informações sobre o cliente, como título, nome, documento e unidades associadas. Também são exibidos o total de lançamentos, o total devido e o valor pago.</p>
+                  <a href="/upload-page-comercial" target="_blank" class="btn cards-btn" id="see-more">Visitar</a>
+                </div>
+              </div>
+            </div>
+
+            <!--- <div class="card-complete full-card-mobile-3 full-card-web-2" id="full-card-6">
+              <div class="card ">
+                <div class="card-body">
+                  <h5 class="card-title mt-1 mb-0 underline text">Projeto 6</h5>
+                  <p class="card-text text text-white"> Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
+                  <a href="#" target="_blank" class="btn cards-btn" id="see-more">Visitar</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-complete full-card-mobile-4 full-card-web-2" id="full-card-7">
+              <div class="card ">
+                <div class="card-body">
+                  <h5 class="card-title mt-1 mb-0 underline text">Projeto 7</h5>
+                  <p class="card-text text text-white"> Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
+                  <a href="#" target="_blank" class="btn cards-btn" id="see-more">Visitar</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-complete full-card-mobile-4 full-card-web-2" id="full-card-8">
+              <div class="card ">
+                <div class="card-body">
+                  <h5 class="card-title mt-1 mb-0 underline text">Projeto 8</h5>
+                  <p class="card-text text text-white"> Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
+                  <a href="#" target="_blank" class="btn cards-btn" id="see-more">Visitar</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-complete full-card-mobile-5 full-card-web-2" id="full-card-9">
+              <div class="card ">
+                <div class="card-body">
+                  <h5 class="card-title mt-1 mb-0 underline ">Projeto 9</h5>
+                  <p class="card-text text text-white"> Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
+                  <a href="#" target="_blank" class="btn cards-btn" id="see-more">Visitar</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-complete full-card-mobile-5 full-card-web-2" id="full-card-10">
+              <div class="card ">
+                <div class="card-body">
+                  <h5 class="card-title mt-1 mb-0 underline text">Projeto 10</h5>
+                  <p class="card-text text text-white"> Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
+                  <a href="#" target="_blank" class="btn cards-btn" id="see-more">Visitar</a>
+                </div>
+              </div>             
+            </div>
+          </div> !--->
+        </div> 
+      </div> 
+    </div>
+
+  </section>           
 </div>
-</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="assets/js/script.js"></script>
 {% include "footer.html" %}
+</body>
 <style>
     #background {
-    height: 930px;
+    height: 100vh; /* Set height to viewport height */
+    width: 100%;
     background-image: url("https://stanza.com.br/wp-content/uploads/2022/07/FACHADA-NOTURNA.png");
     background-repeat: no-repeat;
     background-size: 100%;
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
+    filter: blur(0px);
+    -webkit-filter: blur(0px);
     z-index: -1;
     position: relative;
     }
@@ -83,10 +234,251 @@
      }
 
     </style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Genos:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
+
+:root {
+    --primary-color:#ffa341;
+    --primary-color-contrast:#6e52bf;
+    --field-background-color:  #14213D;;
+    --second-text-color: #929292;
+    --primary-text-color: #FFFFFF;
+
+}
+
+
+.text{
+    color: var(--second-text-color);
+    margin-top: auto;
+    margin-bottom: auto;
+    font-family: 'Urbanist', sans-serif;
+}
+
+.section-title {
+    font-size: 30px;
+    margin-top: 50px;
+    text-align: center;
+    font-family: 'Urbanist', sans-serif;
+
+}
+
+
+.btn {
+    
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color:  white;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+    transition: color 0.5s ease-in-out;
+  }
+
+  .btn:hover {
+    color: rgb(255, 255, 255);
+    transition: all 1s ease-in-out;
+    
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #df304e;
+    border-radius: 5px;
+    width: 0;
+    height: 100%;
+    z-index: -1;
+    transition: all 0.5s ease-in-out;
+}
+
+.btn:hover::before {
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+  }
+
+  
+.itens {
+    display: flex;
+    height: 25rem;
+    max-width: 70rem;
+    gap: 0.4rem;
+    margin: 15px;
+}
+
+
+.card-complete, .card {
+    background-color: #6e52bfc9 !important;
+    position: relative;
+
+}
+.card-complete{
+  border: solid 2px #df304e;
+    border-radius: 2rem !important;
+}
+
+
+.itens > div {
+    flex: 1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4);
+    text-align: center;
+    max-height: 220px;
+    overflow: hidden;
+
+}
+
+
+.itens > div:hover {
+    flex: 1.5;
+    max-height: 20rem;
+    
+}
+
+.itens > div .card-text{
+    max-height: 150px; 
+    overflow: hidden;
+    word-wrap: break-word;
+    font-size: 14px;
+    
+}
+
+.itens > div:hover .card-text {
+    max-height: 200px;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4); 
+    word-wrap: break-word;
+    
+}
+
+
+.card-text {
+    overflow: hidden;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4); 
+    font-size: 12px;
+    text-align: justify;
+    
+
+}
+
+
+
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0.5rem 1rem 1.25rem 1rem;
+  }
+  
+
+.cards-btn {
+    opacity: 0;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4);
+    margin-top: 20px;
+}
+
+.itens > div:hover .cards-btn {
+    opacity: 1;
+    margin-bottom: 10px;
+}
+.card-title{
+    margin: 0 0 .75rem 0;
+    
+}
+
+.card-title, .contact-title, form {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Urbanist', sans-serif;
+    color: var(--primary-text-color);
+    
+}
+
+
+
+.carousel-indicators.projects{
+    position: static;
+}
+
+.carousel-indicators li {
+    background-color: var(--field-background-color);
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+}
+.carousel-indicators .active {
+    background-color: #ffa341
+}
+
+.gallery-container {
+    display: flex;
+    flex-wrap: nowrap;
+
+}
+
+#carousel-cards{
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.controlL,
+.controlR {
+  display: flex;
+  align-items: center;
+  position:absolute;
+  top: 123.33px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.controlL {
+  left: 0;
+}
+
+.controlR {
+  right: 0;
+}
+
+
+@media (max-width: 767px) {
+.itens > div {
+    flex: 1;
+    border-radius: 2rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4);
+    text-align: center;
+    max-height: 270px;
+    overflow: hidden;
+
+    
+}
+
+.itens > div:hover {
+    flex: 2.5;
+
+    
+
+}
+
+}
+      
+    </style>
 <script>
     var footer = document.querySelector(".footer-container")
     var textFooter = document.querySelectorAll('.footer-text')[0];
     var textFooter2 = document.querySelectorAll('.footer-text')[1];
+
     textFooter.style.color = '#fb8306';
     textFooter2.style.color = '#fb8306';
     footer.style.bottom = '';
@@ -97,5 +489,144 @@
     if (document.getElementById("error") !== null) {
     document.getElementById("error").click();
 };
+function checkFile() {
+  if (document.getElementById('confirmarSolicitacao').checked){
+    document.getElementById('solicitar').disabled = false;
+  } else {
+    document.getElementById('solicitar').disabled = true;
+  }
+}
+
+
+  grupo = document.getElementById('grupoSolicitado')
+  sol = document.getElementById('solicitarAcesso')
+  sol.value = grupo.textContent
+
+
+</script>
+<script>
+  function cardDisposition(screen){
+  if (screen == "mobile") {
+    for (var d = 3; d <= 7; d++) {
+      var div = $('.card-complete full-card-mobile-' + (d - 2));
+      window['$div' + d] = div;
+      console.log(div);
+    }  
+    for (var p = 5; p <= 13; p++) {
+      var newProjDiv;
+      if (p % 2 === 1) {
+        if (p === 5) {
+          newProjDiv = $('<div class="projects carousel-item active"></div>');
+          window['$newDiv' + p] = newProjDiv;
+          console.log(newProjDiv);
+        } else {
+          newProjDiv = $('<div class="projects carousel-item"></div>');
+          window['$newDiv' + p] = newProjDiv;
+          console.log(newProjDiv);
+        }  
+      }  
+    }  
+    for (var i = 6; i <= 14; i++) {
+      var newDivIten;
+      var num = Math.ceil((i - 4) / 2);
+      if (i % 2 === 0) {
+        newDivIten = $('<div class="itens" id="new-itens-' + num + '"></div>');  
+        window['$newDiv' + i] = newDivIten;
+        console.log(newDivIten);
+      }  
+    }  
+    $div3.wrapAll($newDiv6);
+    var $itens = $('#new-itens-1');
+    $itens.wrapAll($newDiv5);
+  
+    $div4.wrapAll($newDiv8);
+    var $itens2 = $('#new-itens-2');
+    $itens2.wrapAll($newDiv7);
+  
+    $div5.wrapAll($newDiv10);
+    var $itens3 = $('#new-itens-3');
+    $itens3.wrapAll($newDiv9);
+  
+    $div6.wrapAll($newDiv12);
+    var $itens4 = $('#new-itens-4');
+    $itens4.wrapAll($newDiv11);
+  
+    $div7.wrapAll($newDiv14);
+    var $itens5 = $('#new-itens-5');
+    $itens5.wrapAll($newDiv13);
+
+} else if (screen == "web"){  
+  var elements = document.getElementsByClassName('controlRemove');
+
+  for (var e = 0; e < 3; e++) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }  
+  for (var d = 1; d <= 2; d++) {
+    var div = $('.full-card-web-' + d);
+    window['$div' + d] = div;
+  }  
+  for (var p = 1; p <= 4; p++) {
+    var newProjDiv;
+    var newDivIten;
+    if (p % 2 === 1) {
+      if (p === 1) {
+        newProjDiv = $('<div class="projects carousel-item active"></div>');
+        window['$newDiv' + p] = newProjDiv;
+      } else {
+        newProjDiv = $('<div class="projects carousel-item"></div>');
+        window['$newDiv' + p] = newProjDiv;
+      }  
+    } else if (p % 2 === 0){
+      newDivIten = $('<div class="itens" id="new-itens-' + (p/2) + '"></div>');  
+      window['$newDiv' + p] = newDivIten;
+  }}    
+    $div1.wrapAll($newDiv2)
+    var $itens = $('#new-itens-1')
+    $itens.wrapAll($newDiv1)
+
+    $div2.wrapAll($newDiv4)
+    var $itens2 = $('#new-itens-2')
+    $itens2.wrapAll($newDiv3)
+}};    
+
+//Adiciona FadeInUp aos títulos das cartas
+function titleEffect(){
+  for (let i = 0; i < cards.length; i++) {
+    cards[i].addEventListener('mouseover', function() {
+      CardTitle[i].style.animation = 'fadeInUp .5s ease-out';
+    });  
+    
+    cards[i].addEventListener('mouseout', function() {
+      CardTitle[i].style.animation = 'none';
+    });  
+  }  
+}
+//Adiciona efeito ao rolar a página à partir dos links da navbar
+function smoothEffect (){
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(event) {
+      event.preventDefault(); 
+      var section = document.querySelector(this.getAttribute('href')); 
+      var sectionTop = section.offsetTop; 
+      section.classList.add('active');
+      window.scrollTo({
+        top: sectionTop,
+        behavior: 'smooth' 
+      });  
+    });  
+  });    
+};
+  
+if (window.innerWidth < 768 ) {
+  cardDisposition("mobile");
+}else if (window.innerWidth > 767){
+  cardDisposition("web");
+}  
+titleEffect();
+
+smoothEffect();
+
+window.onscroll = function() {scrollFunction()};
 </script>
 </html>

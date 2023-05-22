@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect, reverse
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import Group
+from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.http import require_POST
 from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial, DadosVT
 from core.models import ExtendedUser as User
@@ -14,12 +16,29 @@ import tempfile, os, math, time, locale, numero_por_extenso, collections
 import pandas as pd
 import numpy as np
 
+
+#Verifica se o usuário pertence ao grupo para o qual ele fez solicitação de análise
 def in_group(user, group_name):
     if user.groups.filter(name=group_name).exists():
         return True
     else:
         False
-    
+
+@login_required
+@require_POST
+#Efetua a solicitação de acesso à um grupo de análise
+def solicitar_acesso(request):
+    grupo = request.POST['solicitarAcesso']
+    print(grupo)
+    usuario_aux = User.objects.get(email=request.user.email)
+    usuario_aux.aprovado=False
+    usuario_aux.save()
+    group = Group.objects.get(name=grupo)
+    print(group)
+    group.user_set.add(usuario_aux)
+    logout(request)
+    return render(request, 'login.html', {'Sucesso': 'Inclusão solicitada com sucesso!'})
+
 @require_POST
 #cadastra novo usuario
 def cadastro(request):
@@ -32,13 +51,45 @@ def cadastro(request):
         email = request.POST['emailRegister']
         senha = request.POST['password1']
         nome_usuario = request.POST['nomeUsuario']
-        novoUsuario = User.objects.create_user(email=email, password=senha, username=nome_usuario, aprovado=False)
+        try:
+            request.POST['checkSupr']
+            check1 = True
+        except MultiValueDictKeyError:
+            check1 = False
+        try:
+            request.POST["checkRh"] 
+            check2 = True
+        except MultiValueDictKeyError:
+            check2 = False
+        try:
+            request.POST["checkCom"] 
+            check3 = True 
+        except MultiValueDictKeyError:
+            check3 = False
+
+        print(check1, check2, check3)
+        novoUsuario = User.objects.create_user(email=email, password=senha, username=nome_usuario, aprovado=False, grupo_rh = check2, grupo_suprimentos = check1, grupo_comercial = check3)
         novoUsuario.save()
+        groups_to_add = []
+        if check1:
+            groups_to_add.append('Suprimentos')  # Adicione aqui o nome do grupo correspondente
+        if check2:
+            groups_to_add.append('RH')  # Adicione aqui o nome do grupo correspondente
+        if check3:
+            groups_to_add.append('Comercial')  # Adicione aqui o nome do grupo correspondente
         usuario_aux = User.objects.get(email=email)
+        for group_name in groups_to_add:
+            try:
+                group = Group.objects.get(name=group_name)
+                print(group)
+                group.user_set.add(usuario_aux)
+            except Group.DoesNotExist:
+                pass
         print(usuario_aux.aprovado)
         return render(request, 'login.html', {'Sucesso': 'Cadastro solicitado com sucesso!'})
-#Efetua o login
+
 @require_POST
+#Efetua o login
 def entrar(request):
     try:
         usuario_aux = User.objects.get(email=request.POST['email'])
@@ -54,16 +105,18 @@ def entrar(request):
 
     except User.DoesNotExist:
         return redirect(reverse('logar') + '?invalido=True')
-#Efetua o logout
+
 @login_required
+#Efetua o logout
 def sair(request):
     logout(request)
     return HttpResponseRedirect('/')
+
 #Retorna página de login
 def logar(request):
     return render(request, 'login.html')
+
 #calcula o valor a ser pago no VT
-@login_required(login_url='/logar/')
 def calcular_pagar(cpf):
     try:
         # Obtendo os objetos que possuem o mesmo CPF nas duas tabelas
@@ -86,9 +139,11 @@ def calcular_pagar(cpf):
         pagar = ((obj_rh.valor/100) * obj_rh.dias_trabalhados)
 
     return pagar
+
 #Upload dos arquivos de SC
-@login_required(login_url='/logar/')
 def upload(request):
+    #if not in_group(request.user, 'Suprimentos'):
+     #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -99,14 +154,31 @@ def upload(request):
             dados_xls = pd.read_excel(tmp.name)
             os.unlink(tmp.name)
             dados_obras(dados_xls, request)
-            return(redirect('graphic'))
+            return(redirect('results-obras'))
         else:
             return(redirect('upload-page-obras'))
     else:
         return(redirect('upload-page-obras'))
+
+#Transforma os dados da tabela em código para importação do desconto do VT
+def transformar_excel(sequencia, e2, f2, evento, valor_desconto, pis):
+    if sequencia != "":
+        texto_sequencia = "{:06d}".format(int(sequencia))
+        texto_e2 = "{:02d}{:02d}{:02d}".format(e2.day, e2.month, e2.year % 100)
+        texto_f2 = "{:02d}{:02d}{:02d}".format(f2.day, f2.month, f2.year % 100)
+        texto_evento = "{:017d}".format(int(evento))
+        texto_valor_desconto = "{:012d}".format(int(valor_desconto))
+        parte_decimal_valor_desconto = "{:02d}".format(int((valor_desconto % 1) * 100))
+        texto_pis = "000000F43670864000123" + str(pis)
+        
+        return texto_sequencia + "00000" + texto_e2 + texto_f2 + texto_evento + texto_valor_desconto + parte_decimal_valor_desconto + texto_pis
+    
+    return ""
+
 #Upload dos arquivos para analise de VT
-@login_required(login_url='/logar/')
 def upload_rh(request):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True&RH=True')
     if request.method == 'POST':
         form = UploadRH(request.POST, request.FILES)
         if form.is_valid():
@@ -136,8 +208,8 @@ def upload_rh(request):
             return render(request, 'upload-page-rh.html')
     else:
         return render(request, 'upload-page-rh.html')
+  
 #Define e salva os dados dos arquivos de VT  
-@login_required(login_url='/logar/')  
 def dados_rh(dados_xls, dados_xls2, dias_uteis, dados_xls0):
     start = time.time()
     nome_obra = str(dados_xls2.iloc[8, 1])
@@ -217,30 +289,51 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis, dados_xls0):
     total_descontos = formatar_real(ctrl_total - ctrl_total_pagar)
     
     DadosRH.objects.bulk_update(dias_list, ['pagar','dias_contabilizados'])
+    sequencia = 0
+    data = DadosAjuCard.objects.first().data_planilha
+    mes = (data.month + 1)
+    
+    data_inicial = datetime(data.year, mes, 1)
+    
+    
+    ultimo_dia_mes = 31  
+    for dia in range(28, 32):  
+        try:
+            datetime(data.year, mes, dia)  
+            ultimo_dia_mes = dia  
+        except ValueError:
+            break  
+    
+    data_final = datetime(data.year, mes, ultimo_dia_mes)
+
     for index, row in dados_xls0.iterrows():
         if not pd.isna(row['CPF']):
             cpf_base = row['CPF']
             salario_base = row['Salário Base']
+            matricula = row['Funcionário']
+            pis = row['PIS/PASEP']
             try:
                 update = DadosRH.objects.get(pk=cpf_base)
                 if (update.pagar and update.pagar > (0.06 * salario_base)):
+                    sequencia = sequencia + 1
                     valor_desconto_colaborador = (0.06*salario_base)
-                    salario_list.append(DadosRH(pk=cpf_base, valor_desconto_colaborador=valor_desconto_colaborador, salario=salario_base))
-                    print(cpf_base, valor_desconto_colaborador)
+                    codigo_desconto_vt = transformar_excel(sequencia, data_inicial, data_final, 604, valor_desconto_colaborador, pis)
+                    salario_list.append(DadosRH(pk=cpf_base, valor_desconto_colaborador=valor_desconto_colaborador, salario=salario_base, matricula=matricula, codigo_desconto_vt=codigo_desconto_vt))
                 else:
+                    sequencia = sequencia + 1
                     valor_desconto_colaborador = update.pagar
-                    salario_list.append(DadosRH(pk=cpf_base, valor_desconto_colaborador=valor_desconto_colaborador, salario=salario_base))
-                    print(cpf_base, valor_desconto_colaborador)
+                    salario_list.append(DadosRH(pk=cpf_base, valor_desconto_colaborador=valor_desconto_colaborador, salario=salario_base, matricula=matricula, codigo_desconto_vt=codigo_desconto_vt))
+                    codigo_desconto_vt = transformar_excel(sequencia, data_inicial, data_final, 604, valor_desconto_colaborador, pis)
             except ObjectDoesNotExist:
                 pass
-    DadosRH.objects.bulk_update(salario_list, ['valor_desconto_colaborador', 'salario'])
+    DadosRH.objects.bulk_update(salario_list, ['valor_desconto_colaborador', 'salario', 'matricula', 'codigo_desconto_vt'])
     salvar = Totais(total=total, total_descontos=total_descontos, total_pagar=total_pagar, nome_obra=nome_obra)
     salvar.save()
 
     end = time.time()
     print(f"Tempo total de leitura: {end - start}")
+  
 #Formata os valores para uma string em Real
-@login_required(login_url='/logar/')  
 def formatar_real(value):
     try:
         formatar = '{:,.2f}'.format(value).replace(',', 'X').replace('.', ',').replace('X', '.')
@@ -248,9 +341,11 @@ def formatar_real(value):
         return total
     except TypeError:
         return None
+
 #Renderiza a página de resultados do VT
-@login_required(login_url='/logar/')
 def results_rh(request):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True&RH=True')
     dados = Totais.objects.all()
     data = DadosAjuCard.objects.all().first()
     nome_obra = str(data.nome_obra)
@@ -273,9 +368,11 @@ def results_rh(request):
     return render(request, 'results-rh.html', {'reais':DadosRH.objects.all(), 'Ajucards': DadosAjuCard.objects.all(), 
                                                    'total': total, 'total_pagar': total_pagar, 'total_descontos': total_descontos, 
                                                    'data_planilha': data.data_planilha, 'nome_obra': nome_obra, 'obras': obras,})
+
 #Cria e disponibiliza para download o arquivo Excel com os dados do VT
-@login_required(login_url='/logar/')
 def download_table(request, nome_obra):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True')
     reais = DadosRH.objects.all()
     dados = Totais.objects.all()
     totais = (list(dados.values('total', 'total_pagar', 'total_descontos')))
@@ -316,12 +413,14 @@ def download_table(request, nome_obra):
     writer.close()
     
     return response
+
 #Cria e disponibiliza para download o arquivo TXT com os dados do VT  
-@login_required(login_url='/logar/')
-def download_txt(request, nome_obra):
+def download_txt_analise(request, nome_obra):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True')
     
     response = HttpResponse(content_type='text/plain')
-    response['Content-Disposition'] = f'attachment; filename="{nome_obra}.txt"'
+    response['Content-Disposition'] = f'attachment; filename="Análise: {nome_obra}.txt"'
 
     reais = DadosRH.objects.all()
     response.write('0200\n')
@@ -336,8 +435,24 @@ def download_txt(request, nome_obra):
                 ))
 
     return response
+
+#Cria e disponibiliza para download o arquivo TXT com os dados do VT  
+def download_txt_desconto(request, nome_obra):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True')
+    
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition'] = f'attachment; filename="Desconto: {nome_obra}.txt"'
+
+    reais = DadosRH.objects.all()
+    for real in reais:
+        if real.matricula and real.codigo_desconto_vt:
+            response.write(f'{real.codigo_desconto_vt} \n')
+
+
+    return response
+
 #Formata os valores de datas para salvar no DB 
-@login_required(login_url='/logar/')  
 def format_date(indice):
     if isinstance(indice, str):
         try:
@@ -347,9 +462,13 @@ def format_date(indice):
     else:
         date = None
     return date
+
 #Define e salva os dados dos arquivos de SC
-@login_required(login_url='/logar/')
 def dados_obras(dados_xls, request):
+
+
+    #if not in_group(request.user, 'Suprimentos'):
+     #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
     start = time.time()
     numero = []    
     insumos = Insumos.objects.all()
@@ -459,9 +578,11 @@ def dados_obras(dados_xls, request):
     'indeterminados':Dados.objects.filter(status='Indeterminado'), 
     'form': FiltroForm(), 
     'insumos': Insumos.objects.all()})
+
 #Renderiza a página de resultados de SC
-@login_required(login_url='/logar/')
 def graphic(request):
+    #if not in_group(request.user, 'Suprimentos'):
+     #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
     iten = Dados.objects.all().first()
     nome_obra = iten.nome_obra
     #dados_obras = Dados.objects.all()
@@ -484,30 +605,34 @@ def graphic(request):
     'indeterminados':Dados.objects.filter(status='Indeterminado'), 
     'form': FiltroForm(), 
     'insumos': Insumos.objects.all()})
+
 #Renderiza a página de upload dos arquivos de SC
-@login_required(login_url='/logar/')
 def upload_page_obras(request):
+    #if not in_group(request.user, 'Suprimentos'):
+     #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
 
-        Dados.objects.all().delete()
-        Operations.objects.all().delete()
+    Dados.objects.all().delete()
+    Operations.objects.all().delete()
+    print('Dados excluidos!')
+    return render(request, 'upload-page-obras.html')
 
-        print('Dados excluidos!')
-        return render(request, 'upload-page-obras.html')
 #Renderiza a página de upload dos arquivos de analise de VT
-@login_required(login_url='/logar/')
 def upload_page_rh(request):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True&RH=True')
     DadosRH.objects.all().delete()
     DadosAjuCard.objects.all().delete()
     Totais.objects.all().delete()
     print('Dados excluidos!')
     return render(request, 'upload-page-rh.html')
+
 #Retorna os valores das quantidades de SC em atraso, no prazo e indeterminadas para gerar o gráfico
-@login_required(login_url='/logar/')
 def dados_do_modelo(request):
     operations = Operations.objects.all().values()
     return JsonResponse(list(operations), safe=False)
+
+#Adicionar insumo somente adm add funcao
 #Cadastrar novos insumos no banco de dados para o calculo de previsão de entrega
-@login_required(login_url='/logar/')
 def cadastrar_insumo(request):
     if request.method == 'POST':
         form = AddInsumoForm(request.POST)
@@ -517,11 +642,13 @@ def cadastrar_insumo(request):
             qtd_dias = form.cleaned_data['qtd_dias']
             novo_insumo = Insumos(codigo_insumo=codigo_insumo, nome_do_insumo=nome_do_insumo, qtd_dias=qtd_dias)
             novo_insumo.save()
-        return(redirect('graphic'))
-    return(redirect('graphic'))
+        return(redirect('results-obras'))
+    return(redirect('results-obras'))
+      
 #Filtra os dados dos resultados de SC por datas  
-@login_required(login_url='/logar/')      
 def filtrar(request):
+    #if not in_group(request.user, 'Suprimentos'):
+     #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
     print(Insumos.objects.all())
     if request.method == 'POST':
         form = FiltroForm(request.POST)
@@ -542,15 +669,16 @@ def filtrar(request):
             context = {'form': form, 'objetos': objetos_filtrados, 'dados': Dados.objects.all(), 'insumos': Insumos.objects.all()}
             return render(request, 'filtro.html', context)
         else:
-            return(redirect('graphic'))
+            return(redirect('results-obras'))
     else:
         form = FiltroForm()
     context = {'form': form}
     return render(request, 'filtro.html', context)
+
 #Retorna Index.html
-#@login_required(login_url='/logar/')
 def index(request):
     return render(request, 'index.html')
+
 #Salva os dados
 def save_data(request):
     if request.method == 'POST':
@@ -564,15 +692,19 @@ def save_data(request):
                 anterior = dado.nome_obra
 
         return HttpResponse('success')
+
 #Renderiza a página de upload dos arquivos de importação de VT
-@login_required(login_url='/logar/')
 def upload_import_vt(request):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True&RH=True')
     DadosVT.objects.all().delete()
     print('Dados Excluídos!')
     return render(request, 'upload-import-vt.html')
+
 #Upload dos arquivos de importação de VT
-@login_required(login_url='/logar/')
 def upload_vt(request):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True&RH=True')
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -588,9 +720,11 @@ def upload_vt(request):
             return(redirect('upload-import-vt'))
     else:
         return(redirect('upload-import-vt'))
+
 #Define e salva os dados dos arquivos de importação de VT 
-@login_required(login_url='/logar/')
 def dados_vt(dados_xls, request):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True&RH=True')
     start = time.time()
     lista_vt = []
     for index, row in dados_xls.iterrows():
@@ -611,13 +745,17 @@ def dados_vt(dados_xls, request):
     DadosVT.objects.bulk_create(lista_vt)
     end = time.time()
     print(f"Tempo total de leitura: {end - start}")
+
 #Renderiza a página de resultados de importação de VT
-@login_required(login_url='/logar/')
 def import_vt(request):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True&RH=True')
     return render(request, 'import-vt.html', {'dados': DadosVT.objects.all()})
+
 #Cria e disponibiliza para download o arquivo TXT com os dados de importação do VT
-@login_required(login_url='/logar/')
 def download_txt_vt(request):
+    #if not in_group(request.user, 'RH'):
+     #   return redirect(reverse('index') + '?unauthorized=True')
     response = HttpResponse(content_type='text/plain')
     response['Content-Disposition'] = f'attachment; filename="Resultado da Consulta.txt"'
 
@@ -641,8 +779,8 @@ def download_txt_vt(request):
         response.write(linha + '\n')
 
     return response
+
 #Formata a lista de condicoes do modelo comercial por data
-@login_required(login_url='/logar/')
 def formatar_lista_por_data(lista):
     def extrair_data(item):
         data_str = item.split("com primeiro vencimento em ")[1].split(" ", 1)[0]
@@ -652,20 +790,19 @@ def formatar_lista_por_data(lista):
 
     lista_formatada = sorted(lista, key=extrair_data)
     return lista_formatada
+
 #Renderiza a página de upload dos arquivos de importação de Comercial
-@login_required(login_url='/logar/')
 def upload_page_comercial(request):
-    if not in_group(request.user, 'django'):
-        return redirect(reverse('index') + '?unauthorized=True')
+    #if not in_group(request.user, 'Comercial'):
+     #   return redirect(reverse('index') + '?unauthorized=True&Comercial=True')    
     DadosComercial.objects.all().delete()
     ClientesComercial.objects.all().delete()
     print('Dados excluidos!')
 
     return render(request, 'upload-page-comercial.html')
-#Calcula os dados de parcelas do comercial
-@login_required(login_url='/logar/')
-def calcular_parcelas(lista, valor, texto, vencimentos):
 
+#Calcula os dados de parcelas do comercial
+def calcular_parcelas(lista, valor, texto, vencimentos):
     contagem = collections.Counter(lista)
 
     parcelas = []
@@ -693,9 +830,11 @@ def calcular_parcelas(lista, valor, texto, vencimentos):
             vencimentos.pop(0) 
         parcelas.append(parcela)
     return (parcelas)
+
 #Define e salva os dados do arquivo Comercial 
-@login_required(login_url='/logar/')
 def dados_comercial(dados_xls, request):
+    #if not in_group(request.user, 'Comercial'):
+     #   return redirect(reverse('index') + '?unauthorized=True&Comercial=True')   
     locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     lista_vcto_mensal = []
     lista_vcto_ato = []
@@ -1082,9 +1221,11 @@ def dados_comercial(dados_xls, request):
 
     DadosComercial.objects.bulk_create(lista_comercial) 
     ClientesComercial.objects.bulk_create(lista_comercial_condicoes)    
+
 #Retorna os valores das quantidades de pagamentos em atraso para gerar o gráfico
-@login_required(login_url='/logar/')
 def dados_do_modelo_comercial(request):
+    #if not in_group(request.user, 'Comercial'):
+     #   return redirect(reverse('index') + '?unauthorized=True&Comercial=True')   
     operations = DadosComercial.objects.filter(status='No Prazo')
     oper = DadosComercial.objects.filter(status='Atrasado')
     nopr = []
@@ -1101,9 +1242,11 @@ def dados_do_modelo_comercial(request):
     valores.append(formatar_real(sum(nopr)))
     valores.append(formatar_real(sum(atra)))
     return JsonResponse({'valores': valores})
+
 #Renderiza a página de resultados de Comercial
-@login_required(login_url='/logar/')
 def comercial(request):
+    #if not in_group(request.user, 'Comercial'):
+     #   return redirect(reverse('index') + '?unauthorized=True&Comercial=True')   
     first = DadosComercial.objects.first()
     Soma_Par_Men2 = DadosComercial.objects.filter(tipo_condicao="Parcela Mensais 2").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
     Soma_Ato = DadosComercial.objects.filter(tipo_condicao="Ato").exclude(valor_devido=0).aggregate(Sum('valor_devido'))['valor_devido__sum']
@@ -1182,9 +1325,11 @@ def comercial(request):
                                               'Total_FGTS': formatar_real(Soma_FGTS ),'Total_Financiamento': formatar_real(Soma_Financiamento), 'total_residuo': formatar_real(Soma_Resíduo), 
                                               'finan_pago': Soma_Financiamento_pago, 'total_devido': formatar_real(total_devido), 'total_juros_obra': formatar_real(Soma_juros_de_obra), 'lista_atrasados': listagem_atrasados, 
                                               'lista_prazos': listagem_prazos})
+
 #Upload dos arquivos de Comercial
-@login_required(login_url='/logar/')
 def upload_comercial(request):
+    #if not in_group(request.user, 'Comercial'):
+     #   return redirect(reverse('index') + '?unauthorized=True&Comercial=True')   
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
