@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -11,6 +12,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% endblock %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">    
@@ -21,7 +25,7 @@
 <div class="container-xxl col-md-12">
 <div class="row">
 
-<div class="container col-md-2" style="position: absolute; left: 0; margin-top: -10px;" id="divSidebar">
+<div class="container col-md-2" style="position: fixed; left: 0; margin-top: -10px;" id="divSidebar">
     <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
         <li>
             <a href="/upload-page-rh" style="font-size: 16px; width: 100%; margin-top: 35px;" class="btn btn-roxo mb-5" >Nova consulta</a>
@@ -49,7 +53,7 @@
     </button>
     <ul class="dropdown-menu dropdown-menu-secondary bg-secondary" style="border: gray dotted 1px;">
       <li><a class="dropdown-item filter text-dark" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLS</a></li>
-      <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_analise' nome_obra=nome_obra %}">Análise VT</a></li>
+      <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_analise' nome_obra=nome_obra %}">Pedido TXT</a></li>
       <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_desconto' nome_obra=nome_obra %}">Desconto VT</a></li>
     </ul>
 </div>
@@ -59,54 +63,54 @@
     <table class="table" style="background: rgb(230, 230, 230);">
         <thead>
             <tr>
-                <th style="text-align: center; color: black; width: 70px;border: 1px black dotted;" scope="col"  >Matrícula</th>
-                <th style="text-align: center; color: black; width: 70px;border: 1px black dotted;" scope="col"  >CPF</th>
-                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Nome</th>
-                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Dias</th>
-                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Dias 2</th>
-                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Valor a pagar</th>
-                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Saldo</th>
-                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Saldo atualizado</th>
-                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Salário</th>
-                <th style="color: black;text-align: center;border: 1px black dotted; " scope="col">Desconto</th>
+                <th class="tabela bg-secondary text-white" style="width: 70px;" scope="col"  >Matrícula</th>
+                <th class="tabela bg-secondary text-white" style="width: 70px;" scope="col"  >CPF</th>
+                <th class="tabela bg-secondary text-white" scope="col">Nome</th>
+                <th class="tabela bg-secondary text-white" scope="col">Dias trabalhados</th>
+                <th class="tabela bg-secondary text-white" scope="col">Dias direito</th>
+                <th class="tabela bg-secondary text-white" scope="col">Valor a pagar</th>
+                <th class="tabela bg-secondary text-white" scope="col">Saldo ARACAJUCARD</th>
+                <th class="tabela bg-secondary text-white" scope="col">Saldo atualizado</th>
+                <th class="tabela bg-secondary text-white" scope="col">Salário</th>
+                <th class="tabela bg-secondary text-white" scope="col">Desconto</th>
             </tr>
         </thead>
         <tbody>
             {% for real in reais %}
             <tr>
-                <th style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;"> {% if real.matricula != none %}{{real.matricula}}{% else %} {% endif %}</th>
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.cpf}}</td>
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.nome}}</td>
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.dias_trabalhados}}</td>
+                <th class="tabela" style="font-size: 14px"> {% if real.matricula != none %}{{real.matricula}}{% else %} {% endif %}</th>
+                <td class="tabela" style="font-size: 14px">{{real.cpf}}</td>
+                <td class="tabela" style="font-size: 14px">{{real.nome}}</td>
+                <td class="tabela" style="font-size: 14px">{{real.dias_trabalhados}}</td>
             {% if real.dias_contabilizados is not none %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.dias_contabilizados}}</td>
+                <td class="tabela" style="font-size: 14px">{{real.dias_contabilizados}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.dias_trabalhados}}</td>
+                <td class="tabela" style="font-size: 14px">{{real.dias_trabalhados}}</td>
             {% endif %}
             {% if real.pagar is not none %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.pagar}}</td>
+                <td class="tabela" style="font-size: 14px">{{real.pagar}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">Sem informações</td>
+                <td class="tabela" style="font-size: 14px">Sem informações</td>
             {% endif %}
             {% if real.total is not none %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.total}}</td>
+                <td class="tabela" style="font-size: 14px">{{real.total}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">0.00</td>
+                <td class="tabela" style="font-size: 14px">0.00</td>
             {% endif %}
             {% if real.total_atualizado is not none %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.total_atualizado}}</td>
+                <td class="tabela" style="font-size: 14px">{{real.total_atualizado}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">0.00</td>
+                <td class="tabela" style="font-size: 14px">0.00</td>
             {% endif %}
             {% if real.salario is not none %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.salario}}</td>
+                <td class="tabela" style="font-size: 14px">{{real.salario}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">0.00</td>
+                <td class="tabela" style="font-size: 14px">0.00</td>
             {% endif %}
             {% if real.valor_desconto_colaborador is not none %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">{{real.valor_desconto_colaborador}}</td>
+                <td class="tabela" style="font-size: 14px">{{real.valor_desconto_colaborador}}</td>
             {% else %}
-                <td style="text-align: center; font-size: 14px; color: black;border: 1px black dotted;">0.00</td>
+                <td class="tabela" style="font-size: 14px">0.00</td>
             {% endif %}
             </tr>
             {% endfor %}

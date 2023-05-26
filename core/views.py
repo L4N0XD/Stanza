@@ -161,7 +161,8 @@ def upload(request):
         return(redirect('upload-page-obras'))
 
 #Transforma os dados da tabela em código para importação do desconto do VT
-def transformar_excel(sequencia, e2, f2, evento, valor_desconto, pis):
+def transformar_excel(sequencia, e2, f2, evento, valor_desconto, pis, nome_obra):
+    print(nome_obra)
     if sequencia != "":
         texto_sequencia = "{:06d}".format(int(sequencia))
         texto_e2 = "{:02d}{:02d}{:02d}".format(e2.day, e2.month, e2.year % 100)
@@ -169,7 +170,16 @@ def transformar_excel(sequencia, e2, f2, evento, valor_desconto, pis):
         texto_evento = "{:017d}".format(int(evento))
         texto_valor_desconto = "{:012d}".format(int(valor_desconto))
         parte_decimal_valor_desconto = "{:02d}".format(int((valor_desconto % 1) * 100))
-        texto_pis = "000000F43670864000123" + str(pis)
+        if nome_obra == 'SPE CAETE SERIGY INCORPORAÇÃO IMOBILIARIA LTDA':
+            cnpj_obra = '43670864000123'
+        elif nome_obra == 'VISTA ARUANA INCORPORACAO IMOBILIARIA SPE LTDA':
+            cnpj_obra = '46355692000191'
+        elif nome_obra == 'STANZA INCORPORACAO E CONSTRUCAO LTDA':
+            cnpj_obra = '09191102000106'
+        elif nome_obra == 'SPE JARDIM SERIGY INCORPORAÇÃO E IMOBILIARIA LTDA':
+            cnpj_obra = '38468216000159'        
+        
+        texto_pis = f"000000F{cnpj_obra}{str(pis)}"
         
         return texto_sequencia + "00000" + texto_e2 + texto_f2 + texto_evento + texto_valor_desconto + parte_decimal_valor_desconto + texto_pis
     
@@ -220,19 +230,20 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis, dados_xls0):
     lista_aju = []
     dados_rh_update = []   
 
-    
-
 
     for index, row in dados_xls.iterrows():
-        
-        cpf = (row[0])
-        if not pd.isna(cpf):
-                cpf = cpf.zfill(11)
-            #if str(row[6]) == 'OPERACIONAL DE OBRA':
-                dias_trabalhados = row[1] if not pd.isna(row[1]) else None
+        try:    
+            int(row[0])
+            cpf = (row[0])
+            if not pd.isna(cpf):
+                cpf = str(cpf).zfill(11)
+                #if str(row[6]) == 'VISTA ARUANA ':
+                dias_trabalhados = row[1] if not pd.isna(row[1]) and row[1] != 'DIAS' else None
                 valor = row[2] if not pd.isna(row[2]) else None
                 nome = row[3] if not pd.isna(row[3]) else None
                 lista_real.append(DadosRH(cpf=cpf, dias_trabalhados=dias_trabalhados, valor=valor, nome=nome, nome_obra=nome_obra))
+        except ValueError:
+            pass
     DadosRH.objects.bulk_create(lista_real) 
     
     for index, row in dados_xls2.iterrows():
@@ -317,13 +328,13 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis, dados_xls0):
                 if (update.pagar and update.pagar > (0.06 * salario_base)):
                     sequencia = sequencia + 1
                     valor_desconto_colaborador = (0.06*salario_base)
-                    codigo_desconto_vt = transformar_excel(sequencia, data_inicial, data_final, 604, valor_desconto_colaborador, pis)
+                    codigo_desconto_vt = transformar_excel(sequencia, data_inicial, data_final, 604, valor_desconto_colaborador, pis, nome_obra)
                     salario_list.append(DadosRH(pk=cpf_base, valor_desconto_colaborador=valor_desconto_colaborador, salario=salario_base, matricula=matricula, codigo_desconto_vt=codigo_desconto_vt))
                 else:
                     sequencia = sequencia + 1
                     valor_desconto_colaborador = update.pagar
+                    codigo_desconto_vt = transformar_excel(sequencia, data_inicial, data_final, 604, valor_desconto_colaborador, pis, nome_obra)
                     salario_list.append(DadosRH(pk=cpf_base, valor_desconto_colaborador=valor_desconto_colaborador, salario=salario_base, matricula=matricula, codigo_desconto_vt=codigo_desconto_vt))
-                    codigo_desconto_vt = transformar_excel(sequencia, data_inicial, data_final, 604, valor_desconto_colaborador, pis)
             except ObjectDoesNotExist:
                 pass
     DadosRH.objects.bulk_update(salario_list, ['valor_desconto_colaborador', 'salario', 'matricula', 'codigo_desconto_vt'])
@@ -465,156 +476,173 @@ def format_date(indice):
 
 #Define e salva os dados dos arquivos de SC
 def dados_obras(dados_xls, request):
-
-
     #if not in_group(request.user, 'Suprimentos'):
      #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
+
     start = time.time()
-    numero = []    
     insumos = Insumos.objects.all()
-    atrasado = []
-    noprazo = []
     bulk_list = []
     nome_obra = str(dados_xls.iloc[3, 3])
+    nome_obra = nome_obra.replace('- Obra Construção', '')
     
     for index, row in dados_xls.iterrows():
         data_prev_final = None
         
-        if index < 5:
-            continue
-
-            
-        item = None if pd.isna(row[0]) else int(row[0]) if isinstance(row[0], (int, float)) else None
-        cod_sol_compra = None if pd.isna(row[1]) else int(row[1]) if isinstance(row[1], (int, float)) else None
-        cod_obra = None if pd.isna(row[2]) else int(row[2]) if isinstance(row[2], (int, float)) else None
-        cod_insumo = None if pd.isna(row[4]) else int(row[4]) if isinstance(row[4], (int, float)) else None
-        desc_insumo = None if pd.isna(row[5]) else row[5] if isinstance(row[5], str) else None
-        quant_sol = None if pd.isna(row[8]) else str(row[8])    
-        data_sol = None if pd.isna(row[10]) else row[10] if isinstance(row[10], str) else None
-        data_sol_cheg_obra = None if pd.isna(row[11]) else row[11] if isinstance(row[11], str) else None
-        num_ped_compra = None if pd.isna(row[12]) else int(row[12]) if isinstance(row[12], (int, float)) else None
-        data_emissao_pc = None if pd.isna(row[13]) else row[13] if isinstance(row[13], str) else None
-        prev_entrega = None if pd.isna(row[14]) else row[14] if isinstance(row[14], str) else None
-        quant_entregue = None if pd.isna(row[16]) else str(row[16])
-        saldo = None if pd.isna(row[18]) else str(row[18])
-        data_NF = None if pd.isna(row[19]) else row[19] if isinstance(row[19], str) else None
-        cod_NF = None if pd.isna(row[20]) else row[20] if isinstance(row[20], str) else None
-        data_entrada_obra = None if pd.isna(row[21]) else row[21] if isinstance(row[21], str) else None
-        data_vencimento = None if pd.isna(row[22]) else row[22] if isinstance(row[22], str) else None
-        status = 'Total'
-        insumos = Insumos.objects.filter(codigo_insumo=cod_insumo)
-        if insumos.exists() and data_emissao_pc:
-            insumo = insumos.first()
-            data_prev_final = format_date(data_emissao_pc) + timedelta(days=insumo.qtd_dias) if insumo.qtd_dias else None
-        else:
-            data_prev_final = format_date(prev_entrega)
-
-        data_entrada_obra = format_date(data_entrada_obra)
-        if data_prev_final and data_entrada_obra:
-            data_prev_final = datetime.strptime(str(data_prev_final), "%Y-%m-%d").date()
-            data_entrada_obra = datetime.strptime(str(data_entrada_obra), "%Y-%m-%d").date()
-            diferenca = (data_entrada_obra - data_prev_final).days
-            if diferenca <= 0:
-                status = 'NoPrazo'
-                noprazo.append(diferenca)
+        try:
+            int(row[0])
+            item = None if pd.isna(row[0]) else int(row[0]) if isinstance(row[0], (int, float)) else None
+            cod_sol_compra = None if pd.isna(row[1]) else int(row[1]) if isinstance(row[1], (int, float)) else None
+            cod_obra = None if pd.isna(row[2]) else int(row[2]) if isinstance(row[2], (int, float)) else None
+            cod_insumo = None if pd.isna(row[4]) else int(row[4]) if isinstance(row[4], (int, float)) else None
+            desc_insumo = None if pd.isna(row[5]) else row[5] if isinstance(row[5], str) else None
+            quant_sol = None if pd.isna(row[8]) else str(row[8])    
+            data_sol = None if pd.isna(row[10]) else row[10] if isinstance(row[10], str) else None
+            data_sol_cheg_obra = None if pd.isna(row[11]) else row[11] if isinstance(row[11], str) else None
+            num_ped_compra = None if pd.isna(row[12]) else int(row[12]) if isinstance(row[12], (int, float)) else None
+            data_emissao_pc = None if pd.isna(row[13]) else row[13] if isinstance(row[13], str) else None
+            prev_entrega = None if pd.isna(row[14]) else row[14] if isinstance(row[14], str) else None
+            quant_entregue = None if pd.isna(row[16]) else str(row[16])
+            saldo = None if pd.isna(row[18]) else str(row[18])
+            data_NF = None if pd.isna(row[19]) else row[19] if isinstance(row[19], str) else None
+            cod_NF = None if pd.isna(row[20]) else row[20] if isinstance(row[20], str) else None
+            data_entrada_obra = None if pd.isna(row[21]) else row[21] if isinstance(row[21], str) else None
+            data_vencimento = None if pd.isna(row[22]) else row[22] if isinstance(row[22], str) else None
+            status = 'Total'
+            insumos = Insumos.objects.filter(codigo_insumo=cod_insumo)
+            if insumos.exists() and data_emissao_pc:
+                insumo = insumos.first()
+                data_prev_final = format_date(data_emissao_pc) + timedelta(days=insumo.qtd_dias) if insumo.qtd_dias else None
             else:
-                status = 'Atrasado'
-                atrasado.append(diferenca)
-        else:
-            status = 'Indeterminado'
+                data_prev_final = format_date(prev_entrega)
 
-        bulk_list.append(Dados(item=item,
-                  id=index, 
-                  cod_sol_compra=cod_sol_compra, 
-                  cod_obra=cod_obra, cod_insumo=cod_insumo, 
-                  desc_insumo=desc_insumo, 
-                  num_ped_compra=num_ped_compra, 
-                  data_emissao_pc=(format_date(data_emissao_pc)),
-                  quant_sol=quant_sol,
-                  data_sol=(format_date(data_sol)),
-                  data_sol_cheg_obra=(format_date(data_sol_cheg_obra)),
-                  saldo=saldo,
-                  nome_obra=nome_obra,
-                  status = status,
-                  data_NF=(format_date(data_NF)),
-                  cod_NF=cod_NF,
-                  prev_entrega=(format_date(prev_entrega)),
-                  quant_entregue=quant_entregue,
-                  data_entrada_obra=(data_entrada_obra),
-                  data_vencimento=(format_date(data_vencimento)),
-                  data_prev_final = data_prev_final
-                  ))
-        
-        
+            data_entrada_obra = format_date(data_entrada_obra)
+            data_sol=(format_date(data_sol))
+            data_vencimento=(format_date(data_vencimento))
+            prev_entrega=(format_date(prev_entrega))
+            data_sol_cheg_obra=(format_date(data_sol_cheg_obra))
+            data_emissao_pc=(format_date(data_emissao_pc))
+            data_NF=(format_date(data_NF))
+            if prev_entrega and data_entrada_obra:
+                prev_entrega_2 = prev_entrega + timedelta(days=2)
+                diferenca = ((data_entrada_obra - prev_entrega_2).days)
+                if diferenca <= 0:
+                    status_entregue = 'NoPrazo'
+                else:
+                    status_entregue = 'Atrasado'
+            else:
+                if cod_obra:
+                    status_entregue = 'Indeterminado'
+                else:
+                    status_entregue = None
+            if prev_entrega and data_sol_cheg_obra:
+                diferenca = ((prev_entrega - data_sol_cheg_obra).days)
+                if diferenca <= 0:
+                    status_compra = 'NoPrazo'
+                else:
+                    status_compra = 'Atrasado'
+            else:
+                if cod_obra:
+                    status_compra = 'Indeterminado'
+                else:
+                    status_compra = None
 
-        if isinstance(row[1], int):
-            numero.append(row[1])
+
+            bulk_list.append(Dados(item=item,
+                      id=index, 
+                      cod_sol_compra=cod_sol_compra, 
+                      cod_obra=cod_obra, cod_insumo=cod_insumo, 
+                      desc_insumo=desc_insumo, 
+                      num_ped_compra=num_ped_compra, 
+                      data_emissao_pc=data_emissao_pc,
+                      quant_sol=quant_sol,
+                      data_sol=data_sol,
+                      data_sol_cheg_obra=data_sol_cheg_obra,
+                      saldo=saldo,
+                      nome_obra=nome_obra,
+                      status_entregue = status_entregue,
+                      status_compra = status_compra,
+                      data_NF=data_NF,
+                      cod_NF=cod_NF,
+                      prev_entrega=prev_entrega,
+                      quant_entregue=quant_entregue,
+                      data_entrada_obra=data_entrada_obra,
+                      data_vencimento=data_vencimento,
+                      data_prev_final = data_prev_final
+                      ))
+        
+        except ValueError:
+            pass
+        
     Dados.objects.bulk_create(bulk_list)      
-    total_sols_compra = len(numero)   
     iten = Dados.objects.all().first()
-    iten.total_sols_compra = total_sols_compra 
     iten.nome_obra = nome_obra
     print(iten.nome_obra)
     iten.save()
 
-    Operations.objects.all().delete()
+    
 
-     
-    prazo = len(noprazo)
-    atrasados = len(atrasado)
-    total_atendido = (prazo + atrasados)
-    if iten.total_sols_compra != None and iten.total_sols_compra != 0:
-            indeterminados = (iten.total_sols_compra - total_atendido)
-
-    atendidos = Operations(prazo=prazo, atrasados=atrasados, total_atendido=total_atendido, indeterminados=indeterminados)
-    atendidos.save()
     end = time.time()
     print(f"Tempo total de leitura: {end - start}")
-    return render(request, 'graphic.html', {'nome_obra': nome_obra, 
-    'dados': Dados.objects.all(), 
-    'prazos': Operations.objects.all(), 
-    'atrasados': Dados.objects.filter(status='Atrasado'), 
-    'entregues': Dados.objects.filter(status='NoPrazo'), 
-    'indeterminados':Dados.objects.filter(status='Indeterminado'), 
-    'form': FiltroForm(), 
-    'insumos': Insumos.objects.all()})
+    results_obras(request)
 
 #Renderiza a página de resultados de SC
-def graphic(request):
+def results_obras(request):
     #if not in_group(request.user, 'Suprimentos'):
      #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
     iten = Dados.objects.all().first()
     nome_obra = iten.nome_obra
-    #dados_obras = Dados.objects.all()
-    #obras = []
-    #anterior = None
-    #
-    ##################################################################
-    #for real in dados_obras:
-    #    if real.nome_obra is not None and anterior != real.nome_obra:
-    #        obras.append(real.nome_obra)
-    #        anterior = real.nome_obra
-    ##################################################################
+    print(nome_obra)
+    atrasados =  Dados.objects.filter(status_entregue='Atrasado')
+    entregues =  Dados.objects.filter(status_entregue='NoPrazo')
+    indeterminados = Dados.objects.filter(status_entregue='Indeterminado')
+    noprazo = len(entregues)
+    ind =  len(indeterminados)
+    atraso = len(atrasados)
+    total_atendido = (noprazo + atraso)
+    total_sol = (total_atendido + ind)
+    
+    atrasados_compra =  Dados.objects.filter(status_compra='Atrasado')
+    entregues_compra =  Dados.objects.filter(status_compra='NoPrazo')
+    indeterminados_compra = Dados.objects.filter(status_compra='Indeterminado')
+    noprazo_compra = len(entregues_compra)
+    ind_compra =  len(indeterminados_compra)
+    atraso_compra = len(atrasados_compra)
+    total_atendido = (noprazo + atraso)
 
+    print(atraso_compra, noprazo_compra, ind_compra)
 
-    return render(request, 'graphic.html', {'nome_obra': nome_obra, 
+    return render(request, 'graphic.html', 
+    {'nome_obra': nome_obra, 
     'dados': Dados.objects.all(), 
-    'prazos': Operations.objects.all(), 
-    'atrasados': Dados.objects.filter(status='Atrasado'), 
-    'entregues': Dados.objects.filter(status='NoPrazo'), 
-    'indeterminados':Dados.objects.filter(status='Indeterminado'), 
+    'atrasados': atrasados, 
+    'entregues': entregues, 
+    'indeterminados':indeterminados, 
     'form': FiltroForm(), 
-    'insumos': Insumos.objects.all()})
+    'insumos': Insumos.objects.all(),
+    'noprazo': noprazo, 
+    'atraso': atraso,
+    'ind': ind,
+    'atrasados_compra': atrasados_compra, 
+    'entregues_compra': entregues_compra, 
+    'indeterminados_compra':indeterminados_compra, 
+    'noprazo_compra': noprazo_compra, 
+    'atraso_compra': atraso_compra,
+    'ind_compra': ind_compra,
+    'total_atendido': total_atendido,
+    'total_sols_compra': total_sol,
+    'filtro': False
+    })
 
 #Renderiza a página de upload dos arquivos de SC
 def upload_page_obras(request):
     #if not in_group(request.user, 'Suprimentos'):
      #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
 
+    insumos = Insumos.objects.all()
     Dados.objects.all().delete()
     Operations.objects.all().delete()
     print('Dados excluidos!')
-    return render(request, 'upload-page-obras.html')
+    return render(request, 'upload-page-obras.html',{'insumos': insumos})
 
 #Renderiza a página de upload dos arquivos de analise de VT
 def upload_page_rh(request):
@@ -625,11 +653,6 @@ def upload_page_rh(request):
     Totais.objects.all().delete()
     print('Dados excluidos!')
     return render(request, 'upload-page-rh.html')
-
-#Retorna os valores das quantidades de SC em atraso, no prazo e indeterminadas para gerar o gráfico
-def dados_do_modelo(request):
-    operations = Operations.objects.all().values()
-    return JsonResponse(list(operations), safe=False)
 
 #Adicionar insumo somente adm add funcao
 #Cadastrar novos insumos no banco de dados para o calculo de previsão de entrega
@@ -642,8 +665,8 @@ def cadastrar_insumo(request):
             qtd_dias = form.cleaned_data['qtd_dias']
             novo_insumo = Insumos(codigo_insumo=codigo_insumo, nome_do_insumo=nome_do_insumo, qtd_dias=qtd_dias)
             novo_insumo.save()
-        return(redirect('results-obras'))
-    return(redirect('results-obras'))
+        return(redirect(reverse('upload-page-obras') + '?success=True'))
+    return(redirect('upload-page-obras'))
       
 #Filtra os dados dos resultados de SC por datas  
 def filtrar(request):
@@ -657,17 +680,42 @@ def filtrar(request):
             data_final = form.cleaned_data['data_final']
             filtro = form.cleaned_data['filtro']
             if filtro == 'mes_entrega':
-                objetos_filtrados = Dados.objects.filter(Q(prev_entrega__gte=data_inicial), Q(prev_entrega__lte=data_final))
+                objetos_filtrados = Dados.objects.filter(Q(data_prev_final__gte=data_inicial), Q(data_prev_final__lte=data_final))
             elif filtro == 'mes_emissao_pc':
                 objetos_filtrados = Dados.objects.filter(Q(data_emissao_pc__gte=data_inicial), Q(data_emissao_pc__lte=data_final))
-            
+            atrasados = objetos_filtrados.filter(status='Atrasado')
+            entregues = objetos_filtrados.filter(status='NoPrazo')
+            indeterminados = objetos_filtrados.filter(status='Indeterminado')
+            print(len(atrasados), len(entregues), len(indeterminados))
             #obras = Obras.objects.all()
             #for obra in obras:
             #    if obra.obra6.nome_obra:
             #        print(obra.obra6.nome_obra)
+                #if not in_group(request.user, 'Suprimentos'):
+            #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
+            iten = Dados.objects.all().first()
+            nome_obra = iten.nome_obra
+            noprazo = len(entregues)
+            total_atendido = (len(atrasados) + len(entregues))
+            ind =  len(indeterminados)
+            atraso = len(atrasados)
+            context = {'objetos': objetos_filtrados, 'nome_obra': nome_obra, 
+            'dados': Dados.objects.all(), 
+            'objetos': objetos_filtrados,
+            'atrasados': atrasados, 
+            'entregues': entregues, 
+            'indeterminados':indeterminados, 
+            'form': FiltroForm(), 
+            'insumos': Insumos.objects.all(),
+            'noprazo': noprazo, 
+            'atraso': atraso,
+            'ind': ind,
+            'total_atendido': total_atendido,
+            'total_sols_compra': (total_atendido + ind),
+            'filtro': True
+            }
 
-            context = {'form': form, 'objetos': objetos_filtrados, 'dados': Dados.objects.all(), 'insumos': Insumos.objects.all()}
-            return render(request, 'filtro.html', context)
+            return render(request, 'graphic.html', context )
         else:
             return(redirect('results-obras'))
     else:

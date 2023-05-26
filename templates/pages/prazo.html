@@ -7,124 +7,248 @@
           <button type="button" style="background: transparent; border: 0;" data-bs-dismiss="modal" aria-label="Close"><span class="material-symbols-outlined" style="color:white">close</span></button>
         </div>
         <div class="modal-body bg-light">
-          <table class="table table-light">
+          <table id="tabela-noPrazo" class="table table-light">
             <thead>
               <tr>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Item</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Nº SC</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Cód. Obra</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Cód. insumo</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Descrição do insumo</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Qt. solicitada</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Data SC</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Prev. chegada à obra</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Nº PC</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Data PC</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Prev. entrega</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Quant. entregue</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Saldo</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Data NF</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Nº NF</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Entrada na obra</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Data vencimento</th>
-                <th class="bg-secondary text-white" style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="col">Prev. final</th>
+                <th class="bg-secondary text-white tabela" scope="col">Item</th>
+                <th class="bg-secondary text-white tabela" scope="col">Nº SC</th>
+                <th class="bg-secondary text-white tabela" scope="col">Cód. Obra</th>
+                <th class="bg-secondary text-white tabela" scope="col">Cód. insumo</th>
+                <th class="bg-secondary text-white tabela" scope="col">Descrição do insumo</th>
+                <th class="bg-secondary text-white tabela" scope="col">Qt. solicitada</th>
+                <th class="bg-secondary text-white tabela" scope="col">Data SC</th>
+                <th class="bg-secondary text-white tabela" scope="col">Prev. chegada à obra</th>
+                <th class="bg-secondary text-white tabela" scope="col">Nº PC</th>
+                <th class="bg-secondary text-white tabela" scope="col">Data PC</th>
+                <th class="bg-secondary text-white tabela" scope="col">Prev. entrega</th>
+                <th class="bg-secondary text-white tabela" scope="col">Quant. entregue</th>
+                <th class="bg-secondary text-white tabela" scope="col">Saldo</th>
+                <th class="bg-secondary text-white tabela" scope="col">Data NF</th>
+                <th class="bg-secondary text-white tabela" scope="col">Nº NF</th>
+                <th class="bg-secondary text-white tabela" scope="col">Entrada na obra</th>
+                <th class="bg-secondary text-white tabela" scope="col">Data vencimento</th>
+                <th class="bg-secondary text-white tabela" scope="col">Prev. final</th>
               </tr>
             </thead>
             <tbody>
               {% for entregue in entregues %}
               <tr>
                 {% if entregue.item is not none %}
-                  <th style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.item}}</th>
+                  <th class="tabela" scope="row">{{entregue.item}}</th>
                 {% else %}
                   <th></th>
                 {% endif %}
                 {% if entregue.cod_sol_compra is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.cod_sol_compra }}</td>
+                  <td class="tabela" scope="row">{{entregue.cod_sol_compra }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.cod_obra is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.cod_obra }}</td>
+                  <td class="tabela" scope="row">{{entregue.cod_obra }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.cod_insumo is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.cod_insumo }}</td>
+                  <td class="tabela" scope="row">{{entregue.cod_insumo }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.desc_insumo is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.desc_insumo }}</td>
+                  <td class="tabela" scope="row">{{entregue.desc_insumo }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.quant_sol is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.quant_sol }}</td>
+                  <td class="tabela" scope="row">{{entregue.quant_sol }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.data_sol is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.data_sol|date:"d/m/Y" }}</td>
+                  <td class="tabela" scope="row">{{entregue.data_sol|date:"d/m/Y" }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.data_sol_cheg_obra is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.data_sol_cheg_obra|date:"d/m/Y" }}</td>
+                  <td class="tabela" scope="row">{{entregue.data_sol_cheg_obra|date:"d/m/Y" }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.num_ped_compra is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.num_ped_compra }}</td>
+                  <td class="tabela" scope="row">{{entregue.num_ped_compra }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.data_emissao_pc is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.data_emissao_pc|date:"d/m/Y" }}</td>
+                  <td class="tabela" scope="row">{{entregue.data_emissao_pc|date:"d/m/Y" }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.prev_entrega is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.prev_entrega|date:"d/m/Y" }}</td>
+                  <td class="tabela" scope="row">{{entregue.prev_entrega|date:"d/m/Y" }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.quant_entregue is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.quant_entregue }}</td>
+                  <td class="tabela" scope="row">{{entregue.quant_entregue }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.saldo is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.saldo }}</td>
+                  <td class="tabela" scope="row">{{entregue.saldo }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.data_NF is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.data_NF|date:"d/m/Y" }}</td>
+                  <td class="tabela" scope="row">{{entregue.data_NF|date:"d/m/Y" }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.cod_NF is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.cod_NF }}</td>
+                  <td class="tabela" scope="row">{{entregue.cod_NF }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.data_entrada_obra is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.data_entrada_obra|date:"d/m/Y" }}</td>
+                  <td class="tabela" scope="row">{{entregue.data_entrada_obra|date:"d/m/Y" }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %}
                 {% if entregue.data_vencimento is not none %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.data_vencimento|date:"d/m/Y" }}</td>
+                  <td class="tabela" scope="row">{{entregue.data_vencimento|date:"d/m/Y" }}</td>
                 {% else %}
-                  <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                  <td class="tabela" scope="row"></td>
                 {% endif %} 
                 {% if entregue.data_prev_final is not none %}
-                <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.data_prev_final|date:"d/m/Y" }}</td>
+                <td class="tabela" scope="row">{{entregue.data_prev_final|date:"d/m/Y" }}</td>
                 {% else %}
                   {% if entregue.prev_entrega is not none %}
-                    <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row">{{entregue.prev_entrega|date:"d/m/Y"}}</td>
+                    <td class="tabela" scope="row">{{entregue.prev_entrega|date:"d/m/Y"}}</td>
                   {% else %}
-                    <td style="text-align: center; color: black;font-size: 12px;border: 1px black dotted; padding: .2rem .2rem!important;" scope="row"></td>
+                    <td class="tabela" scope="row"></td>
+                  {% endif %} 
+                {% endif %} 
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          <table id="tabela-noPrazo-compra" style="display: none;" class="table table-light">
+            <thead>
+              <tr>
+                <th class="bg-secondary text-white tabela" scope="col">Item</th>
+                <th class="bg-secondary text-white tabela" scope="col">Nº SC</th>
+                <th class="bg-secondary text-white tabela" scope="col">Cód. Obra</th>
+                <th class="bg-secondary text-white tabela" scope="col">Cód. insumo</th>
+                <th class="bg-secondary text-white tabela" scope="col">Descrição do insumo</th>
+                <th class="bg-secondary text-white tabela" scope="col">Qt. solicitada</th>
+                <th class="bg-secondary text-white tabela" scope="col">Data SC</th>
+                <th class="bg-secondary text-white tabela" scope="col">Prev. chegada à obra</th>
+                <th class="bg-secondary text-white tabela" scope="col">Nº PC</th>
+                <th class="bg-secondary text-white tabela" scope="col">Data PC</th>
+                <th class="bg-secondary text-white tabela" scope="col">Prev. entrega</th>
+                <th class="bg-secondary text-white tabela" scope="col">Quant. entregue</th>
+                <th class="bg-secondary text-white tabela" scope="col">Saldo</th>
+                <th class="bg-secondary text-white tabela" scope="col">Data NF</th>
+                <th class="bg-secondary text-white tabela" scope="col">Nº NF</th>
+                <th class="bg-secondary text-white tabela" scope="col">Entrada na obra</th>
+                <th class="bg-secondary text-white tabela" scope="col">Data vencimento</th>
+                <th class="bg-secondary text-white tabela" scope="col">Prev. final</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for entregue in entregues_compra %}
+              <tr>
+                {% if entregue.item is not none %}
+                  <th class="tabela" scope="row">{{entregue.item}}</th>
+                {% else %}
+                  <th></th>
+                {% endif %}
+                {% if entregue.cod_sol_compra is not none %}
+                  <td class="tabela" scope="row">{{entregue.cod_sol_compra }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.cod_obra is not none %}
+                  <td class="tabela" scope="row">{{entregue.cod_obra }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.cod_insumo is not none %}
+                  <td class="tabela" scope="row">{{entregue.cod_insumo }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.desc_insumo is not none %}
+                  <td class="tabela" scope="row">{{entregue.desc_insumo }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.quant_sol is not none %}
+                  <td class="tabela" scope="row">{{entregue.quant_sol }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.data_sol is not none %}
+                  <td class="tabela" scope="row">{{entregue.data_sol|date:"d/m/Y" }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.data_sol_cheg_obra is not none %}
+                  <td class="tabela" scope="row">{{entregue.data_sol_cheg_obra|date:"d/m/Y" }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.num_ped_compra is not none %}
+                  <td class="tabela" scope="row">{{entregue.num_ped_compra }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.data_emissao_pc is not none %}
+                  <td class="tabela" scope="row">{{entregue.data_emissao_pc|date:"d/m/Y" }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.prev_entrega is not none %}
+                  <td class="tabela" scope="row">{{entregue.prev_entrega|date:"d/m/Y" }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.quant_entregue is not none %}
+                  <td class="tabela" scope="row">{{entregue.quant_entregue }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.saldo is not none %}
+                  <td class="tabela" scope="row">{{entregue.saldo }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.data_NF is not none %}
+                  <td class="tabela" scope="row">{{entregue.data_NF|date:"d/m/Y" }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.cod_NF is not none %}
+                  <td class="tabela" scope="row">{{entregue.cod_NF }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.data_entrada_obra is not none %}
+                  <td class="tabela" scope="row">{{entregue.data_entrada_obra|date:"d/m/Y" }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %}
+                {% if entregue.data_vencimento is not none %}
+                  <td class="tabela" scope="row">{{entregue.data_vencimento|date:"d/m/Y" }}</td>
+                {% else %}
+                  <td class="tabela" scope="row"></td>
+                {% endif %} 
+                {% if entregue.data_prev_final is not none %}
+                <td class="tabela" scope="row">{{entregue.data_prev_final|date:"d/m/Y" }}</td>
+                {% else %}
+                  {% if entregue.prev_entrega is not none %}
+                    <td class="tabela" scope="row">{{entregue.prev_entrega|date:"d/m/Y"}}</td>
+                  {% else %}
+                    <td class="tabela" scope="row"></td>
                   {% endif %} 
                 {% endif %} 
               </tr>

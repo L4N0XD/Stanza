@@ -1,0 +1,221 @@
+#background {
+    height: 100vh; /* Set height to viewport height */
+    width: 100%;
+    background-image: url("https://stanza.com.br/wp-content/uploads/2022/07/FACHADA-NOTURNA.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    filter: blur(0px);
+    -webkit-filter: blur(0px);
+    z-index: -1;
+    position: relative;
+    }
+    
+body {
+    background-color: #f7f7f7;
+    background-image: radial-gradient(
+      circle,
+      #fb8306 1px,
+      transparent 1px
+    );
+    background-size: 10px 10px;
+    background-position: 0 0, 5px 5px;
+  }
+  @media (max-width: 768px) { 
+    #background {
+    height: 1000px;
+    background-size: 1600px;
+    }
+}
+.tabela {
+  text-align: center; 
+  color: black;
+  font-size: 12px;
+  border: 1px black dotted !important; 
+  padding: .2rem .2rem !important;
+
+}
+
+.btn-outline-stanza {
+    --bs-btn-color: #fb8306;
+    --bs-btn-border-color: #fb8306;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #fb8306;
+    --bs-btn-hover-border-color: #fb8306;
+    --bs-btn-focus-shadow-rgb: 25,135,84;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #fb8306;
+    --bs-btn-active-border-color: #fb8306;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fb8306;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #fb8306;
+    --bs-gradient: none;
+}
+.btn-stanza{
+--bs-btn-color: #fff;
+--bs-btn-bg: #fb8306;
+--bs-btn-border-color: #fb8306;
+--bs-btn-hover-color: #fff;
+--bs-btn-hover-bg: #fb9325;
+--bs-btn-hover-border-color: #b36512;
+--bs-btn-focus-shadow-rgb: 66,70,73;
+--bs-btn-active-color: #fff;
+--bs-btn-active-bg: #b36512;
+--bs-btn-active-border-color: #b36512;
+--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+--bs-btn-disabled-color: #fff;
+--bs-btn-disabled-bg: #fb8306;
+--bs-btn-disabled-border-color: #fb8306;
+}
+
+.btn-roxo {
+  --bs-btn-color: #fff;
+--bs-btn-bg: #6e52bf;
+--bs-btn-border-color: #6e52bf;
+--bs-btn-hover-color: #fff;
+--bs-btn-hover-bg: #7c51ff;
+--bs-btn-hover-border-color: #5330bb;
+--bs-btn-focus-shadow-rgb: 66,70,73;
+--bs-btn-active-color: #fff;
+--bs-btn-active-bg: #5231b4;
+--bs-btn-active-border-color: #42298f;
+--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+--bs-btn-disabled-color: #fff;
+--bs-btn-disabled-bg: #6e52bf;
+--bs-btn-disabled-border-color: #6e52bf;
+
+}
+.btn-rosa {
+  --bs-btn-color: #fff;
+--bs-btn-bg: #df304e;
+--bs-btn-border-color: #df304e;
+--bs-btn-hover-color: #fff;
+--bs-btn-hover-bg: #e75e74;
+--bs-btn-hover-border-color: #f7677f;
+--bs-btn-focus-shadow-rgb: 66,70,73;
+--bs-btn-active-color: #fff;
+--bs-btn-active-bg: #b5374c;
+--bs-btn-active-border-color: #e84c66;
+--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+--bs-btn-disabled-color: #fff;
+--bs-btn-disabled-bg: #df304e;
+--bs-btn-disabled-border-color: #df304e;
+
+}
+.btn-vermelho {
+  --bs-btn-color: #fff;
+--bs-btn-bg: rgb(220, 57, 18);
+--bs-btn-border-color: rgb(220, 57, 18);
+--bs-btn-hover-color: #fff;
+--bs-btn-hover-bg: rgb(227, 68, 29);
+--bs-btn-hover-border-color: rgb(220, 77, 42);
+--bs-btn-focus-shadow-rgb: 66,70,73;
+--bs-btn-active-color: #fff;
+--bs-btn-active-bg: rgb(221, 77, 41);
+--bs-btn-active-border-color: rgb(227, 74, 35);
+--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+--bs-btn-disabled-color: #fff;
+--bs-btn-disabled-bg: rgb(220, 57, 18);
+--bs-btn-disabled-border-color: rgb(220, 57, 18);
+
+}
+.btn-azul {
+  --bs-btn-color: #fff;
+--bs-btn-bg: rgb(51, 102, 204);
+--bs-btn-border-color: rgb(51, 102, 204);
+--bs-btn-hover-color: #fff;
+--bs-btn-hover-bg: rgb(51, 108, 229);
+--bs-btn-hover-border-color: rgb(51, 107, 242);
+--bs-btn-focus-shadow-rgb: 66,70,73;
+--bs-btn-active-color: #fff;
+--bs-btn-active-bg: rgb(51, 107, 241);
+--bs-btn-active-border-color: rgb(51, 104, 235);
+--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+--bs-btn-disabled-color: #fff;
+--bs-btn-disabled-bg: rgb(51, 102, 204);
+--bs-btn-disabled-border-color: rgb(51, 102, 204);
+
+}
+
+.voltar-btn {
+  justify-content: center;
+  display: flex;
+  margin-bottom: 20%;
+}
+.nav-link, .dropdown-item{
+  color: white !important;
+}
+
+.btn-outline-roxo{
+  --bs-btn-color: #6e52bf;
+    --bs-btn-border-color: #6e52bf;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #6e52bf;
+    --bs-btn-hover-border-color: #6e52bf;
+    --bs-btn-focus-shadow-rgb: 25,135,84;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #6e52bf;
+    --bs-btn-active-border-color: #6e52bf;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #6e52bf;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #6e52bf;
+    --bs-gradient: none;
+}
+
+.navdrop {
+  color: #6e52bf !important;
+align-items: center;
+display: flex;
+justify-content: center;
+}
+.navdrop:hover {
+  background-color: #6e52bf;
+  color: white !important;
+}
+
+
+.dropdown-item.filter:hover{
+  background-color: #ffffff;
+  color: black !important;
+}
+
+.popover-body{
+  color: #6e52bf;
+  height: 25px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.title-page {
+color: transparent;
+background-image: url('https://th.bing.com/th/id/OIP.v9ddKErMJpTRiebR8kFXIAHaFS?pid=ImgDet&rs=1');
+-webkit-background-clip: text;
+background-clip: text;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+}
+
+
+.dropdown-menu.user.show {
+left: -300%!important;
+}
+
+.form-control::placeholder {
+color: #c8c8c8;
+}
+.form-check-input:checked {
+background-color: #6e52bf;
+border-color: #fb8306;
+}
+.form-check-input:focus {
+border-color: #fb8306;
+outline: 0;
+box-shadow: 0 0 0 0.25rem rgba(251, 131, 6, 0.25);
+}
+.form-label {
+font-size: 0.9rem
+}
+
