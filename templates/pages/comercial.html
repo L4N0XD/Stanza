@@ -194,107 +194,109 @@
       </div>
     </div>
 </div>
-<a href="/upload-page-comercial" style="font-size: 14px;position: absolute; margin-left: 15px; border-radius: 50px;" class="btn btn-roxo mb-5 mt-4" >Nova consulta</a> 
-<div class="container col-md-2" style="position: absolute;margin-top: 8%;" id="divSidebar">
-        <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
+<div class="container col-md-2" style="position: absolute;" id="divSidebar">
+    <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
+        <li>
+            <a href="/upload-page-comercial" style="font-size: 14px; border-radius: 50px;" class="btn btn-roxo mb-5 mt-4" >Nova consulta</a> 
+        </li>    
             {% if Total_Par_Men2 is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza ">MENSAL 2: <br> {{Total_Par_Men2}}</p>
+                <p class=" resultados-content btn btn-stanza ">MENSAL 2: <br> {{Total_Par_Men2}}</p>
             </li>
             {% endif %}
             {% if Total_Ato is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">ATO: <br> {{Total_Ato}}</p>
+                <p class=" resultados-content btn btn-stanza">ATO: <br> {{Total_Ato}}</p>
             </li>
             {% endif %}        
             {% if Total_Par_Mensais is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">MENSAL: <br> {{Total_Par_Mensais}}</p>
+                <p class=" resultados-content btn btn-stanza">MENSAL: <br> {{Total_Par_Mensais}}</p>
             </li>
             {% endif %}
             {% if Total_Par_Semestrais is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">SEMESTRAL: <br> {{Total_Par_Semestrais}}</p>
+                <p class=" resultados-content btn btn-stanza">SEMESTRAL: <br> {{Total_Par_Semestrais}}</p>
             </li>
             {% endif %}
             {% if Total_Par_Bimestrais is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">BIMESTRAL: <br> {{Total_Par_Bimestrais}}</p>
+                <p class=" resultados-content btn btn-stanza">BIMESTRAL: <br> {{Total_Par_Bimestrais}}</p>
             </li>
             {% endif %}
             {% if Total_Ent_chave is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">ENTREGA DA CHAVE: <br> {{Total_Ent_chave}}</p>
+                <p class=" resultados-content btn btn-stanza">ENTREGA DA CHAVE: <br> {{Total_Ent_chave}}</p>
             </li>
             {% endif %}
             {% if Total_Sinal is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">SINAL: <br> {{Total_Sinal}}</p>
+                <p class=" resultados-content btn btn-stanza">SINAL: <br> {{Total_Sinal}}</p>
             </li>
             {% endif %}
             {% if Total_Par_Inter_ is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">INTERMEDIARIA: <br> {{Total_Par_Inter_}}</p>
+                <p class=" resultados-content btn btn-stanza">INTERMEDIARIA: <br> {{Total_Par_Inter_}}</p>
             </li>
             {% endif %}
             {% if Total_Par_Inter_2 is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">INTERMEDIARIA 2: <br> {{Total_Par_Inter_2}}</p>
+                <p class=" resultados-content btn btn-stanza">INTERMEDIARIA 2: <br> {{Total_Par_Inter_2}}</p>
             </li>
             {% endif %}
             {% if Total_Sin_Cartão is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">SINAL CARTÃO: <br> {{Total_Sin_Cartão}}</p>
+                <p class=" resultados-content btn btn-stanza">SINAL CARTÃO: <br> {{Total_Sin_Cartão}}</p>
             </li>
             {% endif %}
             {% if Total_Par_Cartão is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">PARCELAS CARTÃO: <br> {{Total_Par_Cartão}}</p>
+                <p class=" resultados-content btn btn-stanza">PARCELAS CARTÃO: <br> {{Total_Par_Cartão}}</p>
             </li>
             {% endif %}
             {% if Total_Car_Credit is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">CARTÃO CRÉDITO: <br> {{Total_Car_Credit}}</p>
+                <p class=" resultados-content btn btn-stanza">CARTÃO CRÉDITO: <br> {{Total_Car_Credit}}</p>
             </li>
             {% endif %}
             {% if Total_Transf_Credito is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">TRANSFERÊNCIA DE CRÉDITO: <br> {{Total_Transf_Credito}}</p>
+                <p class=" resultados-content btn btn-stanza">TRANSFERÊNCIA DE CRÉDITO: <br> {{Total_Transf_Credito}}</p>
             </li>
             {% endif %}
             {% if Total_Fin_Associativo is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">FINANCIAMENTO ASSOCIATIVO: <br> {{Total_Fin_Associativo}}</p>
+                <p class=" resultados-content btn btn-stanza">FINANCIAMENTO ASSOCIATIVO: <br> {{Total_Fin_Associativo}}</p>
             </li>
             {% endif %}
             {% if Total_Anual is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">ANUAL: <br> {{Total_Anual}}</p>
+                <p class=" resultados-content btn btn-stanza">ANUAL: <br> {{Total_Anual}}</p>
             </li>
             {% endif %}
             {% if Total_Financiamento is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">FINANCIAMENTO: <br> {{Total_Financiamento}}</p>
+                <p class=" resultados-content btn btn-stanza">FINANCIAMENTO: <br> {{Total_Financiamento}}</p>
             </li>
             {% endif %}
             {% if total_residuo is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">RESÍDUO: <br> {{total_residuo}}</p>
+                <p class=" resultados-content btn btn-stanza">RESÍDUO: <br> {{total_residuo}}</p>
             </li>
             {% endif %}
             {% if Total_FGTS is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">FGTS: <br> {{Total_FGTS}}</p>
+                <p class=" resultados-content btn btn-stanza">FGTS: <br> {{Total_FGTS}}</p>
             </li>
             {% endif %}
             {% if total_juros_obra is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">JUROS OBRAS: <br> {{total_juros_obra}}</p>
+                <p class=" resultados-content btn btn-stanza">JUROS OBRAS: <br> {{total_juros_obra}}</p>
             </li>
             {% endif %}
             {% if total_devido is not none %}
             <li>
-                <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%; " class="btn btn-stanza">TOTAL DEVIDO: <br> {{total_devido}}</p>
+                <p class=" resultados-content btn btn-stanza">TOTAL DEVIDO: <br> {{total_devido}}</p>
             </li>
             {% endif %}
         </ul>
@@ -325,7 +327,7 @@
             {% if lista_prazos is not none %}
                 {% for prazo in lista_prazos %}
                 <li>
-                    <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%;" class="btn btn-azul ">{{prazo}}</p>
+                    <p class="resultados-content btn btn-azul ">{{prazo}}</p>
                 </li>
                 {% endfor %}
             {% endif %}
@@ -336,7 +338,7 @@
             {% if lista_atrasados is not none %}
                 {% for atrasado in lista_atrasados %}
                 <li>
-                    <p style="font-size: 14px; cursor: context-menu; user-select: text; width: 100%;" class="btn btn-vermelho ">{{atrasado}}</p>
+                    <p class="resultados-content btn btn-vermelho ">{{atrasado}}</p>
                 </li>
                 {% endfor %}
             {% endif %}

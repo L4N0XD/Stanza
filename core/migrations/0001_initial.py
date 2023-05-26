@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('auth', '0014_remove_user_aprovado'),
+        
     ]
 
     operations = [

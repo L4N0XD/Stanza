@@ -162,7 +162,6 @@ def upload(request):
 
 #Transforma os dados da tabela em código para importação do desconto do VT
 def transformar_excel(sequencia, e2, f2, evento, valor_desconto, pis, nome_obra):
-    print(nome_obra)
     if sequencia != "":
         texto_sequencia = "{:06d}".format(int(sequencia))
         texto_e2 = "{:02d}{:02d}{:02d}".format(e2.day, e2.month, e2.year % 100)
@@ -609,6 +608,7 @@ def results_obras(request):
     atraso_compra = len(atrasados_compra)
     total_atendido = (noprazo + atraso)
 
+    print(atraso, noprazo, ind)
     print(atraso_compra, noprazo_compra, ind_compra)
 
     return render(request, 'graphic.html', 

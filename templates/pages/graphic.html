@@ -42,7 +42,7 @@
   </div>
 </div>
 <section id="page" style="display: flex; flex-direction: column-reverse;">
-  <div class="container col-md-2" style="position: absolute; top: 0; background: white; height: -webkit-fill-available;" id="divSidebar">
+  <div class="container col-md-2 shadow" style="position: absolute; top: 0; background: white; height: -webkit-fill-available;" id="divSidebar">
 
     <ul class="nav nav-pills flex-column mb-auto" style="margin-top: 30%;" id="ulSidebar">
       {% if filtro == True%}
@@ -54,7 +54,7 @@
             <form class="d-flex ms-auto" role="search" method="POST" action="{% url 'filtrar' %}" id="formulario">
                 {% csrf_token %}
                 <div class="input-group d-flex justify-content-center align-items-center">
-                    <button class="btn btn-secondary dropdown-toggle mb-3" style="width: 100%; border-radius: 7px;" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="button-filtrar">Filtrar por:</button>
+                    <button class="btn btn-secondary dropdown-toggle mb-3" style="width: 100%;border-radius: 7px;margin-top: 25%;;" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="button-filtrar">Filtrar por:</button>
                     <ul class="dropdown-menu dropdown-menu-secondary bg-secondary filtro-dropdown" style="border: gray solid 1px;">
                         <li><a class="dropdown-item filter" href="#" onclick="selecionarFiltro('mes_entrega')">Pedido Entregue</a></li>
                         <li><a class="dropdown-item filter" href="#" onclick="selecionarFiltro('mes_emissao_pc')">Solicitação de Compra</a></li>
@@ -66,9 +66,9 @@
                 </div>
             </form>
         </li>
-        <hr>
         <li class="mt-2">
-          <a href="/upload-page-obras" style="width: 100%;font-size: 16px; justify-content: center;" class=" d-flex ms-auto btn btn-roxo mb-5" >Nova consulta</a>
+          <hr style="margin-top: 20%;">
+          <a href="/upload-page-obras" style="width: 100%;font-size: 16px; justify-content: center; margin-top: 20%;" class=" d-flex ms-auto btn btn-roxo mb-5" >Nova consulta</a>
         </li>  
     </ul>
   </div>
@@ -93,7 +93,7 @@
           Ver SC Indeterminadas
         </button>
         {% include "indeterminados.html" %}
-        <div id="barchart_values" style="width: 600px; height: 65%;" class="d-flex justify-content-center align-items-center mt-0 mx-auto"></div>
+        <div id="barchart_values" style="width: 600px; height: 65%;" class="shadow d-flex justify-content-center align-items-center mt-0 mx-auto"></div>
       </div>
       {% if filtro == True %}
       <div style="position: absolute;right: 2%;top: 12.3%;">
@@ -148,7 +148,6 @@
       });
     });
 
-    document.querySelector('.col-2.footer-container').style.width = '100%';
  
 
     </script>
@@ -170,24 +169,32 @@ function selecionarFiltro(valor) {
 
 function atualizarGrafico() {
   const idFiltro = document.getElementById('id_filtro');
-  if (idFiltro.value === 'mes_emissao_pc') {
+  if (idFiltro.value === 'mes_entrega') {
+   document.getElementById('atrasados').style.display = '';
+   document.getElementById('atrasados-compra').style.display = 'none';
+   document.getElementById('tabela-noPrazo').style.display = '';
+   document.getElementById('tabela-noPrazo-compra').style.display = 'none';
+   document.getElementById('tabela-Indeterminados').style.display = '';
+   document.getElementById('tabela-Indeterminados-compra').style.display = 'none';
+   drawChart(prazo, atraso, ind, 'Pedidos Entregues');
+  } else if (idFiltro.value === 'mes_emissao_pc') {
+    document.getElementById('tabela-noPrazo').style.display = 'none';
+    document.getElementById('tabela-noPrazo-compra').style.display = '';
     document.getElementById('atrasados').style.display = 'none';
     document.getElementById('atrasados-compra').style.display = '';
-    drawChart(prazo_compra, atraso_compra, ind_compra);
-  } else if (idFiltro.value === 'mes_entrega') {
-    document.getElementById('atrasados').style.display = '';
-    document.getElementById('atrasados-compra').style.display = 'none';
-    drawChart(prazo, atraso, ind);
+    document.getElementById('tabela-Indeterminados').style.display = 'none';
+    document.getElementById('tabela-Indeterminados-compra').style.display = '';
+    drawChart(prazo_compra, atraso_compra, ind_compra, 'Solicitações de Compra');
 
   }
 }
 
 
         google.charts.load("current", {packages:["corechart"]});
-        google.charts.setOnLoadCallback(function() { drawChart(prazo, atraso, ind); });
+        google.charts.setOnLoadCallback(function() { drawChart(prazo, atraso, ind, 'Pedidos Entregues'); });
 
 
-    function drawChart(prazo, atrasados, indeterminados) {
+    function drawChart(prazo, atrasados, indeterminados, titulo) {
       var data = google.visualization.arrayToDataTable([
         ["Element", "Quantidade", { role: "style" } ],
         ["No Prazo", prazo, "green"],
@@ -204,7 +211,7 @@ function atualizarGrafico() {
       2]);
       
       var options = {
-        title: "Solicitacões de Compra entregues",
+        title: titulo,
         width: 600,
         height: 400,
         bar: {groupWidth: "70%"},

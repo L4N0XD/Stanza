@@ -31,8 +31,7 @@
               </tr>
             </thead>
             <tbody>
-            {% with sliced_data=indeterminados|slice:"24:1360" %}
-              {% for indeterminado in sliced_data %}
+              {% for indeterminado in indeterminados %}
               <tr>
                 {% if indeterminado.item is not none %}
                 <th class="tabela" scope="row">{{indeterminado.item}}</th>
@@ -130,10 +129,9 @@
                 {% endif %} 
               </tr>
             {% endfor %}
-            {% endwith %}
             </tbody>
           </table>
-          <table class="table table-light" style="display: none;" id="tabela-IndeterminadosCompra">
+          <table class="table table-light" style="display: none;" id="tabela-Indeterminados-compra">
             <thead>
               <tr>
                 <th class="bg-secondary text-white tabela" scope="col">Item</th>
@@ -157,8 +155,7 @@
               </tr>
             </thead>
             <tbody>
-            {% with sliced_data=indeterminados|slice:"24:1360" %}
-              {% for indeterminado in sliced_data %}
+              {% for indeterminado in indeterminados_compra %}
               <tr>
                 {% if indeterminado.item is not none %}
                 <th class="tabela" scope="row">{{indeterminado.item}}</th>
@@ -256,7 +253,6 @@
                 {% endif %} 
               </tr>
             {% endfor %}
-            {% endwith %}
             </tbody>
           </table>
         </div>
