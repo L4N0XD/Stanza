@@ -174,7 +174,7 @@ def transformar_excel(sequencia, e2, f2, evento, valor_desconto, pis, nome_obra)
             cnpj_obra = '43670864000123'
         elif nome_obra == 'VISTA ARUANA INCORPORACAO IMOBILIARIA SPE LTDA':
             cnpj_obra = '46355692000191'
-        elif nome_obra == 'STANZA INCORPORACAO E CONSTRUCAO LTDA':
+        elif nome_obra == 'STANZA INCORPORAÇÃO E CONSTRUÇÃO LTDA':
             cnpj_obra = '09191102000106'
         elif nome_obra == 'SPE JARDIM SERIGY INCORPORAÇÃO E IMOBILIARIA LTDA':
             cnpj_obra = '38468216000159'        
