@@ -52,6 +52,7 @@ body {
 
 }
 
+
 #carousel-cards, .gallery-container.carousel-inner{
   height: 60vh;
 }
@@ -61,12 +62,7 @@ body {
   top: 15%;
 }  
 
-#divSidebar {
-  position: fixed;
-  left: 0;
-  margin-top: -10px;
-  height: -webkit-fill-available;
-}
+
 
 .btn-outline-stanza {
     --bs-btn-color: #fb8306;

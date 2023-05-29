@@ -22,11 +22,11 @@
   {% endif %}
 
  <!-- Modal Insumos-->
- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade" id="modalInsumos" tabindex="-1" aria-labelledby="modalInsumosLabel" aria-hidden="true">
         <div class="modal-dialog bg-light">
           <div class="modal-content bg-light">
             <div class="modal-header bg-light mb-3" style="border-bottom: #fb8306 solid; border-radius: 20px;">
-              <h1 class="modal-title fs-5 text-dark mx-auto" id="exampleModalLabel">Adicionar Insumo</h1>
+              <h1 class="modal-title fs-5 text-dark mx-auto" id="modalInsumosLabel">Adicionar Insumo</h1>
             </div>
             <div class="modal-body bg-light">
               <form id='novoInsumo' method="POST" action="{% url 'insumos' %}" enctype="multipart/form-data">
@@ -50,24 +50,35 @@
                 </div>
                 <div class="modal-footer bg-light" style="border-top: #fb8306 solid; border-radius: 20px;">
                   <div class="dropdown">
-                    <button style="width: 90%; margin-right: 55px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button style="width: 90%; margin-right: 55px;" class="shadow btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                       Insumos cadastrados
                     </button>
                     <ul class="dropdown-menu dropdown-menu-light bg-light" aria-labelledby="dropdownMenuButton2">
-                      <li>
-                        <table class="table table-dark dropdown-item">
-                            {% for insumo in insumos %}
-                            <tr style="border-color: black;">
-                              <th scope="row" style="font-size: 12px;">{{insumo.codigo_insumo}}</th>
+                      <table class="table dropdown-item">
+                        <thead>
+                          <tr class="insumos-cadastrados" style="border-color: black;">
+                            <th>Código</th>
+                            <td> Descrição </td>
+                            <td> Qtd. Dias </td>
+                            <td>Editar</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for insumo in insumos %}
+                          <li>
+                            <tr class="insumos-cadastrados" style="border-color: black;">
+                              <th>{{insumo.codigo_insumo}}</th>
                               <td> {{insumo.nome_do_insumo}} </td>
                               <td> {{insumo.qtd_dias}} dias </td>
+                              <td><a style="font-size: 18px; cursor: pointer;" onclick="abrirEditarInsumos()" data-bs-dismiss="modal" class="material-symbols-outlined text-success-emphasis">edit_note</a></td>
                             </tr>
+                          </li>
                             {% endfor %}
+                          </tbody>
                         </table>
-                      </li>
                     </ul>
                   </div>
-                  <button id="salvarInsumo"class="btn btn-stanza" type="submit">Salvar</button>
+                  <button id="salvarInsumo"class="shadow btn btn-stanza" type="submit">Salvar</button>
                   <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
                 </div>
               </form>
@@ -75,6 +86,70 @@
           </div>
         </div>
 </div>
+<div class="modal fade" id="modalEditarInsumos" tabindex="-1" aria-labelledby="modalEditarInsumosLabel" aria-hidden="true">
+  <div class="modal-dialog bg-light" style="max-width: 80%;border: 15px white solid;border-radius: 5%;">
+    <div class="modal-content bg-light" style="border:0;">
+      <div class="modal-header bg-light mb-3" style="border-bottom: #fb8306 solid; border-radius: 20px;">
+        <h1 class="modal-title fs-5 text-dark mx-auto" id="modalEditarInsumosLabel">Editar Insumos</h1>
+        <button type="button" class="btn-close mx-0" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body bg-light">
+        <div class="">
+            <table class="table">
+              <thead>
+              </thead>
+              <tbody>
+                {% for insumo in insumos %}
+                <tr>
+                  <form method="POST" action="{% url 'editar_insumo' insumo.codigo_insumo %}">
+                    {% csrf_token %}
+                    <tr class="insumos-cadastrados" style="border-color: black;">
+                      <th>
+                        <div class="input-group input-group-sm mb-3">
+                          <span class="input-group-text" id="inputGroup-sizing-sm">Código</span>
+                          <input name="codigo" value="{{ insumo.codigo_insumo }} " type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                      </th>
+                      <td>
+                        <div class="input-group input-group-sm mb-3">
+                          <span class="input-group-text" id="inputGroup-sizing-sm">Descrição</span>
+                          <input name="nome" value="{{ insumo.nome_do_insumo }} " type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                      </td>
+                      <td>
+                        <div class="input-group input-group-sm mb-3">
+                          <span class="input-group-text" id="inputGroup-sizing-sm">Qtd. Dias</span>
+                          <input type="number" name="dias" value="{{ insumo.qtd_dias }}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                      </td>
+                      <td>
+                        <button type="submit" class="shadow btn btn-success p-0 d-flex" style="align-items: center;"><span class="material-symbols-outlined">
+                          save
+                          </span></button>
+                      </td>
+                    </form>
+                    
+                    <form method="POST" action="{% url 'excluir_insumo' insumo.codigo_insumo %}">
+                      {% csrf_token %}
+                        <td>
+                          <button type="submit" class="shadow btn btn-danger p-0 d-flex" style="align-items: center;"><span class="material-symbols-outlined">
+                            delete
+                            </span></button>
+                        </td>
+                    </form>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
+          <div class="modal-footer bg-light" style="border-top: #fb8306 solid; border-radius: 20px;">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <button id="startProgress"  onclick="startProgressBar()" style="display: none;">comecar</button>
 <form  method="POST" action="{% url 'upload' %}" enctype="multipart/form-data">
     {% csrf_token %}
@@ -87,9 +162,12 @@
         
             <div class="form-group "style="width:500px;top: 40%;display: grid;position: fixed;" id='uploadForm'>
                 <input type="file" class="form-control mb-3" id="arquivo" style="height: 40px; border: 1px rgb(123, 123, 123) solid;" name="arquivo" onchange="checkFile()">
-                <button id="startUpload" class="btn btn-stanza" disabled type="submit">Upload</button>
+                <button id="startUpload" class="shadow btn btn-stanza" disabled type="submit">Upload</button>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-outline-roxo mt-5 mx-auto" style="width: 50%; border-radius: 7px;" data-bs-toggle="modal" data-bs-target="#exampleModal"> Adicionar Insumo </button>   
+                <div class="mt-5 d-flex ">
+                  <button type="button" id="cadastrarInsumo" class="shadow btn btn-outline-roxo mx-auto" style="width: 30%; border-radius: 7px;" data-bs-toggle="modal" data-bs-target="#modalInsumos"> Adicionar Insumo </button>   
+                  <button type="button" id="editarInsumo" class="shadow btn btn-outline-roxo mx-auto" style="width: 30%; border-radius: 7px;" data-bs-toggle="modal" data-bs-target="#modalEditarInsumos"> Editar insumos </button>   
+                </div>
             </div>
 
         </div>
@@ -107,8 +185,20 @@
         position: absolute;
         bottom: 0;
     }
+    .insumos-cadastrados {
+  color: black !important;
+  font-size: 14px;
+}
+.table.dropdown-item.active,
+.table.dropdown-item:active {
+background-color: white;
+}
 </style>
     <script>
+
+    function abrirEditarInsumos() {
+      document.getElementById("editarInsumo").click()
+    }
     document.querySelector('#titulo').textContent = 'Upload de solicitação de compra'
     const startUpload = document.querySelector('#startUpload')
     const startProgress = document.querySelector('#startProgress')

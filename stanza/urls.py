@@ -48,4 +48,6 @@ urlpatterns = [
     path('download_txt_analise/<str:nome_obra>/', views.download_txt_analise, name='download_txt_analise'),
     path('download_txt_desconto/<str:nome_obra>/', views.download_txt_desconto, name='download_txt_desconto'),
     path('download_txt_vt/', views.download_txt_vt, name='download_txt_vt'),
+    path('insumo/editar/<int:codigo_insumo>/', views.editar_insumo, name='editar_insumo'),
+    path('insumo/excluir/<int:codigo_insumo>/', views.excluir_insumo, name='excluir_insumo'),
 ]

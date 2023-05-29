@@ -1,30 +1,66 @@
-<html>
-  <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
-
-        var options = {
-          title: 'My Daily Activities',
-          pieHole: 0.4,
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-        chart.draw(data, options);
-      }
-    </script>
-  </head>
-  <body>
-    <div id="donutchart" style="width: 900px; height: 500px;"></div>
-  </body>
-</html>
+<div class="modal fade" id="modalEditarInsumos" tabindex="-1" aria-labelledby="modalEditarInsumosLabel" aria-hidden="true">
+  <div class="modal-dialog bg-light">
+    <div class="modal-content bg-light">
+      <div class="modal-header bg-light mb-3" style="border-bottom: #fb8306 solid; border-radius: 20px;">
+        <h1 class="modal-title fs-5 text-dark mx-auto" id="modalEditarInsumosLabel">Adicionar Insumo</h1>
+      </div>
+      <div class="modal-body bg-light">
+        <form id='novoInsumo' method="POST" action="{% url 'insumos' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="input-group mb-3" style="justify-content: center;">                            
+            <div class="form-group"style="width:80%; " >
+              
+              <div class="input-group mb-3">
+                <span class="input-group-text material-symbols-outlined" id="basic-addon1">123</span>
+                <input  type="number" required name="codigo_insumo" class="form-control" placeholder="Código do Insumo" aria-label="Código do Insumo" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text material-symbols-outlined" id="basic-addon1">abc</span>
+                <input type="text" name="nome_do_insumo" class="form-control" placeholder="Descrição do Insumo" aria-label="Descrição do Insumo" aria-describedby="basic-addon1" >
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text material-symbols-outlined" id="basic-addon1">123</span>
+                <input type="number" name="qtd_dias" class="form-control" placeholder="Quantidade de dias" aria-label="Quantidade de dias" aria-describedby="basic-addon1" >   
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light" style="border-top: #fb8306 solid; border-radius: 20px;">
+            <div class="dropdown">
+              <button style="width: 90%; margin-right: 55px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                Insumos cadastrados
+              </button>
+              <ul class="dropdown-menu dropdown-menu-light bg-light" aria-labelledby="dropdownMenuButton2">
+                <table class="table dropdown-item">
+                  <thead>
+                    <tr class="insumos-cadastrados" style="border-color: black;">
+                      <th>Código</th>
+                      <td> Descrição </td>
+                      <td> Qtd. Dias </td>
+                      <td>Editar</td>
+                      <td>Excluir</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for insumo in insumos %}
+                    <li>
+                      <tr class="insumos-cadastrados" style="border-color: black;">
+                        <th>{{insumo.codigo_insumo}}</th>
+                        <td> {{insumo.nome_do_insumo}} </td>
+                        <td> {{insumo.qtd_dias}} dias </td>
+                        <td><a style="font-size: 18px;" href="" class="material-symbols-outlined text-success-emphasis">edit_note</a></td>
+                        <td><a style="font-size: 18px;" href="" class="material-symbols-outlined text-danger">delete</a></td>
+                      </tr>
+                    </li>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+              </ul>
+            </div>
+            <button id="salvarInsumo"class="btn btn-stanza" type="submit">Salvar</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -127,12 +127,11 @@ def calcular_pagar(cpf):
         mult_valor_dias = ((obj_rh.valor/100) * obj_rh.dias_trabalhados)
         sub_valor_dias = (float(mult_valor_dias) - float(obj_aju_card.total_atualizado))
         pagar = max(sub_valor_dias, 0)
-        if pagar / 9 != int:
-            if ((math.ceil(pagar / 9))*9) < 45 and ((math.ceil(pagar / 9))*9) != 0 :
-                pagar = 45
-            else:
-                pagar = ((math.ceil(pagar / 9))*9)
-        
+        #if pagar / 9 != int:
+        if ((math.ceil(pagar / 9))*9) <= 45 and ((math.ceil(pagar / 9))*9) != 0 :
+            pagar = 45
+        else:
+            pagar = ((math.ceil(pagar / 9))*9)        
 
     except (DadosRH.DoesNotExist, DadosAjuCard.DoesNotExist):
         obj_rh = DadosRH.objects.get(cpf=cpf)
@@ -334,6 +333,8 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis, dados_xls0):
                     valor_desconto_colaborador = update.pagar
                     codigo_desconto_vt = transformar_excel(sequencia, data_inicial, data_final, 604, valor_desconto_colaborador, pis, nome_obra)
                     salario_list.append(DadosRH(pk=cpf_base, valor_desconto_colaborador=valor_desconto_colaborador, salario=salario_base, matricula=matricula, codigo_desconto_vt=codigo_desconto_vt))
+                if str(cpf_base) == '01727846540':
+                    print(valor_desconto_colaborador)
             except ObjectDoesNotExist:
                 pass
     DadosRH.objects.bulk_update(salario_list, ['valor_desconto_colaborador', 'salario', 'matricula', 'codigo_desconto_vt'])
@@ -667,7 +668,28 @@ def cadastrar_insumo(request):
             novo_insumo.save()
         return(redirect(reverse('upload-page-obras') + '?success=True'))
     return(redirect('upload-page-obras'))
-      
+
+def editar_insumo(request, codigo_insumo):
+    insumo = Insumos.objects.get(codigo_insumo=codigo_insumo)
+    print(insumo)
+    
+    if request.method == 'POST':
+        insumo.nome_do_insumo = request.POST.get('nome')
+        insumo.qtd_dias = request.POST.get('dias')
+        insumo.save()
+        print(Insumos.objects.get(codigo_insumo=codigo_insumo).codigo_insumo)
+        return redirect('upload-page-obras')  # Redirecione para a view desejada após a edição
+    
+    return redirect('upload-page-obras')  # Redirecione para a view desejada após a edição
+
+def  excluir_insumo(request, codigo_insumo):
+        insumo = Insumos.objects.get(codigo_insumo=codigo_insumo)
+        if request.method == 'POST':
+            insumo.delete()
+            return redirect('upload-page-obras')
+        
+        return redirect('upload-page-obras')
+
 #Filtra os dados dos resultados de SC por datas  
 def filtrar(request):
     #if not in_group(request.user, 'Suprimentos'):

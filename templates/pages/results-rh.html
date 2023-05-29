@@ -20,51 +20,56 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">    
     <title id="titulo">Resultados VT</title>
 </head>
-{% include "header.html" %}
+<main>
+    <header>
+        {% include "header.html" %}
+    </header>
+    <aside class="shadow">
+        <div class="col-md-2" id="divSidebar">
+            <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
+                <li>
+                    <a href="/upload-page-rh" style="font-size: 16px; width: 100%;" class="shadow btn btn-roxo mb-3 mt-4" >Nova consulta</a>
+                   
+                </li>
+                <li>
+                    <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="mb-5 shadow btn btn-primary" >Total: <br> {{total}}</p>
+                   
+                </li>
+                <li>
+                    <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="mb-5 shadow btn btn-success">Total Descontos: <br> {{total_descontos}}</p>
+                   
+                </li>
+                <li>
+                    <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="mb-5 shadow btn btn-danger">Total a pagar: <br> {{total_pagar}}</p>
+                   
+                </li>
+                <li>
+                    <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="mb-5 shadow btn btn-secondary">Data da Planilha: <br> {{data_planilha|date:"d/m/Y"}}</p>
+                </li>
+        </div>
+        </aside>
+    <article>
 <body class="bg-light">
-<div class="container-xxl col-md-12">
+<div class="container-xxl col-md-11">
 <div class="row">
 
-<div class="container col-md-2" id="divSidebar">
-    <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
-        <li>
-            <a href="/upload-page-rh" style="font-size: 16px; width: 100%; margin-top: 35px;" class="btn btn-roxo mb-2" >Nova consulta</a>
-            <hr>
-        </li>
-        <li>
-            <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="btn btn-primary" >Total: <br> {{total}}</p>
-            <hr>
-        </li>
-        <li>
-            <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="btn btn-success">Total Descontos: <br> {{total_descontos}}</p>
-            <hr>
-        </li>
-        <li>
-            <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="btn btn-danger">Total a pagar: <br> {{total_pagar}}</p>
-            <hr>
-        </li>
-        <li>
-            <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="btn btn-secondary">Data da Planilha: <br> {{data_planilha|date:"d/m/Y"}}</p>
-            <hr>
-        </li>
-  </div>
-
 <div class="container row mt-4">
-<div class="col-md-11 d-flex mx-auto" >
-    <p style="font-size: 16px; cursor: context-menu; user-select: text;" class="btn btn-rosa mx-auto my-auto">Obra: {{nome_obra}}</p>
-    <div class="dropdown" >
-    <button  class="btn btn-secondary dropdown-toggle my-auto" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Exportar para:
-    </button>
-    <ul class="dropdown-menu dropdown-menu-secondary bg-secondary" style="border: gray dotted 1px;">
-      <li><a class="dropdown-item filter text-dark" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLS</a></li>
-      <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_analise' nome_obra=nome_obra %}">Pedido TXT</a></li>
-      <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_desconto' nome_obra=nome_obra %}">Desconto VT</a></li>
-    </ul>
+    <div class="col-md-11 d-flex mx-auto" style="margin-left: 0!important;" >
+        <p style="font-size: 16px; cursor: context-menu; user-select: text; margin-left: 0!important;" class="shadow btn btn-rosa mx-auto my-auto">Obra: {{nome_obra}}</p>
+        <div class="dropdown" >
+        <button  class="shadow btn btn-secondary dropdown-toggle my-auto" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Exportar para:
+        </button>
+        <ul class="dropdown-menu dropdown-menu-secondary bg-secondary" style="border: gray dotted 1px;">
+          <li><a class="dropdown-item filter text-dark" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLS</a></li>
+          <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_analise' nome_obra=nome_obra %}">Pedido TXT</a></li>
+          <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_desconto' nome_obra=nome_obra %}">Desconto VT</a></li>
+        </ul>
+    </div>
+    </div>
 </div>
-</div>
-</div>
-<div class="col-md-9 container mt-3" style=" margin-right: 6%;">
+
+<div class="col-md-12 container mt-3" style=" margin-right: 6%;">
     <table class="table" style="background: rgb(230, 230, 230);">
         <thead>
             <tr>
@@ -122,10 +127,49 @@
         </tbody>
     </table> 
 </div>
+</article>
+
+
+
 </div>
 </div>
 </body>
-{% include "footer.html" %}
+<footer>
+    {% include "footer.html" %}
+</footer>
+</main>
+<style>
+
+    main {
+      display: grid;
+      grid-template-areas: "head head head" "sidebar article article" "footer footer footer";
+    }
+    header {
+      grid-area: head;
+    }
+    article {
+      grid-area: article;
+    }
+    aside {
+        margin-top: -10px;
+      grid-area: sidebar;
+      width: 35vh;
+      background-color:#ffffff;
+      
+    border-radius: 20px;
+
+
+
+
+    }
+    footer {
+      grid-area: footer;
+    }
+
+    #divSidebar {
+      padding: 20px ;
+    }
+</style>
 <script>
     var footer = document.querySelector(".footer-container")
     footer.style.width = '100%'
