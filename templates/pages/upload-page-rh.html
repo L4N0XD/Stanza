@@ -18,41 +18,43 @@
 </head>
 {% include "header.html" %}
 <body class="bg-light">
-  <div class="container-xxl col-md-12">
-    <div class="row">
-    <button id="startProgress"  onclick="startProgressBar()" style="display: none;">comecar</button>
-    <form method="POST" action="{% url 'upload-rh' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="input-group mb-3 justify-content-center" >
-      <h1 class="title-page mb-3" style="font-family: 'Nanum Gothic Coding', monospace, bold;font-weight: bold;font-size: 90px;margin-top: 25px;"> ANALISAR VT </h1>
 
-      <div id="divProgress" class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 500px;display: none;border-radius: 10px;top: 50%;position: fixed;" >
-        <div class="progress-bar"  id="progresso" style="width: 0%; position: relative; z-index: 0; background: orange;"></div>
-        <p id="text_progress" style="position: absolute; z-index: 1; text-align: center; left: 50%; transform: translateX(-50%); color: black"></p>
-      </div>
-      <div style="display: grid;top: 34%;position: fixed;" id="uploadRH">   
-        <div  class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid; width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
-            <spam class="text-dark" style="width:50%; text-align: center;">Dias a contar</spam>
-              <input type="number" class="form-control" id="diasUteis" name="diasUteis" onchange="checkFile()">
+  <div class="d-grid justify-content-center">
+    <div class="card bg-light shadow mt-2">
+      <h1 class="title-page mb-3" > ANALISAR VT </h1>
+
+      <button id="startProgress"  onclick="startProgressBar()" style="display: none;">comecar</button>
+      <form method="POST" action="{% url 'upload-rh' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group mb-3 justify-content-center" >
+          <div id="divProgress" class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 500px;display: none;border-radius: 10px;top: 50%;position: fixed;" >
+            <div class="progress-bar"  id="progresso" style="width: 0%; position: relative; z-index: 0; background: orange;"></div>
+            <p id="text_progress" style="position: absolute; z-index: 1; text-align: center; left: 50%; transform: translateX(-50%); color: black"></p>
           </div>
-        <div  class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid; width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
-            <spam class="text-dark input-label" style="width:50%; text-align: center;">Planilha de Salários</spam>
-            <input type="file"  class="form-control input-file"  id="arquivo0" name="arquivo0" onchange="checkFile()">
+          <div style="display: grid;" id="uploadRH">   
+            <div  class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid;  display:flex;  border-radius: 6px; align-items: baseline;">
+                <spam class="text-dark" style="width:50%; text-align: center;">Dias a contar</spam>
+                  <input type="number" class="form-control" id="diasUteis" name="diasUteis" onchange="checkFile()">
+            </div>
+            <div  class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid;  display:flex;  border-radius: 6px; align-items: baseline;">
+                <spam class="text-dark input-label" style="width:50%; text-align: center;">Planilha de Salários</spam>
+                <input type="file"  class="form-control input-file"  id="arquivo0" name="arquivo0" onchange="checkFile()">
+            </div>
+            <div  class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid;  display:flex;  border-radius: 6px; align-items: baseline;">
+                <spam class="text-dark input-label" style="width:50%; text-align: center;">Planilha Real</spam>
+                <input type="file"  class="form-control input-file"  id="arquivo1" name="arquivo1" onchange="checkFile()">
+            </div>
+            <div class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid;  display:flex; border-radius: 6px; align-items: baseline;">
+              <spam class="text-dark input-label" style="width:50%; text-align: center;">Planilha AracajuCard</spam>
+              <input type="file"  class="form-control input-file"  id="arquivo2" name="arquivo2" onchange="checkFile()">
+            </div>
+            <button id="startUpload" class="btn btn-stanza d-flex mb-4" disabled style="justify-content: center;" type="submit">Upload</button>
+          </div>
         </div>
-        <div  class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid; width:500px; height:40px; display:flex;  border-radius: 6px; align-items: baseline;">
-            <spam class="text-dark input-label" style="width:50%; text-align: center;">Planilha Real</spam>
-            <input type="file"  class="form-control input-file"  id="arquivo1" name="arquivo1" onchange="checkFile()">
-        </div>
-        <div class="divInput form-group mb-4"style="border: 1px rgb(123, 123, 123) solid; width:500px; height:40px; display:flex; border-radius: 6px; align-items: baseline;">
-          <spam class="text-dark input-label" style="width:50%; text-align: center;">Planilha AracajuCard</spam>
-          <input type="file"  class="form-control input-file"  id="arquivo2" name="arquivo2" onchange="checkFile()">
-        </div>
-        <button id="startUpload" class="btn btn-stanza d-flex mb-4" disabled style="justify-content: center;" type="submit">Upload</button>
+      </form>
       </div>
     </div>
   </div>
-  </div>
-    </form>
     </body>
     {% include "footer.html" %}
     {% block css %}

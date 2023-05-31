@@ -664,8 +664,12 @@ def cadastrar_insumo(request):
             codigo_insumo = form.cleaned_data['codigo_insumo']
             nome_do_insumo = form.cleaned_data['nome_do_insumo']
             qtd_dias = form.cleaned_data['qtd_dias']
-            novo_insumo = Insumos(codigo_insumo=codigo_insumo, nome_do_insumo=nome_do_insumo, qtd_dias=qtd_dias)
-            novo_insumo.save()
+            try:
+                Insumos.objects.get(codigo_insumo=codigo_insumo)
+                return(redirect(reverse('upload-page-obras') + '?existent=True'))
+            except Insumos.DoesNotExist:
+                novo_insumo = Insumos(codigo_insumo=codigo_insumo, nome_do_insumo=nome_do_insumo, qtd_dias=qtd_dias)
+                novo_insumo.save()
         return(redirect(reverse('upload-page-obras') + '?success=True'))
     return(redirect('upload-page-obras'))
 

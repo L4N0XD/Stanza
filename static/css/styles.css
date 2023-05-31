@@ -1,15 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
 #background {
     height: 100vh; /* Set height to viewport height */
     width: 100%;
     background-image: url("https://stanza.com.br/wp-content/uploads/2022/07/FACHADA-NOTURNA.png");
     background-repeat: no-repeat;
     background-size: 100%;
-    filter: blur(0px);
-    -webkit-filter: blur(0px);
     z-index: -1;
     position: relative;
     }
 
+    #section-cards {
+      max-width: 85%;
+      max-height: 70%; 
+      top: 15%;
+      
+    }  
+
+    #uploadForm, #uploadRH {
+      min-width: 500px!important;
+    }
+
+    .btn.btn-outline-secondary:hover {
+      box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+
+    .title-page{
+      font-family: 'Nanum Gothic Coding', monospace, bold;
+      font-weight: bold;
+      font-size: 90px;
+      margin-top: 25px;
+    }
+
+    .card.bg-light.shadow {
+      background: linear-gradient(135deg, rgb(161 232 255 / 10%), rgb(121 218 255 / 0%))!important;
+      min-width: 400px !important;
+      margin-top: 50px;
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(1px);
+      border-radius: 30px;
+      padding: 0 50px 50px 50px;
+    }
+    .card.bg-light.shadow:hover {
+      animation: moveUp 0.5s forwards;
+      box-shadow: 0 .5rem 1rem rgba(0,0,0,.35)!important;
+      z-index: 3;
+
+    }
+
+    .container-xxl.p-2.col-md-12:hover, #footerContent:hover {
+      animation: moveUp 0.5s forwards;
+      box-shadow: 0 8px 32px 0 rgb(154 228 255 / 50%);
+      backdrop-filter: blur(4px);
+    }
+    
+
+    @keyframes moveUp {
+      100% {
+        transform: translateY(-5px);
+      }
+    }
     
 body {
     background-color: #f7f7f7;
@@ -30,6 +79,16 @@ body {
 
       width: 12%;
   }
+  #uploadForm, #uploadRH {
+    min-width: 250px!important;
+  }
+  .title-page{
+    font-size: 60px;
+  }
+.card.bg-light.shadow {
+  min-width: 250px !important;
+  padding: 0 30px 30px 30px;
+  }
 }
 .tabela {
   text-align: center; 
@@ -47,6 +106,10 @@ body {
   width: 100%;
 }
 
+.footer-text {
+  font-family: 'Urbanist', sans-serif;
+}
+
 .footer {
   width: 100%!important;
 
@@ -57,11 +120,12 @@ body {
   height: 60vh;
 }
 #section-cards {
-  max-width: 100%;
+  max-width: 85%;
   max-height: 70%; 
   top: 15%;
+  
 }  
-
+ 
 
 
 .btn-outline-stanza {
@@ -182,7 +246,9 @@ body {
 }
 
 #startUpload:disabled:hover,
-#startUpload:disabled:focus {
+#startUpload:disabled:focus, 
+.btn-stanza:disabled:hover,
+.btn-stanza:disabled:focus {
   box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
   animation: moveAway 0.5s forwards;
 }
@@ -258,6 +324,7 @@ background-clip: text;
 background-size: cover;
 background-position: center;
 background-repeat: no-repeat;
+text-align: center;
 }
 
 

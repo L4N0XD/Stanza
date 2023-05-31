@@ -79,7 +79,8 @@
           </div>
     </div>
   {% endif %}
-  <section id="section-cards" class="section container-xxl p-2 col-md-12" >
+  <section class="d-flex justify-content-center">
+    <div id="section-cards" class="section container-xxl p-2 col-md-12">
     <div class="container cards-container">
       <h4 class="section-title text-white col-3 mx-auto" style="margin-top: 5px;">Como funciona?</h4>
       
@@ -130,76 +131,42 @@
                   <a href="/upload-page-comercial" target="_blank" class="btn cards-btn shadow" id="see-more">Visitar</a>
                 </div>
             </div>
-            <!--- <div class="card-complete full-card-mobile-3 full-card-web-2" id="full-card-6">
-              <div class="card ">
-                <div class="card-body">
-                  <h5 class="card-title mt-1 mb-2 underline text">Projeto 6</h5>
-                  <p class="card-text text"> Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
-                  <a href="#" target="_blank" class="btn cards-btn shadow" id="see-more">Visitar</a>
-                </div>
-              </div>
-            </div>
-            <div class="card-complete full-card-mobile-4 full-card-web-2" id="full-card-7">
-              <div class="card ">
-                <div class="card-body">
-                  <h5 class="card-title mt-1 mb-2 underline text">Projeto 7</h5>
-                  <p class="card-text text"> Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
-                  <a href="#" target="_blank" class="btn cards-btn shadow" id="see-more">Visitar</a>
-                </div>
-              </div>
-            </div>
-            <div class="card-complete full-card-mobile-4 full-card-web-2" id="full-card-8">
-              <div class="card ">
-                <div class="card-body">
-                  <h5 class="card-title mt-1 mb-2 underline text">Projeto 8</h5>
-                  <p class="card-text text"> Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
-                  <a href="#" target="_blank" class="btn cards-btn shadow" id="see-more">Visitar</a>
-                </div>
-              </div>
-            </div>
-            <div class="card-complete full-card-mobile-5 full-card-web-2" id="full-card-9">
-              <div class="card ">
-                <div class="card-body">
-                  <h5 class="card-title mt-1 mb-0 underline ">Projeto 9</h5>
-                  <p class="card-text text"> Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
-                  <a href="#" target="_blank" class="btn cards-btn shadow" id="see-more">Visitar</a>
-                </div>
-              </div>
-            </div>
-            <div class="card-complete full-card-mobile-5 full-card-web-2" id="full-card-10">
-              <div class="card ">
-                <div class="card-body">
-                  <h5 class="card-title mt-1 mb-2 underline text">Projeto 10</h5>
-                  <p class="card-text text"> Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
-                  <a href="#" target="_blank" class="btn cards-btn shadow" id="see-more">Visitar</a>
-                </div>
-              </div>             
-            </div>
-          </div> !--->
         </div> 
+      </div>
       </div> 
     </div>
 
   </section>           
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 {% include "footer.html" %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 {% endblock %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 
-    .container-xxl.p-2.col-md-12 {
-        border:2px solid #fb8306; 
-        background-color: rgb(172 248 255 / 19%);;  
-        position: absolute;
-        z-index: 3; 
-        top: 40%;  
-        text-align: center;
+
+.container-xxl.p-2.col-md-12, #footerContent {
+    background: linear-gradient(135deg, rgb(161 232 255 / 10%), rgb(121 218 255 / 0%));
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    box-shadow: 0 8px 32px 0 rgb(154 228 255 / 37%);
+    border: 1px solid rgb(213, 254, 255);
+    border-radius: 32px;
+    position: absolute;
+    z-index: 3;
+    text-align: center;
+}
+#footerContent {
+  width: 40%;
+  margin-top: -4%;
+}
+    .footer-text {
+      text-shadow: 5px 5px 15px black;
+
     }
     .footer.d-flex.justify-content-center.col-3.footer-container.mx-auto {
-      border:2px solid #fb8306; 
-      background-color: rgb(172 248 255 / 19%);;  
+        
         position: absolute;
         bottom: 0;
     }
@@ -222,12 +189,13 @@ footer {
 .footer-text {
   margin: 0px;
   color: rgb(255 255 255);
+  font-family: 'Urbanist', sans-serif;
+    text-shadow: 5px 5px 15px black;
 }
 </style>
 <!--estilos dos cards-->
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Genos:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
 
 :root {
     --primary-color:#ffa341;

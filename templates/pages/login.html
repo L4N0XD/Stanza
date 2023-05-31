@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -42,10 +43,9 @@
   </div>
   {% endif %}
 <section id="login">
-    <div class="container-fluid" style="margin-top: 5%;" >
-        <div class="row justify-content-center">
-                <div class="card bg-light" style="width: 500px;border: 1px solid #fb8306;box-shadow: 0px 0px 30px 1px #fb8306; border-radius: 30px;">
-                    <div class="card-header text-dark mt-2 bg-light" style="border-bottom: 0;font-size: 20px;justify-content: center;display: flex; letter-spacing: 3px;">
+    <div class="container-fluid d-flex justify-content-center" >
+        <div class="card bg-light shadow">
+                    <div class="mt-2" style="border-bottom: 0;font-size: 20px;justify-content: center;display: flex; letter-spacing: 3px; text-shadow: 2px 1px 2px #c9c9c9;">
                         Login
                     </div>
                     <div class="card-body" style="padding-top: 0;">
@@ -66,20 +66,18 @@
                                 {% endif %}
                             </div>
                             
-                            <button type="submit" disabled id="entrar" class="btn btn-stanza">Entrar</button>
+                            <button type="submit" disabled id="entrar" class="btn btn-stanza shadow">Entrar</button>
                         </form>
-                            <button id="cadastro" class="btn btn-stanza mt-2 mb-3" style="width: 100%;">Cadastrar</button>
+                            <button id="cadastro" class="btn btn-stanza mt-2 mb-3 shadow" style="width: 100%;">Cadastrar</button>
                     </div>
             </div>
-        </div>
     </div>
 </section>
 
 <section id="signup">
-    <div class="container-fluid" style="margin-top: 2%;" >
-        <div class="row justify-content-center">
-            <div class="card bg-light" style="width: 500px;border: 1px solid #fb8306;box-shadow: 0px 0px 30px 1px #fb8306; border-radius: 30px;">
-                <div class="card-header text-dark mt-2 bg-light" style="border-bottom: 0;font-size: 20px;justify-content: center;display: flex; letter-spacing: 3px;">
+    <div class="container-fluid d-flex justify-content-center" >
+            <div class="card bg-light shadow">
+                <div class="mt-2" style="border-bottom: 0;font-size: 20px;justify-content: center;display: flex; letter-spacing: 3px; text-shadow: 2px 1px 2px #c9c9c9;">
                     Cadastro
                     </div>
                     <div class="card-body" style="padding-top: 0;">
@@ -119,14 +117,16 @@
                                     <label for="checkCom" class="mb-0 form-label text-dark">Comercial</label>
                                 </div>
                             </div>
-                            <button id="cadastrar" type="submit" disabled class="btn btn-stanza mt-2 mb-3" style="width: 100%;">Cadastrar</button>
+                            <button id="cadastrar" type="submit" disabled class="btn btn-stanza mt-2 mb-3 shadow" style="width: 100%;">Cadastrar</button>
                         </form>
                     </div>
             </div>
-        </div>
     </div>
 </section>
 {% include "footer.html" %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
 <script>
     const footer = document.querySelector(".footer-container")
     const enable = document.querySelector('#entrar')

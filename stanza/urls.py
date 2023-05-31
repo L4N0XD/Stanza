@@ -22,8 +22,8 @@ from core import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('logar/', views.logar, name='logar'),
-    path('', RedirectView.as_view(url='/logar/', permanent=True)),
     path('index/', views.index, name='index'),
+    path('', RedirectView.as_view(url='/index/', permanent=True)),
     path('entrar/', views.entrar, name='entrar'),
     path('sair/', views.sair, name='sair'),
     path('cadastro/', views.cadastro, name='cadastro'),
