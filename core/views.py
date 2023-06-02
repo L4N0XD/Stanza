@@ -588,10 +588,9 @@ def dados_obras(dados_xls, request):
 #Renderiza a página de resultados de SC
 def results_obras(request):
     #if not in_group(request.user, 'Suprimentos'):
-     #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
+    #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
     iten = Dados.objects.all().first()
     nome_obra = iten.nome_obra
-    print(nome_obra)
     atrasados =  Dados.objects.filter(status_entregue='Atrasado')
     entregues =  Dados.objects.filter(status_entregue='NoPrazo')
     indeterminados = Dados.objects.filter(status_entregue='Indeterminado')
@@ -609,8 +608,7 @@ def results_obras(request):
     atraso_compra = len(atrasados_compra)
     total_atendido = (noprazo + atraso)
 
-    print(atraso, noprazo, ind)
-    print(atraso_compra, noprazo_compra, ind_compra)
+
 
     return render(request, 'graphic.html', 
     {'nome_obra': nome_obra, 
@@ -698,7 +696,6 @@ def  excluir_insumo(request, codigo_insumo):
 def filtrar(request):
     #if not in_group(request.user, 'Suprimentos'):
      #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
-    print(Insumos.objects.all())
     if request.method == 'POST':
         form = FiltroForm(request.POST)
         if form.is_valid():
@@ -707,11 +704,17 @@ def filtrar(request):
             filtro = form.cleaned_data['filtro']
             if filtro == 'mes_entrega':
                 objetos_filtrados = Dados.objects.filter(Q(data_prev_final__gte=data_inicial), Q(data_prev_final__lte=data_final))
+                atrasados = objetos_filtrados.filter(status_entregue='Atrasado')
+                entregues = objetos_filtrados.filter(status_entregue='NoPrazo')
+                indeterminados = objetos_filtrados.filter(status_entregue='Indeterminado')
+                legenda = 'Pedidos Entregues'
             elif filtro == 'mes_emissao_pc':
                 objetos_filtrados = Dados.objects.filter(Q(data_emissao_pc__gte=data_inicial), Q(data_emissao_pc__lte=data_final))
-            atrasados = objetos_filtrados.filter(status='Atrasado')
-            entregues = objetos_filtrados.filter(status='NoPrazo')
-            indeterminados = objetos_filtrados.filter(status='Indeterminado')
+                atrasados = objetos_filtrados.filter(status_compra='Atrasado')
+                entregues = objetos_filtrados.filter(status_compra='NoPrazo')
+                indeterminados = objetos_filtrados.filter(status_compra='Indeterminado')
+                legenda = 'Solicitações de Compra'
+
             print(len(atrasados), len(entregues), len(indeterminados))
             #obras = Obras.objects.all()
             #for obra in obras:
@@ -738,7 +741,8 @@ def filtrar(request):
             'ind': ind,
             'total_atendido': total_atendido,
             'total_sols_compra': (total_atendido + ind),
-            'filtro': True
+            'filtro': True,
+            'legenda': legenda
             }
 
             return render(request, 'graphic.html', context )

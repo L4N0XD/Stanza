@@ -46,15 +46,15 @@
 
     <ul class="nav nav-pills flex-column mb-auto" style="margin-top: 30%;" id="ulSidebar">
       {% if filtro == True%}
-        <li class="mb-4 d-flex justify-content-center">
+        <li class="d-flex justify-content-center">
           <a href="/results-obras" class="btn btn-outline-stanza voltar-btn" style="font-size: 14px;border-radius: 50px;">Voltar</a>
         </li>
       {% endif %}
         <li>
             <form class="d-flex ms-auto" role="search" method="POST" action="{% url 'filtrar' %}" id="formulario">
                 {% csrf_token %}
-                <div class="input-group d-flex justify-content-center align-items-center">
-                    <button class="btn btn-secondary dropdown-toggle mb-3" style="width: 100%;border-radius: 7px;margin-top: 25%;;" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="button-filtrar">Filtrar por:</button>
+                <div class="input-group d-flex justify-content-center mt-2 align-items-center">
+                    <button class="btn btn-secondary dropdown-toggle mb-3" style="width: 100%;border-radius: 7px;" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="button-filtrar">Filtrar por:</button>
                     <ul class="dropdown-menu dropdown-menu-secondary bg-secondary filtro-dropdown" style="border: gray solid 1px;">
                         <li><a class="dropdown-item filter" href="#" onclick="selecionarFiltro('mes_entrega')">Pedido Entregue</a></li>
                         <li><a class="dropdown-item filter" href="#" onclick="selecionarFiltro('mes_emissao_pc')">Solicitação de Compra</a></li>
@@ -153,6 +153,8 @@
     </script>
   
   <script>
+    var legenda = '{{legenda}}'
+    var filtro = '{{filtro}}'
     var prazo_compra = parseInt('{{noprazo_compra}}');
     var atraso_compra = parseInt('{{atraso_compra}}');
     var ind_compra = parseInt('{{ind_compra}}');
@@ -161,10 +163,13 @@
     var atraso = parseInt('{{atraso}}');
     var ind = parseInt('{{ind}}');
     console.log(ind, atraso, prazo);
+    console.log(filtro.toLowerCase())
 
 function selecionarFiltro(valor) {
   document.getElementById('id_filtro').value = valor;
-  atualizarGrafico();
+  if (filtro.toLowerCase() !== 'true') {
+    atualizarGrafico();
+  }
 }
 
 function atualizarGrafico() {
@@ -189,9 +194,13 @@ function atualizarGrafico() {
   }
 }
 
-
         google.charts.load("current", {packages:["corechart"]});
-        google.charts.setOnLoadCallback(function() { drawChart(prazo, atraso, ind, 'Pedidos Entregues'); });
+        if (legenda != '') {
+          console.log(legenda)
+          google.charts.setOnLoadCallback(function() { drawChart(prazo, atraso, ind, legenda); });
+        } else {
+          google.charts.setOnLoadCallback(function() { drawChart(prazo, atraso, ind, 'Pedidos Entregues'); });
+        }
 
 
     function drawChart(prazo, atrasados, indeterminados, titulo) {

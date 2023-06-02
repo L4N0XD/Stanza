@@ -233,7 +233,6 @@ body {
 .voltar-btn {
   justify-content: center;
   display: flex;
-  margin-bottom: 20%;
 }
 .nav-link, .dropdown-item{
   color: white !important;
