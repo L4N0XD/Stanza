@@ -32,7 +32,7 @@
             </thead>
             <tbody>
               {% for indeterminado in indeterminados %}
-              <tr>
+              <tr class="indeterminado">
                 {% if indeterminado.item is not none %}
                 <th class="tabela" scope="row">{{indeterminado.item}}</th>
                 {% else %}
@@ -133,7 +133,7 @@
           </table>
           <table class="table table-light" style="display: none;" id="tabela-Indeterminados-compra">
             <thead>
-              <tr>
+              <tr class="indeterminado">
                 <th class="bg-secondary text-white tabela" scope="col">Item</th>
                 <th class="bg-secondary text-white tabela" scope="col">Nº SC</th>
                 <th class="bg-secondary text-white tabela" scope="col">Cód. Obra</th>

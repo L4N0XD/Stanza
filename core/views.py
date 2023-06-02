@@ -482,14 +482,25 @@ def dados_obras(dados_xls, request):
     start = time.time()
     insumos = Insumos.objects.all()
     bulk_list = []
-    nome_obra = str(dados_xls.iloc[3, 3])
+
+    obra1 = (dados_xls.iloc[3, 3])
+    obra2 = (dados_xls.iloc[4, 3])
+    obra3 = (dados_xls.iloc[5, 3])
+    if str(obra1) != 'nan':
+        nome_obra = (f'{obra1}')
+        if str(obra2) != 'nan':
+            nome_obra = (f'{nome_obra}| {obra2}')
+            if str(obra3) != 'nan':
+                nome_obra = (f'{nome_obra}| {obra3}')
     nome_obra = nome_obra.replace('- Obra Construção', '')
+    print(nome_obra)
+    media = []
     
     for index, row in dados_xls.iterrows():
         data_prev_final = None
-        
         try:
             int(row[0])
+            line = time.time()
             item = None if pd.isna(row[0]) else int(row[0]) if isinstance(row[0], (int, float)) else None
             cod_sol_compra = None if pd.isna(row[1]) else int(row[1]) if isinstance(row[1], (int, float)) else None
             cod_obra = None if pd.isna(row[2]) else int(row[2]) if isinstance(row[2], (int, float)) else None
@@ -507,7 +518,6 @@ def dados_obras(dados_xls, request):
             cod_NF = None if pd.isna(row[20]) else row[20] if isinstance(row[20], str) else None
             data_entrada_obra = None if pd.isna(row[21]) else row[21] if isinstance(row[21], str) else None
             data_vencimento = None if pd.isna(row[22]) else row[22] if isinstance(row[22], str) else None
-            status = 'Total'
             insumos = Insumos.objects.filter(codigo_insumo=cod_insumo)
             if insumos.exists() and data_emissao_pc:
                 insumo = insumos.first()
@@ -569,20 +579,21 @@ def dados_obras(dados_xls, request):
                       data_vencimento=data_vencimento,
                       data_prev_final = data_prev_final
                       ))
-        
+            end_line = time.time()
+            media.append(end_line-line)
+
         except ValueError:
             pass
-        
     Dados.objects.bulk_create(bulk_list)      
     iten = Dados.objects.all().first()
     iten.nome_obra = nome_obra
-    print(iten.nome_obra)
     iten.save()
 
     
 
     end = time.time()
-    print(f"Tempo total de leitura: {end - start}")
+    total_time = end - start
+    print(f"Tempo total de leitura: {total_time}")
     results_obras(request)
 
 #Renderiza a página de resultados de SC
@@ -612,12 +623,10 @@ def results_obras(request):
 
     return render(request, 'graphic.html', 
     {'nome_obra': nome_obra, 
-    'dados': Dados.objects.all(), 
     'atrasados': atrasados, 
     'entregues': entregues, 
     'indeterminados':indeterminados, 
     'form': FiltroForm(), 
-    'insumos': Insumos.objects.all(),
     'noprazo': noprazo, 
     'atraso': atraso,
     'ind': ind,
@@ -729,13 +738,11 @@ def filtrar(request):
             ind =  len(indeterminados)
             atraso = len(atrasados)
             context = {'objetos': objetos_filtrados, 'nome_obra': nome_obra, 
-            'dados': Dados.objects.all(), 
             'objetos': objetos_filtrados,
             'atrasados': atrasados, 
             'entregues': entregues, 
             'indeterminados':indeterminados, 
             'form': FiltroForm(), 
-            'insumos': Insumos.objects.all(),
             'noprazo': noprazo, 
             'atraso': atraso,
             'ind': ind,

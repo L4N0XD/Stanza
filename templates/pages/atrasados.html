@@ -32,7 +32,7 @@
             </thead>
             <tbody>
               {% for atrasado in atrasados %}
-              <tr>
+              <tr class="atrasado">
                 {% if atrasado.item is not none %}
                 <th class="tabela" scope="row">{{atrasado.item}}</th>
                 {% else %}
@@ -156,7 +156,7 @@
             </thead>
           <tbody >
             {% for atrasado in atrasados_compra %}
-            <tr>
+            <tr class="atrasado">
               {% if atrasado.item is not none %}
               <th class="tabela" scope="row">{{atrasado.item}}</th>
               {% else %}

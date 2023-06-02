@@ -32,7 +32,7 @@
             </thead>
             <tbody>
               {% for entregue in entregues %}
-              <tr>
+              <tr class="prazo">
                 {% if entregue.item is not none %}
                   <th class="tabela" scope="row">{{entregue.item}}</th>
                 {% else %}
@@ -156,7 +156,7 @@
             </thead>
             <tbody>
               {% for entregue in entregues_compra %}
-              <tr>
+              <tr class="prazo">
                 {% if entregue.item is not none %}
                   <th class="tabela" scope="row">{{entregue.item}}</th>
                 {% else %}
