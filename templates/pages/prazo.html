@@ -30,7 +30,7 @@
                 <th class="bg-secondary text-white tabela" scope="col">Prev. final</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="body-noPrazo">
               {% for entregue in entregues %}
               <tr class="prazo">
                 {% if entregue.item is not none %}
@@ -154,7 +154,7 @@
                 <th class="bg-secondary text-white tabela" scope="col">Prev. final</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="body-noPrazo-compra">
               {% for entregue in entregues_compra %}
               <tr class="prazo">
                 {% if entregue.item is not none %}
@@ -257,6 +257,20 @@
           </table>
         </div>
         <div class="modal-footer" style="border-top: #fb8306 solid; border-radius: 20px;">
+          <div id="pagination-buttons-prazo" class="pagination-buttons mx-auto">
+            <button type="button" class="btn btn-stanza" id="btn-first-prazo">Primeira</button>
+            <button type="button" class="btn btn-stanza" id="btn-previous-prazo">Anterior</button>
+            <span id="page-indicator-prazo"></span>
+            <button type="button" class="btn btn-stanza" id="btn-next-prazo">Próxima</button>
+            <button type="button" class="btn btn-stanza" id="btn-last-prazo">Última</button>
+          </div>
+          <div id="pagination-buttons-prazo-compra" style="display: none;" class="pagination-buttons mx-auto">
+            <button type="button" class="btn btn-stanza" id="btn-first-prazo-compra">Primeira</button>
+            <button type="button" class="btn btn-stanza" id="btn-previous-prazo-compra">Anterior</button>
+            <span id="page-indicator-prazo-compra"></span>
+            <button type="button" class="btn btn-stanza" id="btn-next-prazo-compra">Próxima</button>
+            <button type="button" class="btn btn-stanza" id="btn-last-prazo-compra">Última</button>
+          </div>
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>

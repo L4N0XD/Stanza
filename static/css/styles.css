@@ -122,8 +122,7 @@
       z-index: 3;
 
     }
-
-    .container-xxl.p-2.col-md-12:hover, #footerContent:hover {
+    .container-xxl.p-2.col-md-12:hover {
       animation: moveUp 0.5s forwards;
       box-shadow: 0 8px 32px 0 rgb(154 228 255 / 50%);
       backdrop-filter: blur(4px);
@@ -134,8 +133,7 @@
       100% {
         transform: translateY(-5px);
       }
-    }
-    
+    }    
 body {
     background-color: #f7f7f7;
     background-image: radial-gradient(

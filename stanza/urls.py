@@ -50,4 +50,5 @@ urlpatterns = [
     path('download_txt_vt/', views.download_txt_vt, name='download_txt_vt'),
     path('insumo/editar/<int:codigo_insumo>/', views.editar_insumo, name='editar_insumo'),
     path('insumo/excluir/<int:codigo_insumo>/', views.excluir_insumo, name='excluir_insumo'),
+
 ]

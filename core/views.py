@@ -494,13 +494,11 @@ def dados_obras(dados_xls, request):
                 nome_obra = (f'{nome_obra}| {obra3}')
     nome_obra = nome_obra.replace('- Obra Construção', '')
     print(nome_obra)
-    media = []
     
     for index, row in dados_xls.iterrows():
         data_prev_final = None
         try:
             int(row[0])
-            line = time.time()
             item = None if pd.isna(row[0]) else int(row[0]) if isinstance(row[0], (int, float)) else None
             cod_sol_compra = None if pd.isna(row[1]) else int(row[1]) if isinstance(row[1], (int, float)) else None
             cod_obra = None if pd.isna(row[2]) else int(row[2]) if isinstance(row[2], (int, float)) else None
@@ -545,8 +543,8 @@ def dados_obras(dados_xls, request):
                 else:
                     status_entregue = None
             if prev_entrega and data_sol_cheg_obra:
-                diferenca = ((prev_entrega - data_sol_cheg_obra).days)
-                if diferenca <= 0:
+                diff = ((prev_entrega - data_sol_cheg_obra).days)
+                if diff <= 0:
                     status_compra = 'NoPrazo'
                 else:
                     status_compra = 'Atrasado'
@@ -579,13 +577,11 @@ def dados_obras(dados_xls, request):
                       data_vencimento=data_vencimento,
                       data_prev_final = data_prev_final
                       ))
-            end_line = time.time()
-            media.append(end_line-line)
 
         except ValueError:
             pass
     Dados.objects.bulk_create(bulk_list)      
-    iten = Dados.objects.all().first()
+    iten = Dados.objects.first()
     iten.nome_obra = nome_obra
     iten.save()
 
@@ -600,7 +596,7 @@ def dados_obras(dados_xls, request):
 def results_obras(request):
     #if not in_group(request.user, 'Suprimentos'):
     #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
-    iten = Dados.objects.all().first()
+    iten = Dados.objects.first()
     nome_obra = iten.nome_obra
     atrasados =  Dados.objects.filter(status_entregue='Atrasado')
     entregues =  Dados.objects.filter(status_entregue='NoPrazo')
@@ -617,10 +613,7 @@ def results_obras(request):
     noprazo_compra = len(entregues_compra)
     ind_compra =  len(indeterminados_compra)
     atraso_compra = len(atrasados_compra)
-    total_atendido = (noprazo + atraso)
-
-
-
+    
     return render(request, 'graphic.html', 
     {'nome_obra': nome_obra, 
     'atrasados': atrasados, 
@@ -640,6 +633,7 @@ def results_obras(request):
     'total_sols_compra': total_sol,
     'filtro': False
     })
+
 
 #Renderiza a página de upload dos arquivos de SC
 def upload_page_obras(request):

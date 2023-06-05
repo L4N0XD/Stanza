@@ -30,7 +30,7 @@
                 <th class="bg-secondary text-white tabela" scope="col">Prev. final</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="body-atrasados">
               {% for atrasado in atrasados %}
               <tr class="atrasado">
                 {% if atrasado.item is not none %}
@@ -154,7 +154,7 @@
                 <th class="bg-secondary text-white tabela" scope="col">Prev. final</th>
               </tr>
             </thead>
-          <tbody >
+          <tbody id="body-atrasados-compra">
             {% for atrasado in atrasados_compra %}
             <tr class="atrasado">
               {% if atrasado.item is not none %}
@@ -257,6 +257,20 @@
         </table>
         </div>
         <div class="modal-footer" style="border-top: #fb8306 solid; border-radius: 20px;">
+          <div id="pagination-buttons-atraso" class="pagination-buttons mx-auto">
+            <button type="button" class="btn btn-stanza" id="btn-first-atraso">Primeira</button>
+            <button type="button" class="btn btn-stanza" id="btn-previous-atraso">Anterior</button>
+            <span id="page-indicator-atraso"></span>
+            <button type="button" class="btn btn-stanza" id="btn-next-atraso">Próxima</button>
+            <button type="button" class="btn btn-stanza" id="btn-last-atraso">Última</button>
+          </div>
+          <div id="pagination-buttons-atraso-compra" style="display: none;" class="pagination-buttons mx-auto">
+            <button type="button" class="btn btn-stanza" id="btn-first-atraso-compra">Primeira</button>
+            <button type="button" class="btn btn-stanza" id="btn-previous-atraso-compra">Anterior</button>
+            <span id="page-indicator-atraso-compra"></span>
+            <button type="button" class="btn btn-stanza" id="btn-next-atraso-compra">Próxima</button>
+            <button type="button" class="btn btn-stanza" id="btn-last-atraso-compra">Última</button>
+          </div>
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>
