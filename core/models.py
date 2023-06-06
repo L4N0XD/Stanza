@@ -25,7 +25,6 @@ class Dados(models.Model):
     cod_NF = models.CharField(max_length=50, null=True, blank=True)
     data_entrada_obra = models.DateField(null=True, blank=True)
     data_vencimento = models.DateField(null=True, blank=True)
-    titles = models.CharField(max_length=100, null=True, blank=True)
     total_sols_compra = models.IntegerField(null=True, blank=True)
     data_prev_final = models.DateField(null=True, blank=True)
 

@@ -33,100 +33,24 @@
             <tbody id="body-noPrazo">
               {% for entregue in entregues %}
               <tr class="prazo">
-                {% if entregue.item is not none %}
-                  <th class="tabela" scope="row">{{entregue.item}}</th>
-                {% else %}
-                  <th></th>
-                {% endif %}
-                {% if entregue.cod_sol_compra is not none %}
-                  <td class="tabela" scope="row">{{entregue.cod_sol_compra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.cod_obra is not none %}
-                  <td class="tabela" scope="row">{{entregue.cod_obra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.cod_insumo is not none %}
-                  <td class="tabela" scope="row">{{entregue.cod_insumo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.desc_insumo is not none %}
-                  <td class="tabela" scope="row">{{entregue.desc_insumo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.quant_sol is not none %}
-                  <td class="tabela" scope="row">{{entregue.quant_sol }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_sol is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_sol|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_sol_cheg_obra is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_sol_cheg_obra|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.num_ped_compra is not none %}
-                  <td class="tabela" scope="row">{{entregue.num_ped_compra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_emissao_pc is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_emissao_pc|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.prev_entrega is not none %}
-                  <td class="tabela" scope="row">{{entregue.prev_entrega|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.quant_entregue is not none %}
-                  <td class="tabela" scope="row">{{entregue.quant_entregue }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.saldo is not none %}
-                  <td class="tabela" scope="row">{{entregue.saldo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_NF is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_NF|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.cod_NF is not none %}
-                  <td class="tabela" scope="row">{{entregue.cod_NF }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_entrada_obra is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_entrada_obra|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_vencimento is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_vencimento|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %} 
-                {% if entregue.data_prev_final is not none %}
-                <td class="tabela" scope="row">{{entregue.data_prev_final|date:"d/m/Y" }}</td>
-                {% else %}
-                  {% if entregue.prev_entrega is not none %}
-                    <td class="tabela" scope="row">{{entregue.prev_entrega|date:"d/m/Y"}}</td>
-                  {% else %}
-                    <td class="tabela" scope="row"></td>
-                  {% endif %} 
-                {% endif %} 
+                <th class="tabela" scope="row">{% if entregue.item is not none %}{{entregue.item}}{% endif %}</th>           
+                <td class="tabela" scope="row">{% if entregue.cod_sol_compra is not none %}{{entregue.cod_sol_compra }}{% endif %}</td>   
+                <td class="tabela" scope="row">{% if entregue.cod_obra is not none %}{{entregue.cod_obra }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.cod_insumo is not none %}{{entregue.cod_insumo }}{% endif %}</td> 
+                <td class="tabela" scope="row">{% if entregue.desc_insumo is not none %}{{entregue.desc_insumo }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.quant_sol is not none %}{{entregue.quant_sol }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_sol is not none %}{{entregue.data_sol|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_sol_cheg_obra is not none %}{{entregue.data_sol_cheg_obra|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.num_ped_compra is not none %}{{entregue.num_ped_compra }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_emissao_pc is not none %}{{entregue.data_emissao_pc|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.prev_entrega is not none %}{{entregue.prev_entrega|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.quant_entregue is not none %}{{entregue.quant_entregue }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.saldo is not none %}{{entregue.saldo }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_NF is not none %}{{entregue.data_NF|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.cod_NF is not none %}{{entregue.cod_NF}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_entrada_obra is not none %}{{entregue.data_entrada_obra|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_vencimento is not none %}{{entregue.data_vencimento|date:"d/m/Y" }}{% endif %}</td>               
+                <td class="tabela" scope="row">{% if entregue.data_prev_final is not none %}{{entregue.data_prev_final|date:"d/m/Y" }}{% else %}{{entregue.prev_entrega|date:"d/m/Y"}}{% endif %} </td>     
               </tr>
             {% endfor %}
             </tbody>
@@ -157,100 +81,24 @@
             <tbody id="body-noPrazo-compra">
               {% for entregue in entregues_compra %}
               <tr class="prazo">
-                {% if entregue.item is not none %}
-                  <th class="tabela" scope="row">{{entregue.item}}</th>
-                {% else %}
-                  <th></th>
-                {% endif %}
-                {% if entregue.cod_sol_compra is not none %}
-                  <td class="tabela" scope="row">{{entregue.cod_sol_compra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.cod_obra is not none %}
-                  <td class="tabela" scope="row">{{entregue.cod_obra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.cod_insumo is not none %}
-                  <td class="tabela" scope="row">{{entregue.cod_insumo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.desc_insumo is not none %}
-                  <td class="tabela" scope="row">{{entregue.desc_insumo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.quant_sol is not none %}
-                  <td class="tabela" scope="row">{{entregue.quant_sol }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_sol is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_sol|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_sol_cheg_obra is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_sol_cheg_obra|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.num_ped_compra is not none %}
-                  <td class="tabela" scope="row">{{entregue.num_ped_compra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_emissao_pc is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_emissao_pc|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.prev_entrega is not none %}
-                  <td class="tabela" scope="row">{{entregue.prev_entrega|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.quant_entregue is not none %}
-                  <td class="tabela" scope="row">{{entregue.quant_entregue }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.saldo is not none %}
-                  <td class="tabela" scope="row">{{entregue.saldo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_NF is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_NF|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.cod_NF is not none %}
-                  <td class="tabela" scope="row">{{entregue.cod_NF }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_entrada_obra is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_entrada_obra|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if entregue.data_vencimento is not none %}
-                  <td class="tabela" scope="row">{{entregue.data_vencimento|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %} 
-                {% if entregue.data_prev_final is not none %}
-                <td class="tabela" scope="row">{{entregue.data_prev_final|date:"d/m/Y" }}</td>
-                {% else %}
-                  {% if entregue.prev_entrega is not none %}
-                    <td class="tabela" scope="row">{{entregue.prev_entrega|date:"d/m/Y"}}</td>
-                  {% else %}
-                    <td class="tabela" scope="row"></td>
-                  {% endif %} 
-                {% endif %} 
+                <th class="tabela" scope="row">{% if entregue.item is not none %}{{entregue.item}}{% endif %}</th>           
+                <td class="tabela" scope="row">{% if entregue.cod_sol_compra is not none %}{{entregue.cod_sol_compra }}{% endif %}</td>   
+                <td class="tabela" scope="row">{% if entregue.cod_obra is not none %}{{entregue.cod_obra }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.cod_insumo is not none %}{{entregue.cod_insumo }}{% endif %}</td> 
+                <td class="tabela" scope="row">{% if entregue.desc_insumo is not none %}{{entregue.desc_insumo }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.quant_sol is not none %}{{entregue.quant_sol }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_sol is not none %}{{entregue.data_sol|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_sol_cheg_obra is not none %}{{entregue.data_sol_cheg_obra|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.num_ped_compra is not none %}{{entregue.num_ped_compra }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_emissao_pc is not none %}{{entregue.data_emissao_pc|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.prev_entrega is not none %}{{entregue.prev_entrega|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.quant_entregue is not none %}{{entregue.quant_entregue }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.saldo is not none %}{{entregue.saldo }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_NF is not none %}{{entregue.data_NF|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.cod_NF is not none %}{{entregue.cod_NF}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_entrada_obra is not none %}{{entregue.data_entrada_obra|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if entregue.data_vencimento is not none %}{{entregue.data_vencimento|date:"d/m/Y" }}{% endif %}</td>               
+                <td class="tabela" scope="row">{% if entregue.data_prev_final is not none %}{{entregue.data_prev_final|date:"d/m/Y" }}{% else %}{{entregue.prev_entrega|date:"d/m/Y"}}{% endif %}</td>
               </tr>
             {% endfor %}
             </tbody>

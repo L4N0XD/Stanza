@@ -4,7 +4,7 @@ function paginatePrazo() {
       var tablePrazo = document.getElementById('body-noPrazo');
       var pageIndicatorPrazo = document.getElementById('page-indicator-prazo');
       var currentPagePrazo = 1;
-      var rowsPerPagePrazo = 400;
+      var rowsPerPagePrazo = 200;
   
       function updateTablePrazo() {
         
@@ -59,7 +59,7 @@ function paginatePrazoCompra() {
       var tablePrazoCompra = document.getElementById('body-noPrazo-compra');
       var pageIndicatorPrazoCompra = document.getElementById('page-indicator-prazo-compra');
       var currentPagePrazoCompra = 1;
-      var rowsPerPagePrazoCompra = 400;
+      var rowsPerPagePrazoCompra = 200;
   
       function updateTablePrazoCompra() {
         var start = (currentPagePrazoCompra - 1) * rowsPerPagePrazoCompra;
@@ -113,7 +113,7 @@ function paginateAtraso() {
       var tableAtraso = document.getElementById('body-atrasados');
       var pageIndicatorAtraso = document.getElementById('page-indicator-atraso');
       var currentPageAtraso = 1;
-      var rowsPerPageAtraso = 400;
+      var rowsPerPageAtraso = 200;
   
       function updateTableAtraso() {
         var start = (currentPageAtraso - 1) * rowsPerPageAtraso;
@@ -167,7 +167,7 @@ function paginateAtrasoCompra() {
           var tableAtrasoCompra = document.getElementById('body-atrasados-compra');
           var pageIndicatorAtrasoCompra = document.getElementById('page-indicator-atraso-compra');
           var currentPageAtrasoCompra = 1;
-          var rowsPerPageAtrasoCompra = 400;
+          var rowsPerPageAtrasoCompra = 200;
       
           function updateTableAtrasoCompra() {
             var start = (currentPageAtrasoCompra - 1) * rowsPerPageAtrasoCompra;
@@ -216,12 +216,12 @@ function paginateAtrasoCompra() {
         });
 }
 
-function paginateindeterminados() {
+function paginateIndeterminados() {
     document.addEventListener('DOMContentLoaded', function () {
       var tableindeterminados = document.getElementById('body-indeterminados');
       var pageIndicatorindeterminados = document.getElementById('page-indicator-indeterminados');
       var currentPageindeterminados = 1;
-      var rowsPerPageindeterminados = 400;
+      var rowsPerPageindeterminados = 200;
   
       function updateTableindeterminados() {
         var start = (currentPageindeterminados - 1) * rowsPerPageindeterminados;
@@ -270,12 +270,12 @@ function paginateindeterminados() {
     });
 }
 
-function paginateindeterminadosCompra() {
+function paginateIndeterminadosCompra() {
   document.addEventListener('DOMContentLoaded', function () {
     var tableindeterminadosCompra = document.getElementById('body-indeterminados-compra');
     var pageIndicatorindeterminadosCompra = document.getElementById('page-indicator-indeterminados-compra');
     var currentPageindeterminadosCompra = 1;
-    var rowsPerPageindeterminadosCompra = 400;
+    var rowsPerPageindeterminadosCompra = 200;
 
     function updateTableindeterminadosCompra() {
       var start = (currentPageindeterminadosCompra - 1) * rowsPerPageindeterminadosCompra;
@@ -324,9 +324,10 @@ function paginateindeterminadosCompra() {
   });
 }
 
+
 paginatePrazo()
 paginatePrazoCompra()
 paginateAtraso()
 paginateAtrasoCompra()
-paginateindeterminados()
-paginateindeterminadosCompra()
+paginateIndeterminados()
+paginateIndeterminadosCompra()

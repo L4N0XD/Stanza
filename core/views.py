@@ -15,6 +15,7 @@ from datetime import datetime, timedelta, date
 import tempfile, os, math, time, locale, numero_por_extenso, collections
 import pandas as pd
 import numpy as np
+import re
 
 
 #Verifica se o usuário pertence ao grupo para o qual ele fez solicitação de análise
@@ -482,18 +483,34 @@ def dados_obras(dados_xls, request):
     start = time.time()
     insumos = Insumos.objects.all()
     bulk_list = []
+    nomes = []
+    nomes_obras = []
 
     obra1 = (dados_xls.iloc[3, 3])
     obra2 = (dados_xls.iloc[4, 3])
     obra3 = (dados_xls.iloc[5, 3])
     if str(obra1) != 'nan':
         nome_obra = (f'{obra1}')
+        nomes.append(obra1)
         if str(obra2) != 'nan':
             nome_obra = (f'{nome_obra}| {obra2}')
+            nomes.append(obra2)
             if str(obra3) != 'nan':
                 nome_obra = (f'{nome_obra}| {obra3}')
+                nomes.append(obra3)
     nome_obra = nome_obra.replace('- Obra Construção', '')
-    print(nome_obra)
+    primeiro_dado = Dados(id=000000000, nome_obra=nome_obra)
+    primeiro_dado.save()
+    try:
+        numeros = re.findall(r"\d+", nome_obra)
+        for nome in nomes:
+            nome_ob = re.sub(r'\d+', '', nome)
+            nome_ob = re.sub(r'\W', ' ', nome_ob)
+            nome_ob = nome_ob.strip()
+            nome_ob = nome_ob.replace('  Obra Construção', '')
+            nomes_obras.append(nome_ob)
+    except:
+        pass
     
     for index, row in dados_xls.iterrows():
         data_prev_final = None
@@ -553,6 +570,12 @@ def dados_obras(dados_xls, request):
                     status_compra = 'Indeterminado'
                 else:
                     status_compra = None
+            for numero in numeros:
+                if int(cod_obra) == int(numero):
+                    i = numeros.index(numero)
+                    nome_obra = nomes_obras[i]
+                else:
+                    pass
 
 
             bulk_list.append(Dados(item=item,
@@ -581,9 +604,7 @@ def dados_obras(dados_xls, request):
         except ValueError:
             pass
     Dados.objects.bulk_create(bulk_list)      
-    iten = Dados.objects.first()
-    iten.nome_obra = nome_obra
-    iten.save()
+
 
     
 
@@ -710,13 +731,13 @@ def filtrar(request):
                 atrasados = objetos_filtrados.filter(status_entregue='Atrasado')
                 entregues = objetos_filtrados.filter(status_entregue='NoPrazo')
                 indeterminados = objetos_filtrados.filter(status_entregue='Indeterminado')
-                legenda = 'Pedidos Entregues'
+                legenda = 'Pedidos Entregues (Total Atendido)'
             elif filtro == 'mes_emissao_pc':
                 objetos_filtrados = Dados.objects.filter(Q(data_emissao_pc__gte=data_inicial), Q(data_emissao_pc__lte=data_final))
                 atrasados = objetos_filtrados.filter(status_compra='Atrasado')
                 entregues = objetos_filtrados.filter(status_compra='NoPrazo')
                 indeterminados = objetos_filtrados.filter(status_compra='Indeterminado')
-                legenda = 'Solicitações de Compra'
+                legenda = 'Solicitações de Compra (Total Atendido)'
 
             print(len(atrasados), len(entregues), len(indeterminados))
             #obras = Obras.objects.all()

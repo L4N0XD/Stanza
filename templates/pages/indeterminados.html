@@ -33,100 +33,24 @@
             <tbody id="body-indeterminados">
               {% for indeterminado in indeterminados %}
               <tr class="indeterminado">
-                {% if indeterminado.item is not none %}
-                <th class="tabela" scope="row">{{indeterminado.item}}</th>
-                {% else %}
-                  <th></th>
-                {% endif %}
-                {% if indeterminado.cod_sol_compra is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.cod_sol_compra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.cod_obra is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.cod_obra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.cod_insumo is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.cod_insumo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.desc_insumo is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.desc_insumo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.quant_sol is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.quant_sol }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_sol is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_sol|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_sol_cheg_obra is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_sol_cheg_obra|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.num_ped_compra is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.num_ped_compra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_emissao_pc is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_emissao_pc|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.prev_entrega is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.prev_entrega|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.quant_entregue is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.quant_entregue }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.saldo is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.saldo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_NF is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_NF|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.cod_NF is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.cod_NF }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_entrada_obra is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_entrada_obra|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_vencimento is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_vencimento|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_prev_final is not none %}
-                <td class="tabela" scope="row">{{indeterminado.data_prev_final|date:"d/m/Y" }}</td>
-                {% else %}
-                  {% if indeterminado.prev_entrega is not none %}
-                    <td class="tabela" scope="row">{{indeterminado.prev_entrega|date:"d/m/Y"}}</td>
-                  {% else %}
-                  <td class="tabela" scope="row"></td>
-                  {% endif %} 
-                {% endif %} 
+                <th class="tabela" scope="row">{% if indeterminado.item is not none %}{{indeterminado.item}}{% endif %}</th>           
+                <td class="tabela" scope="row">{% if indeterminado.cod_sol_compra is not none %}{{indeterminado.cod_sol_compra }}{% endif %}</td>   
+                <td class="tabela" scope="row">{% if indeterminado.cod_obra is not none %}{{indeterminado.cod_obra }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.cod_insumo is not none %}{{indeterminado.cod_insumo }}{% endif %}</td> 
+                <td class="tabela" scope="row">{% if indeterminado.desc_insumo is not none %}{{indeterminado.desc_insumo }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.quant_sol is not none %}{{indeterminado.quant_sol }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_sol is not none %}{{indeterminado.data_sol|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_sol_cheg_obra is not none %}{{indeterminado.data_sol_cheg_obra|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.num_ped_compra is not none %}{{indeterminado.num_ped_compra }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_emissao_pc is not none %}{{indeterminado.data_emissao_pc|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.prev_entrega is not none %}{{indeterminado.prev_entrega|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.quant_entregue is not none %}{{indeterminado.quant_entregue }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.saldo is not none %}{{indeterminado.saldo }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_NF is not none %}{{indeterminado.data_NF|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.cod_NF is not none %}{{indeterminado.cod_NF}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_entrada_obra is not none %}{{indeterminado.data_entrada_obra|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_vencimento is not none %}{{indeterminado.data_vencimento|date:"d/m/Y" }}{% endif %}</td>               
+                <td class="tabela" scope="row">{% if indeterminado.data_prev_final is not none %}{{indeterminado.data_prev_final|date:"d/m/Y" }}{% else %}{{indeterminado.prev_entrega|date:"d/m/Y"}}{% endif %}  </td>        
               </tr>
             {% endfor %}
             </tbody>
@@ -157,100 +81,24 @@
             <tbody id="body-indeterminados-compra">
               {% for indeterminado in indeterminados_compra %}
               <tr>
-                {% if indeterminado.item is not none %}
-                <th class="tabela" scope="row">{{indeterminado.item}}</th>
-                {% else %}
-                  <th></th>
-                {% endif %}
-                {% if indeterminado.cod_sol_compra is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.cod_sol_compra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.cod_obra is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.cod_obra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.cod_insumo is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.cod_insumo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.desc_insumo is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.desc_insumo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.quant_sol is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.quant_sol }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_sol is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_sol|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_sol_cheg_obra is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_sol_cheg_obra|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.num_ped_compra is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.num_ped_compra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_emissao_pc is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_emissao_pc|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.prev_entrega is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.prev_entrega|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.quant_entregue is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.quant_entregue }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.saldo is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.saldo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_NF is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_NF|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.cod_NF is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.cod_NF }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_entrada_obra is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_entrada_obra|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_vencimento is not none %}
-                  <td class="tabela" scope="row">{{indeterminado.data_vencimento|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if indeterminado.data_prev_final is not none %}
-                <td class="tabela" scope="row">{{indeterminado.data_prev_final|date:"d/m/Y" }}</td>
-                {% else %}
-                  {% if indeterminado.prev_entrega is not none %}
-                    <td class="tabela" scope="row">{{indeterminado.prev_entrega|date:"d/m/Y"}}</td>
-                  {% else %}
-                  <td class="tabela" scope="row"></td>
-                  {% endif %} 
-                {% endif %} 
+                <th class="tabela" scope="row">{% if indeterminado.item is not none %}{{indeterminado.item}}{% endif %}</th>           
+                <td class="tabela" scope="row">{% if indeterminado.cod_sol_compra is not none %}{{indeterminado.cod_sol_compra }}{% endif %}</td>   
+                <td class="tabela" scope="row">{% if indeterminado.cod_obra is not none %}{{indeterminado.cod_obra }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.cod_insumo is not none %}{{indeterminado.cod_insumo }}{% endif %}</td> 
+                <td class="tabela" scope="row">{% if indeterminado.desc_insumo is not none %}{{indeterminado.desc_insumo }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.quant_sol is not none %}{{indeterminado.quant_sol }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_sol is not none %}{{indeterminado.data_sol|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_sol_cheg_obra is not none %}{{indeterminado.data_sol_cheg_obra|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.num_ped_compra is not none %}{{indeterminado.num_ped_compra }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_emissao_pc is not none %}{{indeterminado.data_emissao_pc|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.prev_entrega is not none %}{{indeterminado.prev_entrega|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.quant_entregue is not none %}{{indeterminado.quant_entregue }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.saldo is not none %}{{indeterminado.saldo }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_NF is not none %}{{indeterminado.data_NF|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.cod_NF is not none %}{{indeterminado.cod_NF}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_entrada_obra is not none %}{{indeterminado.data_entrada_obra|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if indeterminado.data_vencimento is not none %}{{indeterminado.data_vencimento|date:"d/m/Y" }}{% endif %}</td>              
+                <td class="tabela" scope="row">{% if indeterminado.data_prev_final is not none %}{{indeterminado.data_prev_final|date:"d/m/Y" }}{% else %}{{indeterminado.prev_entrega|date:"d/m/Y"}}{% endif %} </td>         
               </tr>
             {% endfor %}
             </tbody>

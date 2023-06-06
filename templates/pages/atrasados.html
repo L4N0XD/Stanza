@@ -33,100 +33,24 @@
             <tbody id="body-atrasados">
               {% for atrasado in atrasados %}
               <tr class="atrasado">
-                {% if atrasado.item is not none %}
-                <th class="tabela" scope="row">{{atrasado.item}}</th>
-                {% else %}
-                  <th></th>
-                {% endif %}
-                {% if atrasado.cod_sol_compra is not none %}
-                  <td class="tabela" scope="row">{{atrasado.cod_sol_compra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.cod_obra is not none %}
-                  <td class="tabela" scope="row">{{atrasado.cod_obra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.cod_insumo is not none %}
-                  <td class="tabela" scope="row">{{atrasado.cod_insumo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.desc_insumo is not none %}
-                  <td class="tabela" scope="row">{{atrasado.desc_insumo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.quant_sol is not none %}
-                  <td class="tabela" scope="row">{{atrasado.quant_sol }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.data_sol is not none %}
-                  <td class="tabela" scope="row">{{atrasado.data_sol|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.data_sol_cheg_obra is not none %}
-                  <td class="tabela" scope="row">{{atrasado.data_sol_cheg_obra|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.num_ped_compra is not none %}
-                  <td class="tabela" scope="row">{{atrasado.num_ped_compra }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.data_emissao_pc is not none %}
-                  <td class="tabela" scope="row">{{atrasado.data_emissao_pc|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.prev_entrega is not none %}
-                  <td class="tabela" scope="row">{{atrasado.prev_entrega|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.quant_entregue is not none %}
-                  <td class="tabela" scope="row">{{atrasado.quant_entregue }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.saldo is not none %}
-                  <td class="tabela" scope="row">{{atrasado.saldo }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.data_NF is not none %}
-                  <td class="tabela" scope="row">{{atrasado.data_NF|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.cod_NF is not none %}
-                  <td class="tabela" scope="row">{{atrasado.cod_NF }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.data_entrada_obra is not none %}
-                  <td class="tabela" scope="row">{{atrasado.data_entrada_obra|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.data_vencimento is not none %}
-                  <td class="tabela" scope="row">{{atrasado.data_vencimento|date:"d/m/Y" }}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %}
-                {% if atrasado.data_prev_final is not none %}
-                <td class="tabela" scope="row">{{atrasado.data_prev_final|date:"d/m/Y" }}</td>
-                {% else %}
-                  {% if atrasado.prev_entrega is not none %}
-                    <td class="tabela" scope="row">{{atrasado.prev_entrega|date:"d/m/Y"}}</td>
-                  {% else %}
-                    <td class="tabela" scope="row"></td>
-                  {% endif %} 
-                {% endif %} 
+                <th class="tabela" scope="row">{% if atrasado.item is not none %}{{atrasado.item}}{% endif %}</th>           
+                <td class="tabela" scope="row">{% if atrasado.cod_sol_compra is not none %}{{atrasado.cod_sol_compra}}{% endif %}</td>   
+                <td class="tabela" scope="row">{% if atrasado.cod_obra is not none %}{{atrasado.cod_obra}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.cod_insumo is not none %}{{atrasado.cod_insumo}}{% endif %}</td> 
+                <td class="tabela" scope="row">{% if atrasado.desc_insumo is not none %}{{atrasado.desc_insumo}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.quant_sol is not none %}{{atrasado.quant_sol}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_sol is not none %}{{atrasado.data_sol|date:"d/m/Y"}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_sol_cheg_obra is not none %}{{atrasado.data_sol_cheg_obra|date:"d/m/Y"}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.num_ped_compra is not none %}{{atrasado.num_ped_compra}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_emissao_pc is not none %}{{atrasado.data_emissao_pc|date:"d/m/Y" }}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.prev_entrega is not none %}{{atrasado.prev_entrega|date:"d/m/Y"}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.quant_entregue is not none %}{{atrasado.quant_entregue}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.saldo is not none %}{{atrasado.saldo}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_NF is not none %}{{atrasado.data_NF|date:"d/m/Y"}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.cod_NF is not none %}{{atrasado.cod_NF}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_entrada_obra is not none %}{{atrasado.data_entrada_obra|date:"d/m/Y"}}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_vencimento is not none %}{{atrasado.data_vencimento|date:"d/m/Y"}}{% endif %}</td>  
+                <td class="tabela" scope="row">{% if atrasado.data_prev_final is not none %}{{atrasado.data_prev_final|date:"d/m/Y" }}{% else %}{{atrasado.prev_entrega|date:"d/m/Y"}}{% endif %} </td>               
               </tr>
             {% endfor %}
             </tbody>
@@ -157,100 +81,24 @@
           <tbody id="body-atrasados-compra">
             {% for atrasado in atrasados_compra %}
             <tr class="atrasado">
-              {% if atrasado.item is not none %}
-              <th class="tabela" scope="row">{{atrasado.item}}</th>
-              {% else %}
-                <th></th>
-              {% endif %}
-              {% if atrasado.cod_sol_compra is not none %}
-                <td class="tabela" scope="row">{{atrasado.cod_sol_compra }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.cod_obra is not none %}
-                <td class="tabela" scope="row">{{atrasado.cod_obra }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.cod_insumo is not none %}
-                <td class="tabela" scope="row">{{atrasado.cod_insumo }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.desc_insumo is not none %}
-                <td class="tabela" scope="row">{{atrasado.desc_insumo }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.quant_sol is not none %}
-                <td class="tabela" scope="row">{{atrasado.quant_sol }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.data_sol is not none %}
-                <td class="tabela" scope="row">{{atrasado.data_sol|date:"d/m/Y" }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.data_sol_cheg_obra is not none %}
-                <td class="tabela" scope="row">{{atrasado.data_sol_cheg_obra|date:"d/m/Y" }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.num_ped_compra is not none %}
-                <td class="tabela" scope="row">{{atrasado.num_ped_compra }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.data_emissao_pc is not none %}
-                <td class="tabela" scope="row">{{atrasado.data_emissao_pc|date:"d/m/Y" }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.prev_entrega is not none %}
-                <td class="tabela" scope="row">{{atrasado.prev_entrega|date:"d/m/Y" }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.quant_entregue is not none %}
-                <td class="tabela" scope="row">{{atrasado.quant_entregue }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.saldo is not none %}
-                <td class="tabela" scope="row">{{atrasado.saldo }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.data_NF is not none %}
-                <td class="tabela" scope="row">{{atrasado.data_NF|date:"d/m/Y" }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.cod_NF is not none %}
-                <td class="tabela" scope="row">{{atrasado.cod_NF }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.data_entrada_obra is not none %}
-                <td class="tabela" scope="row">{{atrasado.data_entrada_obra|date:"d/m/Y" }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.data_vencimento is not none %}
-                <td class="tabela" scope="row">{{atrasado.data_vencimento|date:"d/m/Y" }}</td>
-              {% else %}
-                <td class="tabela" scope="row"></td>
-              {% endif %}
-              {% if atrasado.data_prev_final is not none %}
-              <td class="tabela" scope="row">{{atrasado.data_prev_final|date:"d/m/Y" }}</td>
-              {% else %}
-                {% if atrasado.prev_entrega is not none %}
-                  <td class="tabela" scope="row">{{atrasado.prev_entrega|date:"d/m/Y"}}</td>
-                {% else %}
-                  <td class="tabela" scope="row"></td>
-                {% endif %} 
-              {% endif %} 
+                <th class="tabela" scope="row">{% if atrasado.item is not none %}{{atrasado.item}}{% else %}{% endif %}</th>
+                <td class="tabela" scope="row">{% if atrasado.cod_sol_compra is not none %}{{atrasado.cod_sol_compra}}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.cod_obra is not none %}{{atrasado.cod_obra}}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.cod_insumo is not none %}{{atrasado.cod_insumo}}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.desc_insumo is not none %}{{atrasado.desc_insumo}}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.quant_sol is not none %}{{atrasado.quant_sol}}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_sol is not none %}{{atrasado.data_sol|date:"d/m/Y"}}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_sol_cheg_obra is not none %}{{atrasado.data_sol_cheg_obra|date:"d/m/Y"}}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.num_ped_compra is not none %}{{atrasado.num_ped_compra }}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_emissao_pc is not none %}{{atrasado.data_emissao_pc|date:"d/m/Y"}}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.prev_entrega is not none %}{{atrasado.prev_entrega|date:"d/m/Y"}}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.quant_entregue is not none %}{{atrasado.quant_entregue }}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.saldo is not none %}{{atrasado.saldo }}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_NF is not none %}{{atrasado.data_NF|date:"d/m/Y"}}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.cod_NF is not none %}{{atrasado.cod_NF }}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_entrada_obra is not none %}{{atrasado.data_entrada_obra|date:"d/m/Y" }}{% else %}{% endif %}</td>
+                <td class="tabela" scope="row">{% if atrasado.data_vencimento is not none %}{{atrasado.data_vencimento|date:"d/m/Y"}}{% else %}{% endif %}</td>            
+                <td class="tabela" scope="row">{% if atrasado.data_prev_final is not none %}{{atrasado.data_prev_final|date:"d/m/Y" }}{% else %}{{atrasado.prev_entrega|date:"d/m/Y"}}{% endif %}</td>
             </tr>
           {% endfor %}
           </tbody>
