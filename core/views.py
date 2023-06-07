@@ -10,7 +10,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.http import require_POST
 from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial, DadosVT
 from core.models import ExtendedUser as User
-from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH
+from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH, FiltrarObras
 from datetime import datetime, timedelta, date
 import tempfile, os, math, time, locale, numero_por_extenso, collections
 import pandas as pd
@@ -613,6 +613,53 @@ def dados_obras(dados_xls, request):
     print(f"Tempo total de leitura: {total_time}")
     results_obras(request)
 
+def filtrar_obras(request):
+        if request.method == 'POST':
+            form = FiltrarObras(request.POST)
+        if form.is_valid():
+            nome_da_obra = form.cleaned_data['nome_da_obra']
+            nome_obra = (f'{nome_da_obra} ')
+            if nome_obra == 'Ver Tudo ':
+                return(redirect('results-obras'))
+            else:
+                atrasados =  Dados.objects.filter(nome_obra=nome_obra, status_entregue='Atrasado')
+                entregues =  Dados.objects.filter(nome_obra=nome_obra, status_entregue='NoPrazo')
+                indeterminados = Dados.objects.filter(nome_obra=nome_obra, status_entregue='Indeterminado')
+                atrasados_compra =  Dados.objects.filter(nome_obra=nome_obra, status_compra='Atrasado')
+                entregues_compra =  Dados.objects.filter(nome_obra=nome_obra, status_compra='NoPrazo')
+                indeterminados_compra = Dados.objects.filter(nome_obra=nome_obra, status_compra='Indeterminado')
+
+            nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
+            noprazo = len(entregues)
+            ind =  len(indeterminados)
+            atraso = len(atrasados)
+            total_atendido = (noprazo + atraso)
+            total_sol = (total_atendido + ind)
+            noprazo_compra = len(entregues_compra)
+            ind_compra =  len(indeterminados_compra)
+            atraso_compra = len(atrasados_compra)
+
+            return render(request, 'graphic.html', 
+            {'nome_obra': nome_obra, 
+            'atrasados': atrasados, 
+            'entregues': entregues, 
+            'indeterminados':indeterminados, 
+            'noprazo': noprazo, 
+            'atraso': atraso,
+            'nomes': nomes,
+            'ind': ind,
+            'atrasados_compra': atrasados_compra, 
+            'entregues_compra': entregues_compra, 
+            'indeterminados_compra':indeterminados_compra, 
+            'noprazo_compra': noprazo_compra, 
+            'atraso_compra': atraso_compra,
+            'ind_compra': ind_compra,
+            'total_atendido': total_atendido,
+            'total_sols_compra': total_sol,
+            'filtro_obra': True,
+            'filtro': False
+            })
+
 #Renderiza a página de resultados de SC
 def results_obras(request):
     #if not in_group(request.user, 'Suprimentos'):
@@ -622,6 +669,7 @@ def results_obras(request):
     atrasados =  Dados.objects.filter(status_entregue='Atrasado')
     entregues =  Dados.objects.filter(status_entregue='NoPrazo')
     indeterminados = Dados.objects.filter(status_entregue='Indeterminado')
+    nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
     noprazo = len(entregues)
     ind =  len(indeterminados)
     atraso = len(atrasados)
@@ -643,6 +691,7 @@ def results_obras(request):
     'form': FiltroForm(), 
     'noprazo': noprazo, 
     'atraso': atraso,
+    'nomes': nomes,
     'ind': ind,
     'atrasados_compra': atrasados_compra, 
     'entregues_compra': entregues_compra, 
@@ -652,9 +701,9 @@ def results_obras(request):
     'ind_compra': ind_compra,
     'total_atendido': total_atendido,
     'total_sols_compra': total_sol,
+    'filtro_obra': False,
     'filtro': False
     })
-
 
 #Renderiza a página de upload dos arquivos de SC
 def upload_page_obras(request):
@@ -726,43 +775,80 @@ def filtrar(request):
             data_inicial = form.cleaned_data['data_inicial']
             data_final = form.cleaned_data['data_final']
             filtro = form.cleaned_data['filtro']
+            nome_da_obra = form.cleaned_data['filtrar_nome_da_obra']
+            nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
+            nome_obra = (f'{nome_da_obra} ')
             if filtro == 'mes_entrega':
-                objetos_filtrados = Dados.objects.filter(Q(data_prev_final__gte=data_inicial), Q(data_prev_final__lte=data_final))
-                atrasados = objetos_filtrados.filter(status_entregue='Atrasado')
-                entregues = objetos_filtrados.filter(status_entregue='NoPrazo')
-                indeterminados = objetos_filtrados.filter(status_entregue='Indeterminado')
+                if nome_obra not in nomes:
+                    objetos_filtrados = Dados.objects.filter(Q(data_prev_final__gte=data_inicial), Q(data_prev_final__lte=data_final))
+                    atrasados = objetos_filtrados.filter(status_entregue='Atrasado')
+                    entregues = objetos_filtrados.filter(status_entregue='NoPrazo')
+                    indeterminados = objetos_filtrados.filter(status_entregue='Indeterminado')
+                    atrasados_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Atrasado')
+                    entregues_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='NoPrazo')
+                    indeterminados_compra = objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Indeterminado')
+                else:
+                    objetos_filtrados = Dados.objects.filter(nome_obra=nome_obra, data_prev_final__gte=data_inicial, data_prev_final__lte=data_final)
+                    atrasados =  objetos_filtrados.filter(nome_obra=nome_obra, status_entregue='Atrasado')
+                    entregues =  objetos_filtrados.filter(nome_obra=nome_obra, status_entregue='NoPrazo')
+                    indeterminados = objetos_filtrados.filter(nome_obra=nome_obra, status_entregue='Indeterminado')
+                    atrasados_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Atrasado')
+                    entregues_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='NoPrazo')
+                    indeterminados_compra = objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Indeterminado')
+
                 legenda = 'Pedidos Entregues (Total Atendido)'
             elif filtro == 'mes_emissao_pc':
-                objetos_filtrados = Dados.objects.filter(Q(data_emissao_pc__gte=data_inicial), Q(data_emissao_pc__lte=data_final))
-                atrasados = objetos_filtrados.filter(status_compra='Atrasado')
-                entregues = objetos_filtrados.filter(status_compra='NoPrazo')
-                indeterminados = objetos_filtrados.filter(status_compra='Indeterminado')
+                if nome_obra not in nomes:
+                    objetos_filtrados = Dados.objects.filter(Q(data_emissao_pc__gte=data_inicial), Q(data_emissao_pc__lte=data_final))
+                    atrasados = objetos_filtrados.filter(status_compra='Atrasado')
+                    entregues = objetos_filtrados.filter(status_compra='NoPrazo')
+                    indeterminados = objetos_filtrados.filter(status_compra='Indeterminado')
+                    atrasados_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Atrasado')
+                    entregues_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='NoPrazo')
+                    indeterminados_compra = objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Indeterminado')
+                else:
+                    objetos_filtrados = Dados.objects.filter(nome_obra=nome_obra, data_emissao_pc__gte=data_inicial, data_emissao_pc__lte=data_final)
+                    atrasados =  objetos_filtrados.filter(nome_obra=nome_obra, status_entregue='Atrasado')
+                    entregues =  objetos_filtrados.filter(nome_obra=nome_obra, status_entregue='NoPrazo')
+                    indeterminados = objetos_filtrados.filter(nome_obra=nome_obra, status_entregue='Indeterminado')
+                    atrasados_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Atrasado')
+                    entregues_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='NoPrazo')
+                    indeterminados_compra = objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Indeterminado')
                 legenda = 'Solicitações de Compra (Total Atendido)'
-
-            print(len(atrasados), len(entregues), len(indeterminados))
+            
+            nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
             #obras = Obras.objects.all()
             #for obra in obras:
             #    if obra.obra6.nome_obra:
             #        print(obra.obra6.nome_obra)
                 #if not in_group(request.user, 'Suprimentos'):
             #   return redirect(reverse('index') + '?unauthorized=True&Suprimentos=True')
-            iten = Dados.objects.all().first()
-            nome_obra = iten.nome_obra
             noprazo = len(entregues)
             total_atendido = (len(atrasados) + len(entregues))
             ind =  len(indeterminados)
             atraso = len(atrasados)
+            noprazo_compra = len(entregues_compra)
+            ind_compra =  len(indeterminados_compra)
+            atraso_compra = len(atrasados_compra)
             context = {'objetos': objetos_filtrados, 'nome_obra': nome_obra, 
             'objetos': objetos_filtrados,
             'atrasados': atrasados, 
             'entregues': entregues, 
             'indeterminados':indeterminados, 
+            'nomes': nomes,
             'form': FiltroForm(), 
-            'noprazo': noprazo, 
+            'noprazo': noprazo,
+            'atrasados_compra': atrasados_compra, 
+            'entregues_compra': entregues_compra, 
+            'indeterminados_compra':indeterminados_compra, 
+            'noprazo_compra': noprazo_compra, 
+            'atraso_compra': atraso_compra,
+            'ind_compra': ind_compra, 
             'atraso': atraso,
             'ind': ind,
             'total_atendido': total_atendido,
             'total_sols_compra': (total_atendido + ind),
+            'filtro_obra': False,
             'filtro': True,
             'legenda': legenda
             }

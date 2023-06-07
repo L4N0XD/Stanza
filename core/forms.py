@@ -4,6 +4,10 @@ class FiltroForm(forms.Form):
     data_inicial = forms.DateField(label='', required=True)
     data_final = forms.DateField(label='', required=True)
     filtro = forms.CharField(widget=forms.HiddenInput(), required=True)
+    filtrar_nome_da_obra = forms.CharField(widget=forms.HiddenInput(), required=True)
+
+class FiltrarObras(forms.Form):
+    nome_da_obra = forms.CharField(widget=forms.HiddenInput(), required=True)
 
 
 class UploadForm(forms.Form):

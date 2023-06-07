@@ -38,30 +38,39 @@
     </div>
   </div>
 </div>
+<button type="button" id="loading" class="btn btn-primary" style="display: none;" data-bs-toggle="modal" data-bs-target="#loadingModal"></button>
+<div class="modal fade loading" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>
+</div>
 <section id="page" style="display: flex; flex-direction: column-reverse;">
   <div class="container col-md-2 shadow" style="position: absolute; top: 0; background: white; height: -webkit-fill-available;" id="divSidebar">
-
     <ul class="nav nav-pills flex-column mb-auto" style="margin-top: 30%;" id="ulSidebar">
       {% if filtro == True%}
-        <li class="d-flex justify-content-center">
-          <a href="/results-obras" class="btn btn-outline-stanza voltar-btn" style="font-size: 14px;border-radius: 50px;width: 100%;">Voltar</a>
-        </li>
+      <li class="d-flex justify-content-center">
+        <a href="/results-obras" class="btn btn-outline-stanza voltar-btn" style="font-size: 14px;border-radius: 50px;width: 100%;">Voltar</a>
+      </li>
       {% endif %}
         <li>
             <form class="d-flex ms-auto" role="search" method="POST" action="{% url 'filtrar' %}" id="formulario">
-                {% csrf_token %}
-                <div class="input-group d-flex justify-content-center mt-2 align-items-center">
-                    <button class="btn btn-secondary dropdown-toggle mb-3 shadow" style="width: 100%;border-radius: 7px;" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="button-filtrar">Filtrar por:</button>
-                    <ul class="dropdown-menu dropdown-menu-secondary bg-secondary filtro-dropdown" style="border: gray solid 1px;">
+              {% csrf_token %}
+              <div class="input-group d-flex justify-content-center mt-2 align-items-center">
+                <button class="btn btn-secondary dropdown-toggle mb-3 shadow" style="width: 100%;border-radius: 7px;" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="button-filtrar">Filtrar por:</button>
+                <ul class="dropdown-menu dropdown-menu-secondary bg-secondary filtro-dropdown" style="border: gray solid 1px;">
                         <li><a class="dropdown-item filter" href="#" onclick="selecionarFiltro('mes_entrega')">Pedido Entregue</a></li>
                         <li><a class="dropdown-item filter" href="#" onclick="selecionarFiltro('mes_emissao_pc')">Solicitação de Compra</a></li>
-                    </ul>
-                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="data_inicial" name="data_inicial" class="form-control mb-2" placeholder="Data inicial" style="width: 100%; border-radius: 7px;">
-                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="data_final" name="data_final" class="form-control mb-2" placeholder="Data final" style="width: 100%; border-radius: 7px;">
-                    <input type="hidden" name="filtro" required id="id_filtro" onchange="atualizarGrafico()" value="">
-                    <button id="filtrarBtn"class="btn btn-stanza shadow" onclick="filtrar()" style="width: 100%; border-radius: 7px; margin-bottom: 100%;" type="submit">Filtrar</button>
-                </div>
-            </form>
+                      </ul>
+                      <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="data_inicial" name="data_inicial" class="form-control mb-2" placeholder="Data inicial" style="width: 100%; border-radius: 7px;">
+                      <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="data_final" name="data_final" class="form-control mb-2" placeholder="Data final" style="width: 100%; border-radius: 7px;">
+                      <input type="hidden" name="filtro" required id="id_filtro" onchange="atualizarGrafico()" value="">
+                      <input type="hidden" name="filtrar_nome_da_obra" required id="id_nome_da_obra" value="">
+                      <button id="filtrarBtn"class="btn btn-stanza shadow" onclick="filtrar()" style="width: 100%; border-radius: 7px;" type="submit">Filtrar</button>
+                    </div>
+                  </form>
+                </li>
+        <li>
+          <div id="columnchart_values" class="mt-4 d-flex justify-content-center"></div>
         </li>
         <li class="mt-2">
           <hr style="margin-top: 20%;">
@@ -69,11 +78,27 @@
         </li>  
     </ul>
   </div>
-      <div class="container" id="includes">
-        <h5 class="text-dark d-flex mx-auto justify-content-center bg-white mt-3 mb-0 col-9">Obra: {{nome_obra}} </h5>
+  <div class="container">
+    <form class="d-flex" action="{% url 'filtrar-obras' %}" id="filtrar-obras" role="search" method="POST">
+      {% csrf_token %}
+      <div class="mx-auto mt-3 mb-0 shadow d-flex" style="align-items: center; background: #6e52bf; border-radius: 0.375rem;">
+        <a class="text-white" style="padding: 0.375rem 0.75rem 0.375rem 0.75rem; text-decoration: none;">Obra:</a>
+        <button id="texto_nome_obra" class=" btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{nome_obra}}</button>
+        <ul class="dropdown-menu dropdown-menu-secondary bg-secondary filtro-dropdown" style="border: gray solid 1px;">
+          <input type="hidden" name="nome_da_obra" required id="nome_da_obra" value="">
+          {% if filtro_obra == True %}
+          <li><button class="dropdown-item filter" onclick="filtrarObra(this.textContent)">Ver Tudo</button></li>
+          {% endif %}
+          {% for nome in nomes %}
+          <li><button class="dropdown-item filter" onclick="filtrarObra(this.textContent)">{{nome}}</button></li>
+          {% endfor %}
+          <button id="filtrar_obras" type="submit" style="display: none;"></button>
+            </ul>
+          </div>
+        </form>
         <div class="d-flex justify-content-center mt-1">
-            <p class="text-dark bg-white col-3 px-5" >Nº de Solicitacões: {{total_sols_compra}} </p>
-            <p class="text-dark bg-white col-3 px-5">Total atendido: {{total_atendido}}</p>
+          <p class="text-dark bg-white btn btn-outline-secondary col-3 px-5" style="border-right: 0; margin-right: -10px; cursor: auto;" >Total Solicitacões: {{total_sols_compra}} </p>
+          <p class="text-dark bg-white btn btn-outline-secondary col-3 px-5" style="border-left: 0; margin-left: -10px; border-radius: 0 0.375rem 0.375rem 0; cursor: auto;">Total atendido: {{total_atendido}}</p>
         </div>  
         <button type="button" id="BotaoNoPrazo" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NoPrazo" style="display: none;">
           Ver SC entregues no prazo
@@ -89,6 +114,7 @@
         {% include "indeterminados.html" %}
         <div id="barchart_values" style="width: 600px; height: 65%;" class="shadow d-flex justify-content-center align-items-center mt-0 mx-auto"></div>
       </div>
+
       {% if filtro == True %}
       <div style="position: absolute;right: 2%;top: 12.3%;">
         <button id="modalBtn" type="button" class="btn btn-stanza" href="#" role="button" data-bs-toggle="modal" data-bs-target="#detalhamento" style="font-size: 14px;border-radius: 50px;" >
@@ -107,7 +133,79 @@
 {% endblock %}
 <script src="{% static 'js/pagination.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+  var ind = parseInt('{{ind}}');
+  var totalInd = parseInt('{{total_sols_compra}}');
+  google.charts.load("current", {packages:['corechart']});
+  google.charts.setOnLoadCallback(function() { drawChartInd(ind)});
+  function drawChartInd(ind) {
+    var data = google.visualization.arrayToDataTable([
+      ["Element", "Quantidade", { role: "style" } ],
+      ["Indeterminadas", ind, "gray"],
+
+    ]);
+
+    var view = new google.visualization.DataView(data);
+    view.setColumns([0, 1,
+      { calc: function(data, row) {
+        var value = data.getValue(row, 1);
+        var percent = (value / totalInd) * 100;
+        return percent.toFixed(2) + "%";
+      },
+      type: "string",
+      role: "annotation" },
+      2]);
+
+                     var options = {
+      title: "Total de Solicitações",
+      width: getWindowWidth() * 0.15, // Usando 80% da largura da janela
+      height: getWindowHeight() * 0.35, // Usando 80% da altura da janela
+      bar: {groupWidth: "50%"},
+      legend: { position: "none" },
+      vAxis: {
+      ticks: [
+        {v: 0, f: "0%"},
+        {v: (0.25*totalInd), f: "25%"},
+        {v: (0.5*totalInd), f: "50%"},
+        {v: (0.75*totalInd), f: "75%"},
+        {v: totalInd, f: "100%"}
+      ],
+      format: "percent",
+      minValue: 0,
+      maxValue: totalInd,
+    },
+    };
+    var chartInd = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+    google.visualization.events.addListener(chartInd, 'select', function() {
+    var selectedItemInd = chartInd.getSelection()[0];
+    if (selectedItemInd) {
+    if (selectedItemInd.row == 0) {
+      document.getElementById('BotaoIndeterminados').click();
+  }
+}});
+    chartInd.draw(view, options);
+    
+}
+
+// Função para obter a largura da janela
+function getWindowWidth() {
+  return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+}
+
+// Função para obter a altura da janela
+function getWindowHeight() {
+  return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+}
+</script>
 <script>
+function filtrar() {
+  document.getElementById('loading').click();  
+}
+function filtrarObra(valor) {
+  document.getElementById('nome_da_obra').value = valor;
+  document.getElementById('loading').click();  
+  document.getElementById('filtrar_obras').click();
+}
 
 (() => {
   'use strict'
@@ -150,16 +248,15 @@
     var filtro = '{{filtro}}'
     var prazo_compra = parseInt('{{noprazo_compra}}');
     var atraso_compra = parseInt('{{atraso_compra}}');
+    var ind = parseInt('{{ind}}');
     var ind_compra = parseInt('{{ind_compra}}');
-    console.log(prazo_compra, atraso_compra, ind_compra);
     var prazo = parseInt('{{noprazo}}');
     var atraso = parseInt('{{atraso}}');
-    var ind = parseInt('{{ind}}');
-    console.log(ind, atraso, prazo);
-    console.log(filtro.toLowerCase())
+
 
 function selecionarFiltro(valor) {
   document.getElementById('id_filtro').value = valor;
+  document.getElementById('id_nome_da_obra').value = document.getElementById('texto_nome_obra').textContent;
   if (filtro.toLowerCase() !== 'true') {
     atualizarGrafico();
   }
@@ -181,6 +278,7 @@ function atualizarGrafico() {
    document.getElementById('pagination-buttons-prazo').style.display = '';
    document.getElementById('pagination-buttons-prazo-compra').style.display = 'none';
    drawChart(prazo, atraso, 'Pedidos Entregues (Total Atendido)');
+   drawChartInd(ind);
   } else if (idFiltro.value === 'mes_emissao_pc') {
     document.getElementById('tabela-noPrazo').style.display = 'none';
     document.getElementById('tabela-noPrazo-compra').style.display = '';
@@ -195,6 +293,7 @@ function atualizarGrafico() {
     document.getElementById('pagination-buttons-indeterminados').style.display = 'none';
    document.getElementById('pagination-buttons-indeterminados-compra').style.display = '';
     drawChart(prazo_compra, atraso_compra,'Solicitações de Compra (Total Atendido)');
+    drawChartInd(ind_compra);
 
   }
 }
