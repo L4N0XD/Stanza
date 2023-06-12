@@ -26,26 +26,15 @@
     </header>
     <aside class="shadow">
         <div  id="divSidebar">
-            <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar" style="position: fixed;width: 14%;">
-                <li>
-                    <a href="/upload-page-rh" style="font-size: 16px; width: 100%;" class="shadow btn btn-roxo mt-3" >Nova consulta</a>
-                </li>
-                <hr class="mb-3">
-                <li>
-                    <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="shadow btn btn-primary" >Total: <br> {{total}}</p>
-                </li>
-                <hr class="mb-3">
-                <li>
-                    <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="shadow btn btn-success">Total Descontos: <br> {{total_descontos}}</p>
-                </li>
-                <hr class="mb-3">
-                <li>
-                    <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="shadow btn btn-danger">Total a pagar: <br> {{total_pagar}}</p>
-                </li>
-                <hr class="mb-3">
-                <li>
-                    <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="shadow btn btn-secondary">Data da Planilha: <br> {{data_planilha|date:"d/m/Y"}}</p>
-                </li>
+            <div class="nav nav-pills flex-column mb-auto mt-3" id="ulSidebar" style="position: fixed;width: 14%;">
+                <a href="/upload-page-rh" style="font-size: 16px; width: 100%;" class="shadow btn btn-roxo" >Nova consulta</a>
+                <hr class="mb-5">
+                <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%; border-radius: 0.375rem 0.375rem 0 0;" class="shadow btn btn-primary mb-0" >Total: <br> {{total}}</p>
+                <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%; border-radius: 0;" class="shadow btn btn-success mb-0">Total Descontos: <br> {{total_descontos}}</p>
+                <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%; border-radius: 0 0 0.375rem 0.375rem ;" class="shadow btn btn-danger mb-5">Total a pagar: <br> {{total_pagar}}</p>
+                <hr style="margin-top: 4.5rem;">
+                <p style="font-size: 16px; cursor: context-menu; user-select: text; width: 100%;" class="shadow btn btn-secondary mb-0">Data da Planilha: <br> {{data_planilha|date:"d/m/Y"}}</p>
+            </div>
         </div>
         </aside>
     <article>
@@ -54,20 +43,20 @@
 <div class="row">
 
 <div class="container row mt-4">
-    <div class="col-md-11 d-flex mx-auto" style="margin-left: 0!important;" >
-        <p style="font-size: 16px; cursor: context-menu; user-select: text; margin-left: 0!important;" class="shadow btn btn-rosa mx-auto my-auto">Obra: {{nome_obra}}</p>
+    <div class="mx-auto mt-3 mb-0 shadow d-flex col-9" style="justify-content: space-between; align-items: center; background: #6e52bf; border-radius: 0.375rem;">
+        <a class="text-white" style="padding: 0.375rem 0.75rem 0.375rem 0.75rem; text-decoration: none;">Obra:</a>
+        <button id="texto_nome_obra" style="cursor: context-menu; user-select: text;" class=" btn btn-secondary">{{nome_obra}}</button>
         <div class="dropdown" >
-        <button  class="shadow btn btn-secondary dropdown-toggle my-auto" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Exportar para:
-        </button>
-        <ul class="dropdown-menu dropdown-menu-secondary bg-secondary" style="border: gray dotted 1px;">
-          <li><a class="dropdown-item filter text-dark" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLS</a></li>
-          <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_analise' nome_obra=nome_obra %}">Pedido TXT</a></li>
-          <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_desconto' nome_obra=nome_obra %}">Desconto VT</a></li>
-        </ul>
-    </div>
-    </div>
-</div>
+            <button  class="btn btn-roxo dropdown-toggle my-auto" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Exportar para:
+            </button>
+            <ul class="dropdown-menu dropdown-menu-secondary bg-secondary" style="border: gray dotted 1px;">
+              <li><a class="dropdown-item filter text-dark" href="{% url 'download_table' nome_obra=nome_obra %}">Planilha XLSX</a></li>
+              <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_analise' nome_obra=nome_obra %}">Pedido TXT</a></li>
+              <li><a class="dropdown-item filter text-dark" href="{% url 'download_txt_desconto' nome_obra=nome_obra %}">Desconto VT</a></li>
+            </ul>
+        </div>
+          </div>
 
 <div class="col-md-12 container mt-3" style=" margin-right: 6%;">
     <table class="table" style="background: rgb(230, 230, 230);">
@@ -87,42 +76,44 @@
         </thead>
         <tbody>
             {% for real in reais %}
-            <tr>
-                <th class="tabela" style="font-size: 14px"> {% if real.matricula != none %}{{real.matricula}}{% else %} {% endif %}</th>
-                <td class="tabela" style="font-size: 14px">{{real.cpf}}</td>
-                <td class="tabela" style="font-size: 14px">{{real.nome}}</td>
-                <td class="tabela" style="font-size: 14px">{{real.dias_trabalhados}}</td>
-            {% if real.dias_contabilizados is not none %}
-                <td class="tabela" style="font-size: 14px">{{real.dias_contabilizados}}</td>
-            {% else %}
-                <td class="tabela" style="font-size: 14px">{{real.dias_trabalhados}}</td>
+            {% if real.matricula != none %}
+                <tr>
+                    <th class="tabela" style="font-size: 14px">{{real.matricula}}</th>
+                    <td class="tabela" style="font-size: 14px">{{real.cpf}}</td>
+                    <td class="tabela" style="font-size: 14px">{{real.nome}}</td>
+                    <td class="tabela" style="font-size: 14px">{{real.dias_trabalhados}}</td>
+                {% if real.dias_contabilizados is not none %}
+                    <td class="tabela" style="font-size: 14px">{{real.dias_contabilizados}}</td>
+                {% else %}
+                    <td class="tabela" style="font-size: 14px">{{real.dias_trabalhados}}</td>
+                {% endif %}
+                {% if real.pagar is not none %}
+                    <td class="tabela pagar" style="font-size: 14px">{{real.pagar}}</td>
+                {% else %}
+                    <td class="tabela" style="font-size: 14px">Sem informações</td>
+                {% endif %}
+                {% if real.total is not none %}
+                    <td class="tabela" style="font-size: 14px">{{real.total}}</td>
+                {% else %}
+                    <td class="tabela" style="font-size: 14px">0.00</td>
+                {% endif %}
+                {% if real.total_atualizado is not none %}
+                    <td class="tabela" style="font-size: 14px">{{real.total_atualizado}}</td>
+                {% else %}
+                    <td class="tabela" style="font-size: 14px">0.00</td>
+                {% endif %}
+                {% if real.salario is not none %}
+                    <td class="tabela" style="font-size: 14px">{{real.salario}}</td>
+                {% else %}
+                    <td class="tabela" style="font-size: 14px">0.00</td>
+                {% endif %}
+                {% if real.valor_desconto_colaborador is not none %}
+                    <td class="tabela desconto"  style="font-size: 14px">{{real.valor_desconto_colaborador}}</td>
+                {% else %}
+                    <td class="tabela desconto"  style="font-size: 14px">0.00</td>
+                {% endif %}
+                </tr>
             {% endif %}
-            {% if real.pagar is not none %}
-                <td class="tabela" style="font-size: 14px">{{real.pagar}}</td>
-            {% else %}
-                <td class="tabela" style="font-size: 14px">Sem informações</td>
-            {% endif %}
-            {% if real.total is not none %}
-                <td class="tabela" style="font-size: 14px">{{real.total}}</td>
-            {% else %}
-                <td class="tabela" style="font-size: 14px">0.00</td>
-            {% endif %}
-            {% if real.total_atualizado is not none %}
-                <td class="tabela" style="font-size: 14px">{{real.total_atualizado}}</td>
-            {% else %}
-                <td class="tabela" style="font-size: 14px">0.00</td>
-            {% endif %}
-            {% if real.salario is not none %}
-                <td class="tabela" style="font-size: 14px">{{real.salario}}</td>
-            {% else %}
-                <td class="tabela" style="font-size: 14px">0.00</td>
-            {% endif %}
-            {% if real.valor_desconto_colaborador is not none %}
-                <td class="tabela" style="font-size: 14px">{{real.valor_desconto_colaborador}}</td>
-            {% else %}
-                <td class="tabela" style="font-size: 14px">0.00</td>
-            {% endif %}
-            </tr>
             {% endfor %}
         </tbody>
     </table> 
@@ -142,7 +133,7 @@
 
     main {
       display: grid;
-      grid-template-areas: "head head head" "sidebar article article" "footer footer footer";
+      grid-template-areas: "head head head" "sidebar article article" "sidebar footer footer";
     }
     header {
       grid-area: head;

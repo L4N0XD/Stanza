@@ -274,7 +274,11 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis, dados_xls0):
     DadosRH.objects.bulk_update(dados_rh_update, ['total', 'total_atualizado'])
     DadosAjuCard.objects.bulk_create(lista_aju) 
     
-    dados = DadosRH.objects.filter(nome_obra=nome_obra)   
+    dados = DadosRH.objects.filter(nome_obra=nome_obra)  
+    num_elementos = dados.count()  # Obter o número de elementos retornados pela consulta
+    cpfs = [obj.cpf for obj in dados]  # Acessar o atributo 'cpf' de cada objeto retornado
+
+    print('Número de elementos:', num_elementos)
     ctrl_total = int(0)
     ctrl_total_pagar = int(0)
     dias_list = []
@@ -324,7 +328,7 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis, dados_xls0):
             pis = row['PIS/PASEP']
             try:
                 update = DadosRH.objects.get(pk=cpf_base)
-                if (update.pagar and update.pagar > (0.06 * salario_base)):
+                if (update.pagar and update.pagar >= (0.06 * salario_base)):
                     sequencia = sequencia + 1
                     valor_desconto_colaborador = (0.06*salario_base)
                     codigo_desconto_vt = transformar_excel(sequencia, data_inicial, data_final, 604, valor_desconto_colaborador, pis, nome_obra)
@@ -334,8 +338,6 @@ def dados_rh(dados_xls, dados_xls2, dias_uteis, dados_xls0):
                     valor_desconto_colaborador = update.pagar
                     codigo_desconto_vt = transformar_excel(sequencia, data_inicial, data_final, 604, valor_desconto_colaborador, pis, nome_obra)
                     salario_list.append(DadosRH(pk=cpf_base, valor_desconto_colaborador=valor_desconto_colaborador, salario=salario_base, matricula=matricula, codigo_desconto_vt=codigo_desconto_vt))
-                if str(cpf_base) == '01727846540':
-                    print(valor_desconto_colaborador)
             except ObjectDoesNotExist:
                 pass
     DadosRH.objects.bulk_update(salario_list, ['valor_desconto_colaborador', 'salario', 'matricula', 'codigo_desconto_vt'])
@@ -385,7 +387,7 @@ def results_rh(request):
 def download_table(request, nome_obra):
     #if not in_group(request.user, 'RH'):
      #   return redirect(reverse('index') + '?unauthorized=True')
-    reais = DadosRH.objects.all()
+    reais = DadosRH.objects.filter(matricula__isnull=False)    
     dados = Totais.objects.all()
     totais = (list(dados.values('total', 'total_pagar', 'total_descontos')))
     data = DadosAjuCard.objects.all().first()
@@ -393,13 +395,13 @@ def download_table(request, nome_obra):
     date_object = datetime.strptime(date_string, '%Y-%m-%d')
     new_date = date_object.strftime('%d-%m-%Y')
     nome_obra = str(data.nome_obra)
-    df = pd.DataFrame(list(reais.values('cpf', 'nome', 'dias_trabalhados', 'dias_contabilizados', 'pagar', 'total', 'total_atualizado')))
+    df = pd.DataFrame(list(reais.values('matricula', 'cpf', 'nome', 'dias_trabalhados', 'dias_contabilizados', 'pagar', 'total', 'total_atualizado', 'salario')))
     
     
-    df.columns = ['CPF', 'Nome', 'Dias', 'Dias 2', 'Valor a pagar', 'Saldo', 'Saldo Atualizado']
+    df.columns = ['Matrícula', 'CPF', 'Nome', 'Dias trabalhados', 'Dias direito', 'Valor a pagar', 'Saldo ARACAJUCARD', 'Saldo Atualizado', 'Salário']
     
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = f'attachment; filename="{nome_obra}.xls"'
+    response['Content-Disposition'] = f'attachment; filename="{nome_obra}.xlsx"'
     
     writer = pd.ExcelWriter(response, engine='xlsxwriter')
     df.to_excel(writer, index=False, startrow=6)
@@ -437,14 +439,13 @@ def download_txt_analise(request, nome_obra):
     reais = DadosRH.objects.all()
     response.write('0200\n')
     for real in reais:
-        if real.dias_contabilizados:
-            if real.dias_contabilizados > 0:
-                response.write('{0}|{1}|{2}|{3}\n'.format(
-                    real.cpf,
-                    real.dias_contabilizados,
-                    '900',
-                    real.nome,
-                ))
+        if real.matricula and real.dias_contabilizados and real.dias_contabilizados > 0:
+                    response.write('{0}|{1}|{2}|{3}\n'.format(
+                        real.cpf,
+                        real.dias_contabilizados,
+                        '900',
+                        real.nome,
+                    ))
 
     return response
 
@@ -619,7 +620,7 @@ def filtrar_obras(request):
         if form.is_valid():
             nome_da_obra = form.cleaned_data['nome_da_obra']
             nome_obra = (f'{nome_da_obra} ')
-            if nome_obra == 'Ver Tudo ':
+            if nome_obra == 'Ver todas ':
                 return(redirect('results-obras'))
             else:
                 atrasados =  Dados.objects.filter(nome_obra=nome_obra, status_entregue='Atrasado')

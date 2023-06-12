@@ -44,6 +44,15 @@
       font-weight: bold;
       font-size: 90px;
       margin-top: 25px;
+      cursor: context-menu;
+      color: transparent;
+      background-image: url('https://th.bing.com/th/id/OIP.v9ddKErMJpTRiebR8kFXIAHaFS?pid=ImgDet&rs=1');
+      -webkit-background-clip: text;
+      background-clip: text;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      text-align: center;
     }
 
     .card.bg-light.shadow {
@@ -119,7 +128,7 @@ body {
   width: 100%;
 }
 
-.footer-text {
+.footer-text, .text-white {
   font-family: 'Urbanist', sans-serif;
 }
 
@@ -326,17 +335,6 @@ justify-content: center;
   align-items: center;
   justify-content: center;
   display: flex;
-}
-
-.title-page {
-color: transparent;
-background-image: url('https://th.bing.com/th/id/OIP.v9ddKErMJpTRiebR8kFXIAHaFS?pid=ImgDet&rs=1');
--webkit-background-clip: text;
-background-clip: text;
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
-text-align: center;
 }
 
 

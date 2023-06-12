@@ -22,16 +22,16 @@
 </head>
 {% include "header.html" %}
 <body class="bg-light">
-  <a href="/upload-import-vt" style="font-size: 14px;position: absolute; margin-left: 15px; border-radius: 50px;" class="btn btn-roxo mb-5 mt-4" >Nova consulta</a>
-  
-
-  <div class="container row-md-10 mt-4">
-        <div class="dropdown" style="width: 150px;left: 87%;">
-        <button  class="btn btn-secondary dropdown-toggle my-auto" style="border-radius: 50px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    
+    
+    <div class="container row-md-10 mt-4 d-flex" style="justify-content: space-between;">
+      <a href="/upload-import-vt" class="btn btn-roxo" >Nova consulta</a>
+        <div class="dropdown">
+        <button  class="btn btn-secondary dropdown-toggle my-auto" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Exportar para:
         </button>
-        <ul class="dropdown-menu dropdown-menu-dark bg-dark" style="border: gray dotted 1px;">
-          <li><a class="dropdown-item text-black" href="{% url 'download_txt_vt'  %}">Baixar como txt</a></li>
+        <ul class="dropdown-menu dropdown-menu-secondary bg-secondary" style="border: gray dotted 1px;">
+          <li><a class="dropdown-item filter" href="{% url 'download_txt_vt'  %}">Baixar como txt</a></li>
         </ul>
     </div>
     </div>

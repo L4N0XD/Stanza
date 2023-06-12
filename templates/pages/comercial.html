@@ -22,8 +22,120 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">    
     <title id="titulo">Resultados comercial</title>
 </head>
-{% include "header.html" %}
-<body class="bg-light">
+<main>
+<header>
+    {% include "header.html" %}
+</header>
+<aside class="shadow">
+    <div class="container bg-white" id="divSidebar">
+        <ul class="nav nav-pills flex-column mb-auto" style="position: fixed; width:14%;" id="ulSidebar">
+            <li>
+                <a href="/upload-page-comercial" style="width: 100%;font-size: 16px; margin-top: 20%;" class="shadow d-flex ms-auto btn btn-roxo mb-5 justify-content-center" >Nova consulta</a>
+            </li>    
+                {% if Total_Par_Men2 is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza ">MENSAL 2: <br> {{Total_Par_Men2}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Ato is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">ATO: <br> {{Total_Ato}}</p>
+                </li>
+                {% endif %}        
+                {% if Total_Par_Mensais is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">MENSAL: <br> {{Total_Par_Mensais}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Par_Semestrais is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">SEMESTRAL: <br> {{Total_Par_Semestrais}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Par_Bimestrais is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">BIMESTRAL: <br> {{Total_Par_Bimestrais}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Ent_chave is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">ENTREGA DA CHAVE: <br> {{Total_Ent_chave}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Sinal is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">SINAL: <br> {{Total_Sinal}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Par_Inter_ is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">INTERMEDIARIA: <br> {{Total_Par_Inter_}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Par_Inter_2 is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">INTERMEDIARIA 2: <br> {{Total_Par_Inter_2}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Sin_Cartão is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">SINAL CARTÃO: <br> {{Total_Sin_Cartão}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Par_Cartão is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">PARCELAS CARTÃO: <br> {{Total_Par_Cartão}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Car_Credit is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">CARTÃO CRÉDITO: <br> {{Total_Car_Credit}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Transf_Credito is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">TRANSFERÊNCIA DE CRÉDITO: <br> {{Total_Transf_Credito}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Fin_Associativo is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">FINANCIAMENTO ASSOCIATIVO: <br> {{Total_Fin_Associativo}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Anual is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">ANUAL: <br> {{Total_Anual}}</p>
+                </li>
+                {% endif %}
+                {% if Total_Financiamento is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">FINANCIAMENTO: <br> {{Total_Financiamento}}</p>
+                </li>
+                {% endif %}
+                {% if total_residuo is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">RESÍDUO: <br> {{total_residuo}}</p>
+                </li>
+                {% endif %}
+                {% if Total_FGTS is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">FGTS: <br> {{Total_FGTS}}</p>
+                </li>
+                {% endif %}
+                {% if total_juros_obra is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">JUROS OBRAS: <br> {{total_juros_obra}}</p>
+                </li>
+                {% endif %}
+                {% if total_devido is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">TOTAL DEVIDO: <br> {{total_devido}}</p>
+                </li>
+                {% endif %}
+            <hr>
+            </ul>
+    </div>
+</aside>
 <div class="modal fade" id="detalhamento" tabindex="-1" aria-labelledby="detalhamentoLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centergb(220,53,69) modal-dialog-scrollable modal-fullscreen">
       <div class="modal-content bg-light">
@@ -194,135 +306,31 @@
       </div>
     </div>
 </div>
-<div class="container col-md-2" style="position: absolute;" id="divSidebar">
-    <ul class="nav nav-pills flex-column mb-auto" id="ulSidebar">
-        <li>
-            <a href="/upload-page-comercial" style="font-size: 14px; border-radius: 50px;" class="btn btn-roxo mb-5 mt-4" >Nova consulta</a> 
-        </li>    
-            {% if Total_Par_Men2 is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza ">MENSAL 2: <br> {{Total_Par_Men2}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Ato is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">ATO: <br> {{Total_Ato}}</p>
-            </li>
-            {% endif %}        
-            {% if Total_Par_Mensais is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">MENSAL: <br> {{Total_Par_Mensais}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Par_Semestrais is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">SEMESTRAL: <br> {{Total_Par_Semestrais}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Par_Bimestrais is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">BIMESTRAL: <br> {{Total_Par_Bimestrais}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Ent_chave is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">ENTREGA DA CHAVE: <br> {{Total_Ent_chave}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Sinal is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">SINAL: <br> {{Total_Sinal}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Par_Inter_ is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">INTERMEDIARIA: <br> {{Total_Par_Inter_}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Par_Inter_2 is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">INTERMEDIARIA 2: <br> {{Total_Par_Inter_2}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Sin_Cartão is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">SINAL CARTÃO: <br> {{Total_Sin_Cartão}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Par_Cartão is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">PARCELAS CARTÃO: <br> {{Total_Par_Cartão}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Car_Credit is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">CARTÃO CRÉDITO: <br> {{Total_Car_Credit}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Transf_Credito is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">TRANSFERÊNCIA DE CRÉDITO: <br> {{Total_Transf_Credito}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Fin_Associativo is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">FINANCIAMENTO ASSOCIATIVO: <br> {{Total_Fin_Associativo}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Anual is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">ANUAL: <br> {{Total_Anual}}</p>
-            </li>
-            {% endif %}
-            {% if Total_Financiamento is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">FINANCIAMENTO: <br> {{Total_Financiamento}}</p>
-            </li>
-            {% endif %}
-            {% if total_residuo is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">RESÍDUO: <br> {{total_residuo}}</p>
-            </li>
-            {% endif %}
-            {% if Total_FGTS is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">FGTS: <br> {{Total_FGTS}}</p>
-            </li>
-            {% endif %}
-            {% if total_juros_obra is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">JUROS OBRAS: <br> {{total_juros_obra}}</p>
-            </li>
-            {% endif %}
-            {% if total_devido is not none %}
-            <li>
-                <p class=" resultados-content btn btn-stanza">TOTAL DEVIDO: <br> {{total_devido}}</p>
-            </li>
-            {% endif %}
-        </ul>
+<article>
+<body class="bg-light">
+<div id="DadosCliente1" class="col-12 d-flex">
+    <p style="font-size: 14px; cursor: context-menu; user-select: text; display: flex; justify-content: space-between; align-items: center; border-radius: 0.375rem 0.375rem 0 0;" class="btn btn-secondary col-md-8 mx-5 mb-0 mt-3">
+        <span>Titulo: {{first.titulo_cliente}}</span>
+        <span>Documento: {{first.documento}}</span>
+        <span>Unidades: {{first.unidades}}</span>
+    </p>
+    <a id="modalBtn" type="button" class="btn btn-stanza mt-3 mx-auto" href="#" role="button" data-bs-toggle="modal" data-bs-target="#detalhamento" style="font-size: 14px;border-radius: 50px;" >
+        Detalhamento
+    </a>
 </div>
-<div>
-        <p style="font-size: 14px; cursor: context-menu; user-select: text; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; border-radius: 0.375rem 0.375rem 0 0;" class="btn btn-rosa col-md-8 mx-auto mt-3">
-            <span>Titulo: {{first.titulo_cliente}}</span>
-            <span>Cliente: {{first.cliente}}</span>
-            <span>Documento: {{first.documento}}</span>
-            <span>Unidades: {{first.unidades}}</span>
-        </p>
-</div>
-<div>
-        <p style="font-size: 14px; cursor: context-menu; user-select: text; display: flex; justify-content: space-between; align-items: center; margin-top: 0;border-radius: 0px 0px 0.375rem 0.375rem;" class="btn btn-rosa col-md-8 mx-auto">
+<div id="DadosCliente2">
+        <p style="font-size: 14px; cursor: context-menu; user-select: text; display: flex; justify-content: space-between; align-items: center; border-radius: 0;" class="mb-0  mt-0 btn btn-roxo col-md-8 mx-5">
             <span> Data de Emissão: {{first.data_emissao|date:"d/m/Y"}} </span>
             <span> Empresa: {{first.empresa}} </span>
             <span> Total Lanc: {{total_lanc}} </span>
+        </p></div>
+<div id="DadosCliente3">
+        <p style="font-size: 14px; cursor: context-menu; user-select: text; display: flex; justify-content: space-between; align-items: center; border-radius: 0px 0px 0.375rem 0.375rem;" class="btn btn-secondary col-md-8 mx-5 mb-0 mt-0">
+            <span>Cliente: {{first.cliente}}</span>
         </p>
 </div>
-<div style="position: absolute;right: 2%;top: 12.3%;">
-            <a id="modalBtn" type="button" class="btn btn-stanza" href="#" role="button" data-bs-toggle="modal" data-bs-target="#detalhamento" style="font-size: 14px;border-radius: 50px;" >
-                Detalhamento
-            </a>
-</div>
-<div class="container col-md-2" id="donutchart" style="position: absolute;right: 0;margin-top: -1.3%;"></div>
-<div class="container col-md-2" style="justify-content: center; position: absolute;margin-top: 14.5%;right: 0; display: none;" id="no-prazo-donut">
+<div class="container col-md-2" id="donutchart" style="position: absolute;right: 3%;margin-top: -1.3%;"></div>
+<div class="container col-md-2" style="justify-content: center; position: absolute;margin-top: 14.5%;right: 3%; display: none;" id="no-prazo-donut">
     <ul class="nav nav-pills flex-column mb-auto" id="ulSidebarPrazo">
             {% if lista_prazos is not none %}
                 {% for prazo in lista_prazos %}
@@ -333,7 +341,7 @@
             {% endif %}
     </ul>
 </div>
-<div class="container col-md-2" style="justify-content: center; position: absolute;margin-top: 14.5%;right: 0; display: none;" id="atrasados-donut">
+<div class="container col-md-2" style="justify-content: center; position: absolute;margin-top: 14.5%;right: 3%; display: none;" id="atrasados-donut">
         <ul class="nav nav-pills flex-column mb-auto" id="ulSidebarAtrasado">
             {% if lista_atrasados is not none %}
                 {% for atrasado in lista_atrasados %}
@@ -344,7 +352,7 @@
             {% endif %}
         </ul>
 </div>
-<div class="mx-auto mt-3 col-md-8">
+<div class="mx-5 mt-3 col-md-8">
     <table class="table" style="border: 1px black dotted; background: rgb(230, 230, 230);">
         <thead>
             <tr>
@@ -411,8 +419,41 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
-{% include "footer.html" %}
+</article>
+<footer>
+    {% include "footer.html" %}
+</footer>
+</main>
 <style>
+        main {
+      display: grid;
+      grid-template-areas: "head head head" "sidebar article article" "sidebar footer footer";
+    }
+    header {
+      grid-area: head;
+    }
+    article {
+      grid-area: article;
+    }
+    aside {
+        margin-top: -10px;
+      grid-area: sidebar;
+      width: 35vh;
+      background-color:#ffffff;
+      
+    border-radius: 20px;
+
+
+
+
+    }
+    footer {
+      grid-area: footer;
+    }
+
+    #divSidebar {
+      padding: 20px ;
+    }
 
     .dadosTabela {
         font-weight: bold; 

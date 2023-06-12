@@ -84,11 +84,11 @@
       <div class="mx-auto mt-3 mb-0 shadow d-flex" style="align-items: center; background: #6e52bf; border-radius: 0.375rem;">
         <a class="text-white" style="padding: 0.375rem 0.75rem 0.375rem 0.75rem; text-decoration: none;">Obra:</a>
         <button id="texto_nome_obra" class=" btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{nome_obra}}</button>
+        {% if filtro_obra == True %}
+        <a class="btn btn-roxo filter" onclick="filtrarObra(this.textContent)" style="font-size: 1rem; padding: 0.375rem 0.75rem 0.375rem 0.75rem; text-decoration: none;">Ver todas</a>
+        {% endif %}
         <ul class="dropdown-menu dropdown-menu-secondary bg-secondary filtro-dropdown" style="border: gray solid 1px;">
           <input type="hidden" name="nome_da_obra" required id="nome_da_obra" value="">
-          {% if filtro_obra == True %}
-          <li><button class="dropdown-item filter" onclick="filtrarObra(this.textContent)">Ver Tudo</button></li>
-          {% endif %}
           {% for nome in nomes %}
           <li><button class="dropdown-item filter" onclick="filtrarObra(this.textContent)">{{nome}}</button></li>
           {% endfor %}
