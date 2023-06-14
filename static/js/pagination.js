@@ -1,12 +1,14 @@
 
 function paginatePrazo() {
-    document.addEventListener('DOMContentLoaded', function () {
+
       var tablePrazo = document.getElementById('body-noPrazo');
       var pageIndicatorPrazo = document.getElementById('page-indicator-prazo');
       var currentPagePrazo = 1;
       var rowsPerPagePrazo = 200;
   
       function updateTablePrazo() {
+        console.log('Funcionou')
+
         
         var start = (currentPagePrazo - 1) * rowsPerPagePrazo;
         var end = start + rowsPerPagePrazo;
@@ -51,11 +53,10 @@ function paginatePrazo() {
       document.getElementById('btn-next-prazo').addEventListener('click', goToNextPagePrazo);
   
       updateTablePrazo();
-    });
-}
+};
+
 
 function paginatePrazoCompra() {
-    document.addEventListener('DOMContentLoaded', function () {
       var tablePrazoCompra = document.getElementById('body-noPrazo-compra');
       var pageIndicatorPrazoCompra = document.getElementById('page-indicator-prazo-compra');
       var currentPagePrazoCompra = 1;
@@ -105,11 +106,10 @@ function paginatePrazoCompra() {
       document.getElementById('btn-next-prazo-compra').addEventListener('click', goToNextPagePrazoCompra);
   
       updateTablePrazoCompra();
-    });
-}
+};
+
 
 function paginateAtraso() {
-    document.addEventListener('DOMContentLoaded', function () {
       var tableAtraso = document.getElementById('body-atrasados');
       var pageIndicatorAtraso = document.getElementById('page-indicator-atraso');
       var currentPageAtraso = 1;
@@ -159,11 +159,10 @@ function paginateAtraso() {
       document.getElementById('btn-next-atraso').addEventListener('click', goToNextPageAtraso);
   
       updateTableAtraso();
-    });
-}
+    };
+
 
 function paginateAtrasoCompra() {
-        document.addEventListener('DOMContentLoaded', function () {
           var tableAtrasoCompra = document.getElementById('body-atrasados-compra');
           var pageIndicatorAtrasoCompra = document.getElementById('page-indicator-atraso-compra');
           var currentPageAtrasoCompra = 1;
@@ -213,11 +212,10 @@ function paginateAtrasoCompra() {
           document.getElementById('btn-next-atraso-compra').addEventListener('click', goToNextPageAtrasoCompra);
       
           updateTableAtrasoCompra();
-        });
-}
+        };
+
 
 function paginateIndeterminados() {
-    document.addEventListener('DOMContentLoaded', function () {
       var tableindeterminados = document.getElementById('body-indeterminados');
       var pageIndicatorindeterminados = document.getElementById('page-indicator-indeterminados');
       var currentPageindeterminados = 1;
@@ -267,11 +265,10 @@ function paginateIndeterminados() {
       document.getElementById('btn-next-indeterminados').addEventListener('click', goToNextPageindeterminados);
   
       updateTableindeterminados();
-    });
-}
+    };
+
 
 function paginateIndeterminadosCompra() {
-  document.addEventListener('DOMContentLoaded', function () {
     var tableindeterminadosCompra = document.getElementById('body-indeterminados-compra');
     var pageIndicatorindeterminadosCompra = document.getElementById('page-indicator-indeterminados-compra');
     var currentPageindeterminadosCompra = 1;
@@ -321,13 +318,7 @@ function paginateIndeterminadosCompra() {
     document.getElementById('btn-next-indeterminados-compra').addEventListener('click', goToNextPageindeterminadosCompra);
 
     updateTableindeterminadosCompra();
-  });
-}
+  };
 
 
-paginatePrazo()
-paginatePrazoCompra()
-paginateAtraso()
-paginateAtrasoCompra()
-paginateIndeterminados()
-paginateIndeterminadosCompra()
+

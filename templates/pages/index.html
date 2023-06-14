@@ -19,13 +19,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
     <title id="titulo">Início</title>
 </head>
-{% include "header.html" %}
+<main>
+<header>
+  {% include "header.html" %}
+</header>
 <body id="background" class="bg-dark" >
   {% if request.GET.unauthorized %}
     <button type="button" style="display: none;" class="btn btn-primary" id="error" data-bs-toggle="modal" data-bs-target="#modalError">
       Error
     </button>
-    <!-- Modal Solicitação -->
+    <!-- Modal Confirmar Solicitação -->
     <div class="modal fade" id="modalSolicitar" tabindex="-1" aria-labelledby="modalSolicitarLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content" style="background-color: #f7f7f7;background-image: radial-gradient(  circle,  #ddd 1px,  transparent 1px);background-size: 10px 10px;background-position: 0 0, 5px 5px;">
@@ -138,7 +141,10 @@
 
   </section>           
 </body>
-{% include "footer.html" %}
+<footer>
+  {% include "footer.html" %}
+</footer>
+</main>
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 {% endblock %}
@@ -201,7 +207,6 @@ footer {
     text-shadow: 5px 5px 15px black;
 }
 </style>
-<!--estilos dos cards-->
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Genos:wght@700&display=swap');
 

@@ -44,7 +44,7 @@
   {% endif %}
 <section id="login">
     <div class="container-fluid d-flex justify-content-center" >
-        <div class="card bg-light shadow">
+        <div class="card bg-light shadow" style="margin-top: 50px;">
                     <div class="mt-2" style="border-bottom: 0;font-size: 20px;justify-content: center;display: flex; letter-spacing: 3px; text-shadow: 2px 1px 2px #c9c9c9;">
                         Login
                     </div>
@@ -103,21 +103,21 @@
                                 <input type="password" onchange="empty_erro()" style="font-size: 12px;" class="form-control" id="password2" name="password2">
                                 <p id="senhasDiferentes" class="mt-2 mb-0 justify-content-center" style="color: red; display: none;">Senhas não conferem</p>
                             </div>
-                            <div class="mb-2" style="justify-content: space-between;display: flex;">
-                                <div class="form-check form-switch">
+                            <div class="mb-2 d-grid">
+                                <div class="form-check form-switch mb-2">
                                     <input type="checkbox" class="form-check-input" name="checkSupr" id="checkSupr">
                                     <label for="checkSupr" class="mb-0 form-label text-dark">Suprimentos</label>
                                 </div>
-                                <div class="form-check form-switch">
+                                <div class="form-check form-switch mb-2">
                                     <input type="checkbox" class="form-check-input" name="checkRh" id="checkRh">
                                     <label for="checkRh" class="mb-0 form-label text-dark">RH</label>
                                 </div>
-                                <div class="form-check form-switch">
+                                <div class="form-check form-switch mb-2">
                                     <input type="checkbox" class="form-check-input" name="checkCom" id="checkCom">
                                     <label for="checkCom" class="mb-0 form-label text-dark">Comercial</label>
                                 </div>
                             </div>
-                            <button id="cadastrar" type="submit" disabled class="btn btn-stanza mt-2 mb-3 shadow" style="width: 100%;">Cadastrar</button>
+                            <button id="cadastrar" type="submit" disabled class="btn btn-stanza shadow" style="width: 100%;">Cadastrar</button>
                         </form>
                     </div>
             </div>

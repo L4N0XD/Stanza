@@ -17,8 +17,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">    
     <title id="titulo">Gráfico de Resultados</title>
 </head>
-{% include "header.html" %}
-<body class="bg-light">
+<main>
+  <header>
+    {% include "header.html" %}
+  </header>
+
+<body id="body" class="bg-light">
 <button style="display: none;" id="modalBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pageModal">
 </button>
 
@@ -107,15 +111,15 @@
         <button type="button" id="BotaoNoPrazo" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NoPrazo" style="display: none;">
           Ver SC entregues no prazo
         </button>
-        {% include "prazo.html" %}
+        <div id="conteudo-atraso"></div>
+        <div id="conteudo-prazo"></div>
+        <div id="conteudo-indeterminados"></div>
         <button type="button" id="BotaoAtrasados" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Atrasados" style="display: none;">
           Ver SC atrasadas
         </button>
-        {% include "atrasados.html" %}
         <button type="button" id="BotaoIndeterminados" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Indeterminados" style="display: none;">
           Ver SC Indeterminadas
         </button>
-        {% include "indeterminados.html" %}
         <div id="barchart_values" style="width: 600px; height: 65%;" class="shadow d-flex justify-content-center align-items-center mt-0 mx-auto"></div>
       </div>
 
@@ -131,7 +135,10 @@
 </section>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-{% include "footer.html" %}
+<footer>
+  {% include "footer.html" %}
+</footer>
+</main>
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 {% endblock %}
@@ -184,7 +191,7 @@
     var selectedItemInd = chartInd.getSelection()[0];
     if (selectedItemInd) {
     if (selectedItemInd.row == 0) {
-      document.getElementById('BotaoIndeterminados').click();
+      add_indeterminados()
   }
 }});
     chartInd.draw(view, options);
@@ -243,7 +250,71 @@ function filtrarObra(valor) {
         $('#button-filtrar').text(selectedOption);
       });
     });
+    
+    
+    function add_prazo() {
+      if (document.getElementById('NoPrazo') == null) {
+        document.getElementById('loading').click();  
 
+        $.ajax({
+        url: "{% url 'conteudo-prazo' nome_obra=nome_obra %}",  // Substitua 'nome_da_view' pelo nome da sua view Django
+        success: function(response) {
+          // Adicione o conteúdo retornado à página
+          $('#conteudo-prazo').html(response);
+          paginatePrazo()
+          paginatePrazoCompra()
+          document.getElementById('BotaoNoPrazo').click(); 
+        },
+        error: function(xhr, status, error) {
+          // Trate erros, se necessário
+        }
+      });
+} else {
+  document.getElementById('BotaoNoPrazo').click(); 
+  }
+}
+
+    function add_atraso() {
+      if (document.getElementById('Atrasados') == null) {
+        document.getElementById('loading').click();  
+        $.ajax({
+          url: "{% url 'conteudo-atraso' nome_obra=nome_obra %}",  // Substitua 'nome_da_view' pelo nome da sua view Django
+          success: function(response) {
+            // Adicione o conteúdo retornado à página
+            $('#conteudo-atraso').html(response);
+            paginateAtraso()
+            paginateAtrasoCompra()
+            document.getElementById('BotaoAtrasados').click();
+
+          },
+          error: function(xhr, status, error) {
+            // Trate erros, se necessário
+          }
+        });
+      } else {
+        document.getElementById('BotaoAtrasados').click();
+      }
+}
+    function add_indeterminados() {
+      if (document.getElementById('Indeterminados') == null) {
+        document.getElementById('loading').click();  
+        $.ajax({
+          url: "{% url 'conteudo-indeterminados' nome_obra=nome_obra %}",  // Substitua 'nome_da_view' pelo nome da sua view Django
+          success: function(response) {
+            // Adicione o conteúdo retornado à página
+            $('#conteudo-indeterminados').html(response);
+            paginateIndeterminados()            
+            paginateIndeterminadosCompra()            
+            document.getElementById('BotaoIndeterminados').click();
+          },
+          error: function(xhr, status, error) {
+            // Trate erros, se necessário
+          }
+        });
+      } else {
+        document.getElementById('BotaoIndeterminados').click();
+      }
+}
  
 
 </script>
@@ -269,36 +340,48 @@ function selecionarFiltro(valor) {
 function atualizarGrafico() {
   const idFiltro = document.getElementById('id_filtro');
   if (idFiltro.value === 'mes_entrega') {
-   document.getElementById('atrasados').style.display = '';
-   document.getElementById('atrasados-compra').style.display = 'none';
-   document.getElementById('tabela-noPrazo').style.display = '';
-   document.getElementById('tabela-noPrazo-compra').style.display = 'none';
-   document.getElementById('tabela-Indeterminados').style.display = '';
-   document.getElementById('tabela-Indeterminados-compra').style.display = 'none';
-   document.getElementById('pagination-buttons-indeterminados').style.display = '';
-   document.getElementById('pagination-buttons-indeterminados-compra').style.display = 'none';
-   document.getElementById('pagination-buttons-atraso').style.display = '';
-   document.getElementById('pagination-buttons-atraso-compra').style.display = 'none';
-   document.getElementById('pagination-buttons-prazo').style.display = '';
-   document.getElementById('pagination-buttons-prazo-compra').style.display = 'none';
-   drawChart(prazo, atraso, 'Pedidos Entregues (Total Atendido)');
-   drawChartInd(ind);
+    if (document.getElementById('Atrasados') != null) {
+      document.getElementById('atrasados').style.display = '';
+      document.getElementById('atrasados-compra').style.display = 'none';
+      document.getElementById('pagination-buttons-atraso').style.display = '';
+      document.getElementById('pagination-buttons-atraso-compra').style.display = 'none';
+    }
+    if (document.getElementById('NoPrazo') != null) {
+      document.getElementById('tabela-noPrazo').style.display = '';
+      document.getElementById('tabela-noPrazo-compra').style.display = 'none';
+      document.getElementById('pagination-buttons-prazo').style.display = '';
+      document.getElementById('pagination-buttons-prazo-compra').style.display = 'none';
+    }
+    if (document.getElementById('Indeterminados') != null) {
+
+      document.getElementById('tabela-Indeterminados').style.display = '';
+      document.getElementById('tabela-Indeterminados-compra').style.display = 'none';
+      document.getElementById('pagination-buttons-indeterminados').style.display = '';
+      document.getElementById('pagination-buttons-indeterminados-compra').style.display = 'none';
+    }
+    drawChart(prazo, atraso, 'Pedidos Entregues (Total Atendido)');
+    drawChartInd(ind);
   } else if (idFiltro.value === 'mes_emissao_pc') {
-    document.getElementById('tabela-noPrazo').style.display = 'none';
-    document.getElementById('tabela-noPrazo-compra').style.display = '';
-    document.getElementById('atrasados').style.display = 'none';
-    document.getElementById('atrasados-compra').style.display = '';
-    document.getElementById('tabela-Indeterminados').style.display = 'none';
-    document.getElementById('tabela-Indeterminados-compra').style.display = '';
-    document.getElementById('pagination-buttons-atraso').style.display = 'none';
-    document.getElementById('pagination-buttons-atraso-compra').style.display = '';
-    document.getElementById('pagination-buttons-prazo').style.display = 'none';
-    document.getElementById('pagination-buttons-prazo-compra').style.display = '';
-    document.getElementById('pagination-buttons-indeterminados').style.display = 'none';
-   document.getElementById('pagination-buttons-indeterminados-compra').style.display = '';
+      if (document.getElementById('NoPrazo') != null) {
+        document.getElementById('tabela-noPrazo').style.display = 'none';
+        document.getElementById('tabela-noPrazo-compra').style.display = '';
+        document.getElementById('pagination-buttons-prazo').style.display = 'none';
+        document.getElementById('pagination-buttons-prazo-compra').style.display = '';
+      } 
+      if (document.getElementById('Atrasados') != null) {
+        document.getElementById('atrasados').style.display = 'none';
+        document.getElementById('atrasados-compra').style.display = '';
+        document.getElementById('pagination-buttons-atraso').style.display = 'none';
+        document.getElementById('pagination-buttons-atraso-compra').style.display = '';
+      }
+      if (document.getElementById('Indeterminados') != null) {
+        document.getElementById('tabela-Indeterminados').style.display = 'none';
+        document.getElementById('tabela-Indeterminados-compra').style.display = '';
+        document.getElementById('pagination-buttons-indeterminados').style.display = 'none';
+      document.getElementById('pagination-buttons-indeterminados-compra').style.display = '';
+      }
     drawChart(prazo_compra, atraso_compra,'Solicitações de Compra (Total Atendido)');
     drawChartInd(ind_compra);
-
   }
 }
 
@@ -355,10 +438,10 @@ function atualizarGrafico() {
     var selectedItem = chart.getSelection()[0];
     if (selectedItem) {
     if (selectedItem.row == 0) {
-      document.getElementById('BotaoNoPrazo').click(); 
+      add_prazo()
     } else if (selectedItem.row == 1) {
-      document.getElementById('BotaoAtrasados').click();
-    //} else if (selectedItem.row == 2) {
+      add_atraso()
+      //} else if (selectedItem.row == 2) {
       //document.getElementById('BotaoIndeterminados').click();
   }
 }});

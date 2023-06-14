@@ -23,15 +23,20 @@
     <title id="titulo">Resultados comercial</title>
 </head>
 <main>
-<header>
+    <header>
     {% include "header.html" %}
-</header>
-<aside class="shadow">
+    </header>
+    <aside class="shadow">
     <div class="container bg-white" id="divSidebar">
         <ul class="nav nav-pills flex-column mb-auto" style="position: fixed; width:14%;" id="ulSidebar">
             <li>
                 <a href="/upload-page-comercial" style="margin-top: 10%;" class="shadow d-flex ms-auto btn btn-roxo mb-5 justify-content-center" >Nova consulta</a>
             </li>    
+                {% if Total_Par_Mensais is not none %}
+                <li>
+                    <p class=" resultados-content btn btn-stanza">MENSAL: <br> {{Total_Par_Mensais}}</p>
+                </li>
+                {% endif %}
                 {% if Total_Par_Men2 is not none %}
                 <li>
                     <p class=" resultados-content btn btn-stanza ">MENSAL 2: <br> {{Total_Par_Men2}}</p>
@@ -42,11 +47,6 @@
                     <p class=" resultados-content btn btn-stanza">ATO: <br> {{Total_Ato}}</p>
                 </li>
                 {% endif %}        
-                {% if Total_Par_Mensais is not none %}
-                <li>
-                    <p class=" resultados-content btn btn-stanza">MENSAL: <br> {{Total_Par_Mensais}}</p>
-                </li>
-                {% endif %}
                 {% if Total_Par_Semestrais is not none %}
                 <li>
                     <p class=" resultados-content btn btn-stanza">SEMESTRAL: <br> {{Total_Par_Semestrais}}</p>
@@ -135,8 +135,8 @@
             <hr>
             </ul>
     </div>
-</aside>
-<div class="modal fade" id="detalhamento" tabindex="-1" aria-labelledby="detalhamentoLabel" aria-hidden="true">
+    </aside>
+    <div class="modal fade" id="detalhamento" tabindex="-1" aria-labelledby="detalhamentoLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centergb(220,53,69) modal-dialog-scrollable modal-fullscreen">
       <div class="modal-content bg-light">
         <div class="modal-header justify-content-center d-flex" style="border-bottom: #fb8306 solid; border-radius: 20px;">
@@ -220,8 +220,8 @@
         </div>
       </div>
     </div>
-</div>
-<div class="modal fade" id="Financiamento" tabindex="-1" aria-labelledby="FinanciamentoLabel" aria-hidden="true">
+    </div>
+    <div class="modal fade" id="Financiamento" tabindex="-1" aria-labelledby="FinanciamentoLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centergb(220,53,69) modal-dialog-scrollable modal-fullscreen">
       <div class="modal-content bg-light">
         <div class="modal-header justify-content-center d-flex" style="border-bottom: #fb8306 solid; border-radius: 20px;">
@@ -305,8 +305,8 @@
         </div>
       </div>
     </div>
-</div>
-<article>
+    </div>
+    <article>
 <body class="bg-light">
 <div id="DadosCliente1" class="col-12 d-flex">
     <p style="font-size: 14px; cursor: context-menu; user-select: text; display: flex; justify-content: space-between; align-items: center; border-radius: 0.375rem 0.375rem 0 0;" class="btn btn-secondary col-md-8 mx-5 mb-0 mt-3">
@@ -419,10 +419,10 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
-</article>
-<footer>
+    </article>
+    <footer>
     {% include "footer.html" %}
-</footer>
+    </footer>
 </main>
 <style>
         main {

@@ -51,5 +51,8 @@ urlpatterns = [
     path('insumo/editar/<int:codigo_insumo>/', views.editar_insumo, name='editar_insumo'),
     path('insumo/excluir/<int:codigo_insumo>/', views.excluir_insumo, name='excluir_insumo'),
     path('filtrar-obras/', views.filtrar_obras, name='filtrar-obras'),
+    path('conteudo-prazo/<str:nome_obra>/', views.conteudo_prazo, name='conteudo-prazo'),
+    path('conteudo-atraso/<str:nome_obra>/', views.conteudo_atraso, name='conteudo-atraso'),
+    path('conteudo-indeterminados/<str:nome_obra>/', views.conteudo_indeterminados, name='conteudo-indeterminados'),
 
 ]

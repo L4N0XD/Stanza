@@ -642,16 +642,10 @@ def filtrar_obras(request):
 
             return render(request, 'graphic.html', 
             {'nome_obra': nome_obra, 
-            'atrasados': atrasados, 
-            'entregues': entregues, 
-            'indeterminados':indeterminados, 
             'noprazo': noprazo, 
             'atraso': atraso,
             'nomes': nomes,
             'ind': ind,
-            'atrasados_compra': atrasados_compra, 
-            'entregues_compra': entregues_compra, 
-            'indeterminados_compra':indeterminados_compra, 
             'noprazo_compra': noprazo_compra, 
             'atraso_compra': atraso_compra,
             'ind_compra': ind_compra,
@@ -660,6 +654,54 @@ def filtrar_obras(request):
             'filtro_obra': True,
             'filtro': False
             })
+
+def conteudo_prazo(request, nome_obra):
+    nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
+    if nome_obra not in nomes:
+        entregues =  Dados.objects.filter(status_entregue='NoPrazo')
+        entregues_compra =  Dados.objects.filter(status_compra='NoPrazo')
+    else: 
+        entregues =  Dados.objects.filter(nome_obra=nome_obra, status_entregue='NoPrazo')
+        entregues_compra =  Dados.objects.filter(nome_obra=nome_obra, status_compra='NoPrazo')
+
+    context = {
+    'entregues': entregues, 
+    'entregues_compra': entregues_compra,}
+
+    return render(request, 'prazo.html', context)
+
+def conteudo_atraso(request, nome_obra):
+    nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
+    if nome_obra not in nomes:
+        atrasados =  Dados.objects.filter(status_entregue='Atrasado')
+        atrasados_compra =  Dados.objects.filter(status_compra='Atrasado')
+    else: 
+        atrasados =  Dados.objects.filter(nome_obra=nome_obra, status_entregue='Atrasado')
+        atrasados_compra =  Dados.objects.filter(nome_obra=nome_obra, status_compra='Atrasado')
+
+
+    context = {
+    'atrasados': atrasados, 
+    'atrasados_compra': atrasados_compra, 
+}
+
+    return render(request, 'atrasados.html', context)
+
+def conteudo_indeterminados(request, nome_obra):
+    nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
+    if nome_obra not in nomes:
+        indeterminados = Dados.objects.filter(status_entregue='Indeterminado')
+        indeterminados_compra = Dados.objects.filter(status_compra='Indeterminado')
+    else: 
+        indeterminados = Dados.objects.filter(nome_obra=nome_obra, status_entregue='Indeterminado')
+        indeterminados_compra = Dados.objects.filter(nome_obra=nome_obra, status_compra='Indeterminado')
+
+    context = {
+    'indeterminados':indeterminados, 
+    'indeterminados_compra':indeterminados_compra, 
+}
+
+    return render(request, 'indeterminados.html', context)
 
 #Renderiza a página de resultados de SC
 def results_obras(request):
@@ -687,16 +729,12 @@ def results_obras(request):
     return render(request, 'graphic.html', 
     {'nome_obra': nome_obra, 
     'atrasados': atrasados, 
-    'entregues': entregues, 
-    'indeterminados':indeterminados, 
     'form': FiltroForm(), 
     'noprazo': noprazo, 
     'atraso': atraso,
     'nomes': nomes,
     'ind': ind,
     'atrasados_compra': atrasados_compra, 
-    'entregues_compra': entregues_compra, 
-    'indeterminados_compra':indeterminados_compra, 
     'noprazo_compra': noprazo_compra, 
     'atraso_compra': atraso_compra,
     'ind_compra': ind_compra,

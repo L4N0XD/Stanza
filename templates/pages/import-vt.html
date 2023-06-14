@@ -20,7 +20,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">    
     <title id="titulo">Resultados Importação VT</title>
 </head>
-{% include "header.html" %}
+<main>
+<header>
+    {% include "header.html" %}
+</header>
 <body class="bg-light">
     
     
@@ -79,33 +82,33 @@
     
     </div>
     </div>
-    </body>
+</body>
+<footer>
     {% include "footer.html" %}
-    <style>
-        @media (max-width: 768px) {
-            #divSidebar{
-    
-                width: 12%;
-            }
+</footer>
+</main>
+<style>
+    @media (max-width: 768px) {
+        #divSidebar{
+
+            width: 12%;
         }
-    </style>
-    <script>
-        var footer = document.querySelector(".footer-container")
-        footer.style.bottom = 'auto'
-        footer.style.marginTop = '15px'
-        footer.style.bottom = '';
-        footer.style.position = '';
-        footer.style.transform = '';
-        footer.style.marginBottom = '15px';
-        dados = document.querySelectorAll('.dadosTabela');
-        dados.forEach(function(dado) {
-          if (dado.textContent === 'None') {
-            dado.textContent = '';
-          }
-        });
-
-        document.querySelector('.col-2.footer-container').style.width = '100%';
-
-
-    </script>
-    </html>
+    }
+</style>
+<script>
+    var footer = document.querySelector(".footer-container")
+    footer.style.bottom = 'auto'
+    footer.style.marginTop = '15px'
+    footer.style.bottom = '';
+    footer.style.position = '';
+    footer.style.transform = '';
+    footer.style.marginBottom = '15px';
+    dados = document.querySelectorAll('.dadosTabela');
+    dados.forEach(function(dado) {
+      if (dado.textContent === 'None') {
+        dado.textContent = '';
+      }
+    });
+    document.querySelector('.col-2.footer-container').style.width = '100%';
+</script>
+</html>

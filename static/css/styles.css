@@ -58,11 +58,11 @@
     .card.bg-light.shadow {
       background: linear-gradient(135deg, rgb(161 232 255 / 10%), rgb(121 218 255 / 0%))!important;
       min-width: 400px !important;
-      margin-top: 50px;
+      margin-top: 20px;
       -webkit-backdrop-filter: blur(2px);
       backdrop-filter: blur(1px);
       border-radius: 30px;
-      padding: 0 50px 50px 50px;
+      padding: 0 50px 25px 50px;
     }
     .card.bg-light.shadow:hover {
       animation: moveUp 0.5s forwards;
