@@ -72,9 +72,13 @@
         <li>
           <div id="columnchart_values" class="mt-4 d-flex justify-content-center"></div>
         </li>
+        {% if filtro == True%}
+        <li>
+        {% else %}
         <li class="mt-2">
           <hr style="margin-top: 20%;">
-          <a href="/upload-page-obras" style="width: 100%;font-size: 16px; margin-top: 20%;" class="shadow d-flex ms-auto btn btn-roxo mb-5 justify-content-center" >Nova consulta</a>
+        {% endif %}
+          <a href="/upload-page-obras" style="margin-top: 20%;" class="shadow d-flex ms-auto btn btn-roxo mb-5 justify-content-center" >Nova consulta</a>
         </li>  
     </ul>
   </div>

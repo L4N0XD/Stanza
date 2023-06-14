@@ -76,7 +76,7 @@
         </thead>
         <tbody>
             {% for real in reais %}
-            {% if real.matricula != none %}
+            {% if real.pagar > 0 %}
                 <tr>
                     <th class="tabela" style="font-size: 14px">{{real.matricula}}</th>
                     <td class="tabela" style="font-size: 14px">{{real.cpf}}</td>

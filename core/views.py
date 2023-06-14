@@ -439,7 +439,7 @@ def download_txt_analise(request, nome_obra):
     reais = DadosRH.objects.all()
     response.write('0200\n')
     for real in reais:
-        if real.matricula and real.dias_contabilizados and real.dias_contabilizados > 0:
+        if real.pagar > 0 and real.dias_contabilizados and real.dias_contabilizados > 0:
                     response.write('{0}|{1}|{2}|{3}\n'.format(
                         real.cpf,
                         real.dias_contabilizados,
@@ -459,7 +459,7 @@ def download_txt_desconto(request, nome_obra):
 
     reais = DadosRH.objects.all()
     for real in reais:
-        if real.matricula and real.codigo_desconto_vt:
+        if real.codigo_desconto_vt:
             response.write(f'{real.codigo_desconto_vt} \n')
 
 
