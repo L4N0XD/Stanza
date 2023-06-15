@@ -54,6 +54,15 @@
       background-repeat: no-repeat;
       text-align: center;
     }
+    .title-page.error{
+      font-family: 'Nanum Gothic Coding', monospace, bold;
+      font-weight: bold;
+      font-size: 30px;
+      margin-top: 25px;
+      cursor: context-menu;
+      color: red;
+      text-align: center;
+    }
 
     .card.bg-light.shadow {
       background: linear-gradient(135deg, rgb(161 232 255 / 10%), rgb(121 218 255 / 0%))!important;

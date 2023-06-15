@@ -40,6 +40,8 @@ def solicitar_acesso(request):
     logout(request)
     return render(request, 'login.html', {'Sucesso': 'Inclusão solicitada com sucesso!'})
 
+def erro(request, msg):
+    return render(request, 'error.html',{'msg':msg})
 @require_POST
 #cadastra novo usuario
 def cadastro(request):
@@ -153,7 +155,10 @@ def upload(request):
                     tmp.write(chunk)
             dados_xls = pd.read_excel(tmp.name)
             os.unlink(tmp.name)
-            dados_obras(dados_xls, request)
+            try:
+                dados_obras(dados_xls, request)
+            except (KeyError, IndexError) as msg:
+                return(redirect('erro', msg=str(msg)))
             return(redirect('results-obras'))
         else:
             return(redirect('upload-page-obras'))
@@ -211,7 +216,10 @@ def upload_rh(request):
             dados_xls2 = pd.read_excel(tmp.name)
             os.unlink(tmp.name)
 
-            dados_rh(dados_xls, dados_xls2, (int(dias_uteis)), dados_xls0)
+            try:
+                dados_rh(dados_xls, dados_xls2, (int(dias_uteis)), dados_xls0)
+            except (KeyError, IndexError) as msg:
+                return(redirect('erro', msg=str(msg)))
             return(redirect('results-rh'))
         else:
             return render(request, 'upload-page-rh.html')
@@ -939,7 +947,10 @@ def upload_vt(request):
                     tmp.write(chunk)
             dados_xls = pd.read_excel(tmp.name)
             os.unlink(tmp.name)
-            dados_vt(dados_xls, request)
+            try:
+                dados_vt(dados_xls, request)
+            except (KeyError, IndexError) as msg:
+                return(redirect('erro', msg=str(msg)))
             return(redirect('import-vt'))
         else:
             return(redirect('upload-import-vt'))
@@ -1564,7 +1575,10 @@ def upload_comercial(request):
                     tmp.write(chunk)
             dados_xls = pd.read_excel(tmp.name)
             os.unlink(tmp.name)
-            dados_comercial(dados_xls, request)
+            try:
+                dados_comercial(dados_xls, request)
+            except (KeyError, IndexError) as msg:
+                return(redirect('erro', msg=str(msg)))
             return(redirect('comercial'))
         else:
             return(redirect('upload-page-comercial'))

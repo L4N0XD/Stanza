@@ -54,5 +54,6 @@ urlpatterns = [
     path('conteudo-prazo/<str:nome_obra>/', views.conteudo_prazo, name='conteudo-prazo'),
     path('conteudo-atraso/<str:nome_obra>/', views.conteudo_atraso, name='conteudo-atraso'),
     path('conteudo-indeterminados/<str:nome_obra>/', views.conteudo_indeterminados, name='conteudo-indeterminados'),
+    path('erro/<str:msg>/', views.erro, name='erro'),
 
 ]
