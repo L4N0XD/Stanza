@@ -15,6 +15,8 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+MEDIA_ROOT = os.path.join(BASE_DIR, 'documentos')
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -22,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-48f=_ro^(n4z#9fs8hb6bt@zv==l-94%wn7qy2c-6c$%w^@^)o'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

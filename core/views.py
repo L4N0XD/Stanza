@@ -1,21 +1,31 @@
-from django.shortcuts import render, redirect, reverse
-from django.db.models import Q
+from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial, DadosVT, Minutas
+from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH, FiltrarObras
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+import tempfile, os, math, time, locale, numero_por_extenso, collections
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum
+from django.shortcuts import render, redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.models import Group
-from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.http import require_POST
-from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial, DadosVT
-from core.models import ExtendedUser as User
-from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH, FiltrarObras
 from datetime import datetime, timedelta, date
-import tempfile, os, math, time, locale, numero_por_extenso, collections
+from django.core.files.base import ContentFile
+from django.contrib.auth.models import Group
+from core.models import ExtendedUser as User
+from pdf2image import convert_from_bytes
+from django.db.models import Sum
+from django.db.models import Q
+from PyPDF2 import PdfReader
+from io import BytesIO
+from PIL import Image
 import pandas as pd
 import numpy as np
+import docx2pdf
+import tempfile
 import re
+import os
+
 
 
 #Verifica se o usuário pertence ao grupo para o qual ele fez solicitação de análise
@@ -1585,3 +1595,69 @@ def upload_comercial(request):
     else:
         return(redirect('upload-page-comercial'))
     
+def selecionar_minutas(request):
+    minutas = Minutas.objects.all()
+    tamanho = len(minutas)
+    raio = range(tamanho)
+    for u in range(tamanho):
+        if u % 2 == 0:
+            print(minutas[u].nome)
+    return render(request, 'minutas.html', {'minutas': minutas})
+
+def upload_minutas(request):
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            arquivo = request.FILES['arquivo']
+            nome = arquivo.name
+            nome = nome.rsplit('.', 1)[0]
+            nome = nome.replace('_', ' ')
+            nome = re.sub(r'[^a-zA-ZçáàâÃÇÁÀÂÉÊÍÓÕÔÚãéêíóôõúü\s]', '', nome)
+            nome = re.sub(r'\d+', '', nome)
+            nome = re.sub(r'minuta', '', nome, flags=re.IGNORECASE)
+            nome = nome.lstrip()
+            nome = nome.upper()
+            
+            #previa = generate_preview(arquivo)
+
+            dados = Minutas(nome=nome, arquivo=arquivo)#, previa=previa)
+
+            dados.save()
+            return(redirect('selecionar-minutas'))
+        else:
+            return(redirect('upload-import-vt'))
+    else:
+        return(redirect('upload-import-vt'))
+    
+#def generate_preview(file):
+#    file_extension = os.path.splitext(file.name)[1].lower()
+
+#    if file_extension == '.docx' or file_extension == '.doc':
+#        docx_file = file.read()
+#        pdf_file = docx2pdf.convert(BytesIO(docx_file))
+#        if file_extension == '.docx':
+#            file = InMemoryUploadedFile(pdf_file, None, file.name.replace('.docx', '.pdf'), 'application/pdf', pdf_file.tell, None)
+#        elif file_extension == '.doc':
+#            file = InMemoryUploadedFile(pdf_file, None, file.name.replace('.doc', '.pdf'), 'application/pdf', pdf_file.tell, None)
+
+#    if file_extension == '.pdf':
+#        # Convert the first page to an image
+#        pdf_bytes = file.read()
+#        images = convert_from_bytes(pdf_bytes)
+#        preview_image = images[0]
+
+#    else:
+#        # Unsupported file format
+#        return None
+
+#    # Create a temporary file to save the image
+#    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+#        preview_image.save(temp_file, format='PNG')
+#        temp_file.seek(0)
+
+#        # Create an InMemoryUploadedFile from the temporary file path
+#        preview_file = InMemoryUploadedFile(temp_file, None, f'{file.name}_preview.png', 'image/png', temp_file.tell, None)
+
+#    return preview_file
+
+

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Taylan Noronha">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="icon" href="https://stanza.com.br/wp-content/uploads/2021/09/cropped-ms-icon-310x310-1-32x32.png" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!---------------------------------------------------------------------------------------------------->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+    <title id="titulo">Minutas</title>
+</head>
+<main>
+<header>
+  {% include "header.html" %}
+</header>
+<body class="bg-light" >
+    <div class="modal fade" id="modalMinutas" tabindex="-1" aria-labelledby="modalMinutasLabel" aria-hidden="true">
+        <div class="modal-dialog bg-light" style="border-radius: 10%;">
+          <div class="modal-content bg-light">
+            <div class="modal-header bg-light mb-3" style="border-bottom: #fb8306 solid; border-radius: 20px;">
+              <h1 class="modal-title fs-5 text-stanza mx-auto" id="modalMinutasLabel">Enviar Minuta</h1>
+            </div>
+            <div class="modal-body bg-light" style="border-radius: 10%;">
+              <form id='novaMinuta' method="POST" action="{% url 'upload-minutas' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="input-group mb-3" style="justify-content: center;">                            
+                  <div class="form-group"style="width:80%; " >
+                    <div class="input-group mb-3">
+                      <span class="input-group-text material-symbols-outlined" id="basic-addon1">upload_file</span>
+                      <input type="file" class="form-control" id="arquivo" style="height: 40px; border: 1px rgb(123, 123, 123) solid;" name="arquivo">
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer bg-light" style="border-top: #fb8306 solid; border-radius: 20px;">
+                  <button id="salvarMinuta"class="shadow btn btn-stanza" type="submit">Salvar</button>
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  <section class="d-flex justify-content-center" style="flex-wrap: wrap;">
+    <div id="section-cards" class="card bg-light shadow">
+      <h4 class="section-title text-stanza mx-auto mb-3" style="margin-top: 5px;">Minutas</h4>
+        <div class="itens cards d-flex mb-4">
+          {% for minuta in minutas %}
+          <div class="card-complete">
+            <div class="card-body">
+            {% csrf_token %}
+            <form action="">
+              <h5 class="card-title mt-1 mb-2 underline text">{{minuta.nome}}</h5>
+              <p class="card-text text">{{minuta.arquivo}} </p>
+              <p class="card-text text">{{forloop.counter}} </p>
+              <a target="_blank" class="btn cards-btn shadow" id="see-more">Selecionar</a>
+            </form>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        
+      </div>
+    </div> 
+    <button type="button" id="cadastrarMinuta" class="shadow btn btn-stanza mx-auto mt-5 " style="width: 20%; border-radius: 7px; height: 60%;" data-bs-toggle="modal" data-bs-target="#modalMinutas"> Adicionar Minuta </button>   
+  </section>           
+</body>
+<footer>
+  {% include "footer.html" %}
+</footer>
+</main>
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+
+
+.container-xxl.p-2.col-md-12 {
+    background: linear-gradient(135deg, rgb(161 232 255 / 10%), rgb(121 218 255 / 0%));
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    box-shadow: 0 8px 32px 0 rgb(154 228 255 / 37%);
+    border: 1px solid rgb(213, 254, 255);
+    border-radius: 32px;
+    position: absolute;
+    z-index: 3;
+    text-align: center;
+}
+
+    
+    @media (max-width: 768px) { 
+    .container.col-2.footer-container{
+    bottom: 0;
+    align-items: end;
+    left: 50%;
+    display: contents;
+    transform: translate(-50%, -50%);
+}
+     }
+footer {
+  bottom: 0%;
+  position: absolute;
+  width: 100%;
+}
+
+
+</style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Genos:wght@700&display=swap');
+
+:root {
+    --primary-color:#ffa341;
+    --primary-color-contrast:#6e52bf;
+    --field-background-color:  #14213D;;
+    --second-text-color: #929292;
+    --primary-text-color: #FFFFFF;
+
+}
+
+
+.text{
+    color: var(--second-text-color);
+    margin-top: auto;
+    margin-bottom: auto;
+    font-family: 'Urbanist', sans-serif;
+}
+
+.section-title {
+    font-size: 30px;
+    margin-top: 50px;
+    text-align: center;
+    font-family: 'Urbanist', sans-serif;
+    text-shadow: 5px 5px 15px black;
+
+}
+
+
+.btn {
+    
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color:  white;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+    transition: color 0.5s ease-in-out;
+  }
+
+  .btn:hover {
+    color: rgb(255, 255, 255);
+    transition: all 1s ease-in-out;
+    
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #df304e;
+    border-radius: 5px;
+    width: 0;
+    height: 100%;
+    z-index: -1;
+    transition: all 0.5s ease-in-out;
+}
+
+.btn:hover::before {
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+  }
+
+  
+  #section-cards {
+    width: 85%;
+    height: 70%;
+    top: 15%;
+  }
+
+.itens {
+  flex-wrap: wrap;
+}
+
+.cards.d-flex {
+    gap: 0.4rem;
+}
+
+
+.card-complete, .card {
+    background-color: white !important;
+    position: relative;
+
+}
+.card-complete{
+    border-radius: 2rem !important;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.35)!important;
+
+}
+
+
+.cards > div {
+    flex: 1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4)!important;
+    text-align: center;
+    overflow: hidden;
+    max-height: 60px;
+    flex-basis: 200px
+
+}
+
+
+.cards > div:hover {
+    flex: 2;
+    max-height: 12rem;
+    flex-basis: 250px
+    
+}
+
+.cards > div .card-text{
+    max-height: 150px; 
+    overflow: hidden;
+    word-wrap: break-word;
+    font-size: 14px;
+    padding-inline: 20px;
+    
+}
+
+.cards > div:hover .card-text {
+    max-height: 200px;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4); 
+    word-wrap: break-word;
+    
+}
+
+
+.card-text {
+    overflow: hidden;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4); 
+    font-size: 12px;
+    text-align: justify;
+    
+
+}
+
+
+
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0.5rem 1rem 1.25rem 1rem;
+  }
+  
+
+.cards-btn {
+    opacity: 0;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4);
+    display: none;
+}
+
+.card-complete:hover .cards-btn {
+    opacity: 1;
+    margin-bottom: 10px;
+    display: block;
+    margin-top: 20px;
+}
+.card-title{
+    margin: 0 0 .75rem 0;
+    
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Urbanist', sans-serif;
+    color: black;
+    
+}
+
+
+
+
+@media (max-width: 767px) {
+.card-complete {
+    flex: 1;
+    border-radius: 2rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4);
+    text-align: center;
+    max-height: 270px;
+    overflow: hidden;
+
+    
+}
+
+.card-complete:hover {
+    flex: 2.5;
+
+
+}
+
+}
+      
+</style>
+<script>
+    var footer = document.querySelector(".footer-container")
+    var textFooter = document.querySelectorAll('.footer-text')[0];
+    var textFooter2 = document.querySelectorAll('.footer-text')[1];
+
+
+    footer.style.bottom = '';
+    footer.style.position = '';
+    footer.style.transform = '';
+    footer.style.marginBottom = '15px';
+    footer.style.width = '100%';
+
+</script>
+</html>

@@ -9,12 +9,6 @@
     position: relative;
     }
 
-    #section-cards {
-      max-width: 85%;
-      max-height: 70%; 
-      top: 15%;
-      
-    }  
 
 .nav-link, .dropdown-item.navdrop{
   font-family: 'Urbanist', sans-serif;
@@ -156,7 +150,11 @@ body {
   top: 15%;
   
 }  
- 
+
+.text-stanza {
+  color: #fb8306;
+  text-shadow: none!important;
+}
 
 
 .btn-outline-stanza {
