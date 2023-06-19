@@ -57,12 +57,12 @@
           {% for minuta in minutas %}
           <div class="card-complete">
             <div class="card-body">
-            {% csrf_token %}
-            <form action="">
+              <form action="{% url 'minuta-selecionada' %}" id="minuta-selecionada" role="search" method="POST">
+              {% csrf_token %}
               <h5 class="card-title mt-1 mb-2 underline text">{{minuta.nome}}</h5>
-              <p class="card-text text">{{minuta.arquivo}} </p>
-              <p class="card-text text">{{forloop.counter}} </p>
-              <a target="_blank" class="btn cards-btn shadow" id="see-more">Selecionar</a>
+              <input type="hidden" name="nome_minuta" required id="{{minuta.nome}}" value="">
+              <a target="_blank" class="btn cards-btn shadow" onclick="SelecionarMinuta('{{ minuta.nome }}', '{{ forloop.counter }}')" id="see-more">Selecionar</a>
+              <button id="enviar_{{forloop.counter}}" type="submit" style="display: none;"></button>
             </form>
             </div>
           </div>
@@ -222,7 +222,8 @@ footer {
     text-align: center;
     overflow: hidden;
     max-height: 60px;
-    flex-basis: 200px
+    flex-basis: 100px;
+    border: 1px solid #6e52bf;
 
 }
 
@@ -324,6 +325,13 @@ footer {
       
 </style>
 <script>
+  function SelecionarMinuta(valor, forloop) {
+    var idbutton = 'enviar_' + forloop
+    console.log(valor, forloop, idbutton);
+  document.getElementById(valor).value = valor;
+  document.getElementById(idbutton).click();
+}
+
     var footer = document.querySelector(".footer-container")
     var textFooter = document.querySelectorAll('.footer-text')[0];
     var textFooter2 = document.querySelectorAll('.footer-text')[1];

@@ -9,6 +9,9 @@ class FiltroForm(forms.Form):
 class FiltrarObras(forms.Form):
     nome_da_obra = forms.CharField(widget=forms.HiddenInput(), required=True)
 
+class MinutaSelecionada(forms.Form):
+    nome_minuta = forms.CharField(widget=forms.HiddenInput(), required=True)
+
 
 class UploadForm(forms.Form):
     arquivo = forms.FileField(required=True)

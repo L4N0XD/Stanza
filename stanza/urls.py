@@ -57,5 +57,6 @@ urlpatterns = [
     path('erro/<str:msg>/', views.erro, name='erro'),
     path('selecionar-minutas/', views.selecionar_minutas, name='selecionar-minutas'),
     path('upload-minutas/', views.upload_minutas, name='upload-minutas'),
+    path('minuta-selecionada/', views.minuta_selecionada, name='minuta-selecionada'),
 
 ]

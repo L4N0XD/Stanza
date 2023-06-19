@@ -1,8 +1,7 @@
 from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial, DadosVT, Minutas
-from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH, FiltrarObras
+from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH, FiltrarObras, MinutaSelecionada
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 import tempfile, os, math, time, locale, numero_por_extenso, collections
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -10,21 +9,18 @@ from django.shortcuts import render, redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_POST
 from datetime import datetime, timedelta, date
-from django.core.files.base import ContentFile
 from django.contrib.auth.models import Group
 from core.models import ExtendedUser as User
-from pdf2image import convert_from_bytes
 from django.db.models import Sum
 from django.db.models import Q
-from PyPDF2 import PdfReader
-from io import BytesIO
-from PIL import Image
 import pandas as pd
 import numpy as np
-import docx2pdf
 import tempfile
 import re
 import os
+from mammoth import convert_to_html
+import aspose.words as aw
+from io import BytesIO
 
 
 
@@ -1597,11 +1593,6 @@ def upload_comercial(request):
     
 def selecionar_minutas(request):
     minutas = Minutas.objects.all()
-    tamanho = len(minutas)
-    raio = range(tamanho)
-    for u in range(tamanho):
-        if u % 2 == 0:
-            print(minutas[u].nome)
     return render(request, 'minutas.html', {'minutas': minutas})
 
 def upload_minutas(request):
@@ -1624,6 +1615,23 @@ def upload_minutas(request):
 
             dados.save()
             return(redirect('selecionar-minutas'))
+        else:
+            return(redirect('upload-import-vt'))
+    else:
+        return(redirect('upload-import-vt'))
+
+def minuta_selecionada(request):
+    if request.method == 'POST':
+        form = MinutaSelecionada(request.POST)
+        if form.is_valid():
+            nome_minuta = request.POST['nome_minuta']
+            minuta = Minutas.objects.get(nome=nome_minuta)
+            doc = aw.Document(minuta.arquivo.path)
+            
+            doc.save(f'documentos/{minuta.nome}.html')
+            with open(f'documentos/{minuta.nome}.html', 'r', encoding='utf-8') as file:
+                html = file.read()
+            return render(request, 'editar_minuta.html', {'document': html, 'minuta': minuta})
         else:
             return(redirect('upload-import-vt'))
     else:

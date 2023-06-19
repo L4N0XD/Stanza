@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Taylan Noronha">
+    <link rel="icon" href="https://stanza.com.br/wp-content/uploads/2021/09/cropped-ms-icon-310x310-1-32x32.png" type="image/png">
+    <title>{{minuta.nome}}</title>
+</head>
+<body>
+<div id="document" contenteditable>
+    {{ document|safe }}
+</div>
+</body>
+<script>
+var imgElements = document.getElementsByTagName("img");
+var imgArray = Array.from(imgElements);
+
+imgArray.forEach(function(img) {
+  img.parentNode.removeChild(img);
+});
+
+var elements = document.querySelectorAll('span[style="font-weight:bold; color:#ff0000"]');
+
+elements.forEach(function(element) {
+  element.parentNode.removeChild(element);
+});
+</script>
+<style>
+    #document{
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+}
+</style>
+</html>
