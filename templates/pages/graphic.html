@@ -111,9 +111,9 @@
         <button type="button" id="BotaoNoPrazo" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NoPrazo" style="display: none;">
           Ver SC entregues no prazo
         </button>
-        <div id="conteudo-atraso"></div>
-        <div id="conteudo-prazo"></div>
-        <div id="conteudo-indeterminados"></div>
+        <div id="conteudo-atraso">{% if filtro == True %}{% include "atrasados.html" %}{% endif %} </div>
+        <div id="conteudo-prazo">{% if filtro == True %}{% include "prazo.html" %}{% endif %}</div>
+        <div id="conteudo-indeterminados">{% if filtro == True %}{% include "indeterminados.html" %}{% endif %}</div>
         <button type="button" id="BotaoAtrasados" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Atrasados" style="display: none;">
           Ver SC atrasadas
         </button>
@@ -244,6 +244,10 @@ function filtrarObra(valor) {
 
 </script>
 <script>
+  paginateP = false;
+  paginateA = false;
+  paginateI = false;
+
     $(document).ready(function() {
       $('.filtro-dropdown a').click(function() {
         var selectedOption = $(this).text();
@@ -263,6 +267,7 @@ function filtrarObra(valor) {
           $('#conteudo-prazo').html(response);
           paginatePrazo()
           paginatePrazoCompra()
+          paginateP = true
           document.getElementById('BotaoNoPrazo').click(); 
         },
         error: function(xhr, status, error) {
@@ -270,6 +275,11 @@ function filtrarObra(valor) {
         }
       });
 } else {
+  if (paginateP == false) {
+  paginatePrazo()
+  paginatePrazoCompra()
+  paginateP = true
+  }
   document.getElementById('BotaoNoPrazo').click(); 
   }
 }
@@ -284,6 +294,7 @@ function filtrarObra(valor) {
             $('#conteudo-atraso').html(response);
             paginateAtraso()
             paginateAtrasoCompra()
+            paginateA = true
             document.getElementById('BotaoAtrasados').click();
 
           },
@@ -292,6 +303,11 @@ function filtrarObra(valor) {
           }
         });
       } else {
+        if (paginateA == false) {
+        paginateAtraso()
+        paginateAtrasoCompra()
+        paginateA = true
+        }
         document.getElementById('BotaoAtrasados').click();
       }
 }
@@ -304,7 +320,8 @@ function filtrarObra(valor) {
             // Adicione o conteúdo retornado à página
             $('#conteudo-indeterminados').html(response);
             paginateIndeterminados()            
-            paginateIndeterminadosCompra()            
+            paginateIndeterminadosCompra()     
+            paginateI = true       
             document.getElementById('BotaoIndeterminados').click();
           },
           error: function(xhr, status, error) {
@@ -312,6 +329,11 @@ function filtrarObra(valor) {
           }
         });
       } else {
+        if (paginateI == false) {
+          paginateIndeterminados()            
+          paginateIndeterminadosCompra()
+          paginateI = true
+        }
         document.getElementById('BotaoIndeterminados').click();
       }
 }

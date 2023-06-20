@@ -8,7 +8,6 @@ import os
 class Minutas(models.Model):
     nome = models.CharField(max_length=100, primary_key=True)
     arquivo = models.FileField(null=True, default=None)
-    previa = models.ImageField(default=None, blank=True, null=True)
 
 
 

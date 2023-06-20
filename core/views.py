@@ -13,12 +13,12 @@ from django.contrib.auth.models import Group
 from core.models import ExtendedUser as User
 from django.db.models import Sum
 from django.db.models import Q
+import aspose.words as aw
 import pandas as pd
 import numpy as np
 import tempfile
 import re
 import os
-import aspose.words as aw
 
 
 
@@ -45,8 +45,8 @@ def solicitar_acesso(request):
     logout(request)
     return render(request, 'login.html', {'Sucesso': 'Inclusão solicitada com sucesso!'})
 
-def erro(request, msg):
-    return render(request, 'error.html',{'msg':msg})
+def erro(request, msg, error, pagina):
+    return render(request, 'error.html',{'msg':msg, 'error':error, 'pagina':pagina})
 @require_POST
 #cadastra novo usuario
 def cadastro(request):
@@ -162,8 +162,11 @@ def upload(request):
             os.unlink(tmp.name)
             try:
                 dados_obras(dados_xls, request)
-            except (KeyError, IndexError) as msg:
-                return(redirect('erro', msg=str(msg)))
+            except KeyError as msg:
+                return redirect('erro', msg=str(msg), error=str(False), pagina='upload-page-obras')
+            except IndexError:
+                msg = "Arquivo Inválido, verifique o(s) arquivo(s) enviado(s) e tente novamente!"
+                return redirect('erro', msg=str(msg), error=str(True), pagina='upload-page-obras')
             return(redirect('results-obras'))
         else:
             return(redirect('upload-page-obras'))
@@ -223,8 +226,11 @@ def upload_rh(request):
 
             try:
                 dados_rh(dados_xls, dados_xls2, (int(dias_uteis)), dados_xls0)
-            except (KeyError, IndexError) as msg:
-                return(redirect('erro', msg=str(msg)))
+            except KeyError as msg:
+                return redirect('erro', msg=str(msg), error=str(False), pagina='upload-page-rh')
+            except IndexError:
+                msg = "Arquivo Inválido, verifique o(s) arquivo(s) enviado(s) e tente novamente!"
+                return redirect('erro', msg=str(msg), error=str(True), pagina='upload-page-rh' )
             return(redirect('results-rh'))
         else:
             return render(request, 'upload-page-rh.html')
@@ -827,6 +833,7 @@ def filtrar(request):
             nome_da_obra = form.cleaned_data['filtrar_nome_da_obra']
             nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
             nome_obra = (f'{nome_da_obra} ')
+            print(nome_obra)
             if filtro == 'mes_entrega':
                 if nome_obra not in nomes:
                     objetos_filtrados = Dados.objects.filter(Q(data_prev_final__gte=data_inicial), Q(data_prev_final__lte=data_final))
@@ -836,6 +843,7 @@ def filtrar(request):
                     atrasados_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Atrasado')
                     entregues_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='NoPrazo')
                     indeterminados_compra = objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Indeterminado')
+                    filtro_obra = False                   
                 else:
                     objetos_filtrados = Dados.objects.filter(nome_obra=nome_obra, data_prev_final__gte=data_inicial, data_prev_final__lte=data_final)
                     atrasados =  objetos_filtrados.filter(nome_obra=nome_obra, status_entregue='Atrasado')
@@ -844,6 +852,8 @@ def filtrar(request):
                     atrasados_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Atrasado')
                     entregues_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='NoPrazo')
                     indeterminados_compra = objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Indeterminado')
+                    filtro_obra = True                   
+
 
                 legenda = 'Pedidos Entregues (Total Atendido)'
             elif filtro == 'mes_emissao_pc':
@@ -855,6 +865,7 @@ def filtrar(request):
                     atrasados_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Atrasado')
                     entregues_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='NoPrazo')
                     indeterminados_compra = objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Indeterminado')
+                    filtro_obra = False
                 else:
                     objetos_filtrados = Dados.objects.filter(nome_obra=nome_obra, data_emissao_pc__gte=data_inicial, data_emissao_pc__lte=data_final)
                     atrasados =  objetos_filtrados.filter(nome_obra=nome_obra, status_entregue='Atrasado')
@@ -863,6 +874,8 @@ def filtrar(request):
                     atrasados_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Atrasado')
                     entregues_compra =  objetos_filtrados.filter(nome_obra=nome_obra, status_compra='NoPrazo')
                     indeterminados_compra = objetos_filtrados.filter(nome_obra=nome_obra, status_compra='Indeterminado')
+                    filtro_obra = True
+
                 legenda = 'Solicitações de Compra (Total Atendido)'
             
             nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
@@ -897,7 +910,7 @@ def filtrar(request):
             'ind': ind,
             'total_atendido': total_atendido,
             'total_sols_compra': (total_atendido + ind),
-            'filtro_obra': False,
+            'filtro_obra': filtro_obra,
             'filtro': True,
             'legenda': legenda
             }
@@ -951,8 +964,11 @@ def upload_vt(request):
             os.unlink(tmp.name)
             try:
                 dados_vt(dados_xls, request)
-            except (KeyError, IndexError) as msg:
-                return(redirect('erro', msg=str(msg)))
+            except KeyError as msg:
+                return redirect('erro', msg=str(msg), error=str(False), pagina='upload-import-vt')
+            except IndexError:
+                msg = "Arquivo Inválido, verifique o(s) arquivo(s) enviado(s) e tente novamente!"
+                return redirect('erro', msg=str(msg), error=str(True), pagina='upload-import-vt' )
             return(redirect('import-vt'))
         else:
             return(redirect('upload-import-vt'))
@@ -1579,8 +1595,11 @@ def upload_comercial(request):
             os.unlink(tmp.name)
             try:
                 dados_comercial(dados_xls, request)
-            except (KeyError, IndexError) as msg:
-                return(redirect('erro', msg=str(msg)))
+            except KeyError as msg:
+                return redirect('erro', msg=str(msg), error=str(False), pagina='upload-page-comercial')
+            except IndexError:
+                msg = "Arquivo Inválido, verifique o(s) arquivo(s) enviado(s) e tente novamente!"
+                return redirect('erro', msg=str(msg), error=str(True), pagina='upload-page-comercial')
             return(redirect('comercial'))
         else:
             return(redirect('upload-page-comercial'))

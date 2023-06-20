@@ -21,11 +21,15 @@
 <body class="bg-light">
 <div class="d-grid justify-content-center">
     <div class="card bg-light shadow" style="-webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); max-width: 250px; margin-top: 30%;">
-
         <h1 class="title-page error">Erro</h1>
         <div>
+            {% if error == 'True' %}
+            <p>{{msg}}</p>
+            {% else %}
             <p>Não foi identificado o campo <span class="text-danger">{{msg}}</span>, verifique os arquivos enviados e tente novamente!</p>
+            {% endif %}
         </div>
+        <a href="/{{pagina}}"  class="shadow btn btn-roxo">Voltar</a>
     </div>
 </body>
 {% include "footer.html" %}
