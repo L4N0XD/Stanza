@@ -18,9 +18,8 @@ import numpy as np
 import tempfile
 import re
 import os
-from mammoth import convert_to_html
 import aspose.words as aw
-from io import BytesIO
+
 
 
 
@@ -501,19 +500,16 @@ def dados_obras(dados_xls, request):
     nomes = []
     nomes_obras = []
 
-    obra1 = (dados_xls.iloc[3, 3])
-    obra2 = (dados_xls.iloc[4, 3])
-    obra3 = (dados_xls.iloc[5, 3])
-    if str(obra1) != 'nan':
-        nome_obra = (f'{obra1}')
-        nomes.append(obra1)
-        if str(obra2) != 'nan':
-            nome_obra = (f'{nome_obra}| {obra2}')
-            nomes.append(obra2)
-            if str(obra3) != 'nan':
-                nome_obra = (f'{nome_obra}| {obra3}')
-                nomes.append(obra3)
+    x = 3  # valor inicial de x
+
+    while str(dados_xls.iloc[x, 3]) != 'nan':
+        obra = dados_xls.iloc[x, 3]
+        nomes.append(obra)
+        x += 1
+
+    nome_obra = '| '.join(nomes)
     nome_obra = nome_obra.replace('- Obra Construção', '')
+
     primeiro_dado = Dados(id=000000000, nome_obra=nome_obra)
     primeiro_dado.save()
     try:
@@ -1628,10 +1624,10 @@ def minuta_selecionada(request):
             minuta = Minutas.objects.get(nome=nome_minuta)
             doc = aw.Document(minuta.arquivo.path)
             
-            doc.save(f'documentos/{minuta.nome}.html')
-            with open(f'documentos/{minuta.nome}.html', 'r', encoding='utf-8') as file:
+            doc.save(f'documentos/previas/{minuta.nome}.html')
+            with open(f'documentos/previas/{minuta.nome}.html', 'r', encoding='utf-8') as file:
                 html = file.read()
-            return render(request, 'editar_minuta.html', {'document': html, 'minuta': minuta})
+            return render(request, f'editar_minuta.html', {'document': html, 'minuta': minuta})
         else:
             return(redirect('upload-import-vt'))
     else:
