@@ -1651,36 +1651,4 @@ def minuta_selecionada(request):
             return(redirect('upload-import-vt'))
     else:
         return(redirect('upload-import-vt'))
-    
-#def generate_preview(file):
-#    file_extension = os.path.splitext(file.name)[1].lower()
-
-#    if file_extension == '.docx' or file_extension == '.doc':
-#        docx_file = file.read()
-#        pdf_file = docx2pdf.convert(BytesIO(docx_file))
-#        if file_extension == '.docx':
-#            file = InMemoryUploadedFile(pdf_file, None, file.name.replace('.docx', '.pdf'), 'application/pdf', pdf_file.tell, None)
-#        elif file_extension == '.doc':
-#            file = InMemoryUploadedFile(pdf_file, None, file.name.replace('.doc', '.pdf'), 'application/pdf', pdf_file.tell, None)
-
-#    if file_extension == '.pdf':
-#        # Convert the first page to an image
-#        pdf_bytes = file.read()
-#        images = convert_from_bytes(pdf_bytes)
-#        preview_image = images[0]
-
-#    else:
-#        # Unsupported file format
-#        return None
-
-#    # Create a temporary file to save the image
-#    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-#        preview_image.save(temp_file, format='PNG')
-#        temp_file.seek(0)
-
-#        # Create an InMemoryUploadedFile from the temporary file path
-#        preview_file = InMemoryUploadedFile(temp_file, None, f'{file.name}_preview.png', 'image/png', temp_file.tell, None)
-
-#    return preview_file
-
 
