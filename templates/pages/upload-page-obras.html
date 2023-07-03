@@ -69,56 +69,54 @@
 <div class="modal-body bg-light" style="border-radius: 10%;">
   <div>
     {% if insumos|length != 0 %}
-      <table class="table">
-        <thead>
-        </thead>
-        <tbody>
-          {% for insumo in insumos %}
-          <tr>
-            <form method="POST" action="{% url 'editar_insumo' insumo.codigo_insumo %}">
-              {% csrf_token %}
-              <tr class="insumos-cadastrados" style="border-color: black;">
-                <th>
-                  <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Código</span>
-                    <span class="my-0 d-flex align-items-center mx-2 bg-white"> {{ insumo.codigo_insumo }}</span> 
-                    
-                  </div>
-                </th>
-                <td>
-                  <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Descrição</span>
-                    <input name="nome" value="{{ insumo.nome_do_insumo }} " type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                  </div>
-                </td>
-                <td>
-                  <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Qtd. Dias</span>
-                    <input type="number" name="dias" value="{{ insumo.qtd_dias }}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                  </div>
-                </td>
-                <td>
-                  <button type="submit" class="shadow btn btn-success p-0 d-flex" style="align-items: center;"><span class="material-symbols-outlined">
-                    save
-                    </span></button>
-                </td>
-              </form>
-              
-              <form method="POST" action="{% url 'excluir_insumo' insumo.codigo_insumo %}">
-                {% csrf_token %}
-                  <td>
-                    <button type="submit" class="shadow btn btn-danger p-0 d-flex" style="align-items: center;"><span class="material-symbols-outlined">
-                      delete
-                      </span></button>
-                  </td>
-              </form>
-            </tr>
-          </tbody>
-        </table>
+    <table class="table">
+      <thead>
+      </thead>
+      <tbody>
+        {% for insumo in insumos %}
+        <tr class="insumos-cadastrados" style="border-color: black;">
+          <form method="POST" action="{% url 'editar_insumo' insumo.codigo_insumo %}">
+            {% csrf_token %}
+            <th>
+              <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Código</span>
+                <span class="my-0 d-flex align-items-center mx-2 bg-white"> {{ insumo.codigo_insumo }}</span> 
+              </div>
+            </th>
+            <td>
+              <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Descrição</span>
+                <input name="nome" value="{{ insumo.nome_do_insumo }} " type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+              </div>
+            </td>
+            <td>
+              <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Qtd. Dias</span>
+                <input type="number" name="dias" value="{{ insumo.qtd_dias }}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+              </div>
+            </td>
+            <td>
+              <button type="submit" class="shadow btn btn-success p-0 d-flex" style="align-items: center;"><span class="material-symbols-outlined">
+                save
+                </span></button>
+            </td>
+          </form>
+            
+          <form method="POST" action="{% url 'excluir_insumo' insumo.codigo_insumo %}">
+            {% csrf_token %}
+            <td>
+              <button type="submit" class="shadow btn btn-danger p-0 d-flex" style="align-items: center;"><span class="material-symbols-outlined">
+                delete
+                </span></button>
+            </td>
+          </form>
+        </tr>
         {% endfor %}
-        {% else %}
-        <p class="d-flex justify-content-center mb-5" style="font-size: 20px">Não há insumos cadastrados</p>
-        {% endif %}
+      </tbody>
+    </table>
+  {% else %}
+  <p class="d-flex justify-content-center mb-5" style="font-size: 20px">Não há insumos cadastrados</p>
+  {% endif %}
   </div>
     <div class="modal-footer bg-light" style="border-top: #fb8306 solid; border-radius: 20px;">
       <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
