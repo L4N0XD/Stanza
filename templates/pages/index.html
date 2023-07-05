@@ -84,7 +84,7 @@
   {% endif %}
   <section class="d-flex justify-content-center">
     <div id="section-cards" class="section container-xxl p-2 col-md-12">
-    <div class="container cards-container">
+    <div class="cards-container">
       <h4 class="section-title text-white col-3 mx-auto" style="margin-top: 5px;">Como funciona?</h4>
       
       <div id="carousel-cards" class="carousel slide col-md-12" >
@@ -103,8 +103,8 @@
         <div class="gallery-container carousel-inner" id="carousel-inner">             
           <div class="card-complete full-card-mobile-1 full-card-web-1" id="full-card-1" id="">
               <div class="card-body">
-                <h5 class="card-title mt-1 mb-2 underline text">Suprimentos</h5>
-                <p class="card-text text"> Exibe um gráfico de barras com informações sobre o status das solicitações, também exibe a quantidade de solicitações de compra entregues no prazo, atrasadas e indeterminadas.
+                <h5 class="card-title mt-1 mb-2 underline text">Suprimentos  - Analisar SC</h5>
+                <p class="card-text text">Exibe um gráfico de barras com informações sobre o status das solicitações, também exibe a quantidade de solicitações de compra entregues no prazo, atrasadas e indeterminadas.
                 Você pode clicar em uma das barras para obter mais informações sobre cada categoria de solicitação.É possível filtrar e visualizar os dados de forma mais clara e intuitiva.</p>
                 <a href="/upload-page-obras" target="_blank" class="btn cards-btn shadow" id="see-more">Visitar</a>
               </div>
@@ -112,7 +112,7 @@
           <div class="card-complete full-card-mobile-1 full-card-web-1" id="full-card-2">
               <div class="card-body">
                 <h5 class="card-title mt-1 mb-2 underline text">RH - Analisar VT</h5>
-                <p class="card-text text"> Exibe uma tabela na página que mostra os resultados do VT para cada funcionário e contém informações como matrícula, CPF, nome, dias trabalhados, valor a pagar, saldo, salário e desconto.
+                <p class="card-text text">Exibe uma tabela na página que mostra os resultados do VT para cada funcionário e contém informações como matrícula, CPF, nome, dias trabalhados, valor a pagar, saldo, salário e desconto.
                   Em resumo, essa página permite a visualização dos resultados do VT de forma organizada e a realização de ações relacionadas a esses resultados, como exportar dados para outros formatos. </p>
                 <a href="/upload-page-rh" target="_blank" class="btn cards-btn shadow" id="see-more">Visitar</a>
               </div>
@@ -120,7 +120,7 @@
             <div class="card-complete full-card-mobile-2 full-card-web-1" id="full-card-3"> 
                 <div class="card-body">
                   <h5 class="card-title mt-1 mb-2 underline text">RH - Importar VT</h5>
-                  <p class="card-text text"> Gera uma tabela com  várias informações sobre os funcionários, a data de admissão, o nome, o CPF, a identidade, o nome da mãe, a data de nascimento, o CEP, o endereço, o número, 
+                  <p class="card-text text">Gera uma tabela com  várias informações sobre os funcionários, a data de admissão, o nome, o CPF, a identidade, o nome da mãe, a data de nascimento, o CEP, o endereço, o número, 
                     a cidade e o bairro e permite a expotação desses dados para um arquivo TXT que será importado.
                     </p>
                   <a href="/upload-import-vt" target="_blank" class="btn cards-btn shadow" id="see-more">Visitar</a>
@@ -129,7 +129,7 @@
             <div class="card-complete full-card-mobile-2 full-card-web-1" id="full-card-4">
                 <div class="card-body">
                   <h5 class="card-title mt-1 mb-2 underline text">Comercial</h5>
-                  <p class="card-text text"> Ao abrir a página, verão uma lista de diferentes tipos de transações, como mensais, semestrais, bimestrais, entre outros. Cada tipo de transação é acompanhado por um valor correspondente.
+                  <p class="card-text text">Ao abrir a página, verão uma lista de diferentes tipos de transações, como mensais, semestrais, bimestrais, entre outros. Cada tipo de transação é acompanhado por um valor correspondente.
                     Além disso, a página também exibe informações sobre o cliente, como título, nome, documento e unidades associadas. Também são exibidos o total de lançamentos, o total devido e o valor pago.</p>
                   <a href="/upload-page-comercial" target="_blank" class="btn cards-btn shadow" id="see-more">Visitar</a>
                 </div>
@@ -195,8 +195,6 @@
 }
      }
 footer {
-  bottom: -6%;
-  position: absolute;
   width: 100%;
 }
 
@@ -281,8 +279,8 @@ footer {
 .itens {
     display: flex;
     height: 25rem;
-    max-width: 70rem;
-    gap: 0.4rem;
+    max-width: 90%;
+    gap: 1.5rem;
     margin: 15px;
 }
 
@@ -295,6 +293,7 @@ footer {
 .card-complete{
     border-radius: 2rem !important;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.35)!important;
+    border: 2px solid #6e52bf;
 
 }
 
@@ -402,10 +401,6 @@ footer {
 
 }
 
-#carousel-cards{
-    padding-right: 30px;
-    padding-left: 30px;
-}
 
 .controlL,
 .controlR {
@@ -505,7 +500,7 @@ function checkFile() {
       var newDivIten;
       var num = Math.ceil((i - 4) / 2);
       if (i % 2 === 0) {
-        newDivIten = $('<div class="itens" id="new-itens-' + num + '"></div>');
+        newDivIten = $('<div class="itens mx-auto" id="new-itens-' + num + '"></div>');
         window['$newDiv' + i] = newDivIten;
       }
     }
@@ -538,7 +533,7 @@ function checkFile() {
           window['$newDiv' + p] = newProjDiv;
         }
       } else if (p % 2 === 0) {
-        newDivIten = $('<div class="itens" id="new-itens-' + (p / 2) + '"></div>');
+        newDivIten = $('<div class="itens mx-auto" id="new-itens-' + (p / 2) + '"></div>');
         window['$newDiv' + p] = newDivIten;
       }
     }

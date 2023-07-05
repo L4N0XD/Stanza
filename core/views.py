@@ -629,6 +629,7 @@ def dados_obras(dados_xls, request):
     print(f"Tempo total de leitura: {total_time}")
     results_obras(request)
 
+#Filtra as obras para a página
 def filtrar_obras(request):
         if request.method == 'POST':
             form = FiltrarObras(request.POST)
@@ -670,6 +671,7 @@ def filtrar_obras(request):
             'filtro': False
             })
 
+#Retorna os dados referentes para a página de Obras
 def conteudo_prazo(request, nome_obra):
     nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
     if nome_obra not in nomes:
@@ -685,6 +687,7 @@ def conteudo_prazo(request, nome_obra):
 
     return render(request, 'prazo.html', context)
 
+#Retorna os dados referentes para a página de Obras
 def conteudo_atraso(request, nome_obra):
     nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
     if nome_obra not in nomes:
@@ -702,6 +705,7 @@ def conteudo_atraso(request, nome_obra):
 
     return render(request, 'atrasados.html', context)
 
+#Retorna os dados referentes para a página de Obras
 def conteudo_indeterminados(request, nome_obra):
     nomes = Dados.objects.filter(~Q(id=0)).values_list('nome_obra', flat=True).distinct()
     if nome_obra not in nomes:

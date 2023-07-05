@@ -38,7 +38,9 @@
                   </li>
                 </ul>
                 <div class="d-flex" >
+                  {% if user.is_authenticated %}
                   <p class="mx-2 my-auto text-white">{{request.user.username}}</p>
+                  {% endif %}
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item d-flex">
                       {% if user.is_authenticated %}
@@ -50,7 +52,7 @@
                         </ul>
                       </li>
                       {% else %}
-                        <a class=" dropdown-item navdrop nav-link" style="color: white!important; border-radius: 0.375rem;" aria-current="page" href="/logar">Fazer login</a>
+                        <a class=" dropdown-item navdrop nav-link login" style="color: white!important; border-radius: 0.375rem;" aria-current="page" href="/logar">Fazer login</a>
                       {% endif %}
                     </li>
                   </ul>
