@@ -13,7 +13,6 @@ from django.contrib.auth.models import Group
 from core.models import ExtendedUser as User
 from django.db.models import Sum
 from django.db.models import Q
-import aspose.words as aw
 import pandas as pd
 import numpy as np
 import tempfile
@@ -1638,17 +1637,17 @@ def upload_minutas(request):
 def minuta_selecionada(request):
     if request.method == 'POST':
         form = MinutaSelecionada(request.POST)
-        if form.is_valid():
-            nome_minuta = request.POST['nome_minuta']
-            minuta = Minutas.objects.get(nome=nome_minuta)
-            doc = aw.Document(minuta.arquivo.path)
-            
-            doc.save(f'documentos/previas/{minuta.nome}.html')
-            with open(f'documentos/previas/{minuta.nome}.html', 'r', encoding='utf-8') as file:
-                html = file.read()
-            return render(request, f'editar_minuta.html', {'document': html, 'minuta': minuta})
-        else:
-            return(redirect('upload-import-vt'))
+        #if form.is_valid():
+        #    nome_minuta = request.POST['nome_minuta']
+        #    minuta = Minutas.objects.get(nome=nome_minuta)
+        #    doc = aw.Document(minuta.arquivo.path)
+        #    
+        #    doc.save(f'documentos/previas/{minuta.nome}.html')
+        #    with open(f'documentos/previas/{minuta.nome}.html', 'r', encoding='utf-8') as file:
+        #        html = file.read()
+        #    return render(request, f'editar_minuta.html', {'document': html, 'minuta': minuta})
+        #else:
+        #    return(redirect('upload-import-vt'))
     else:
         return(redirect('upload-import-vt'))
 
