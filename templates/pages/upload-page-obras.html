@@ -46,7 +46,7 @@
             </div>
           </div>
           <div class="modal-footer bg-light" style="border-top: #fb8306 solid; border-radius: 20px;">
-            <div class="dropdown">
+            <div>
               <button style="width: 70%;margin-right: 90px;;" class="shadow btn btn-secondary" data-bs-dismiss="modal" onclick="abrirVerInsumos()">
                 Insumos cadastrados
               </button>
@@ -72,7 +72,7 @@
     <table class="table">
       <thead>
       </thead>
-      <tbody>
+      <tbody id="insumosEditar">
         {% for insumo in insumos %}
         <tr class="insumos-cadastrados" style="border-color: black;">
           <form method="POST" action="{% url 'editar_insumo' insumo.codigo_insumo %}">
@@ -119,6 +119,13 @@
   {% endif %}
   </div>
     <div class="modal-footer bg-light" style="border-top: #fb8306 solid; border-radius: 20px;">
+      <div id="pagination-buttons-insumos" class="pagination-buttons mx-auto">
+        <button type="button" class="btn btn-stanza" id="btn-first-editar-insumos">Primeira</button>
+        <button type="button" class="btn btn-stanza" id="btn-previous-editar-insumos">Anterior</button>
+        <span id="page-indicator-editar-insumos"></span>
+        <button type="button" class="btn btn-stanza" id="btn-next-editar-insumos">Próxima</button>
+        <button type="button" class="btn btn-stanza" id="btn-last-editar-insumos">Última</button>
+      </div>
       <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
     </div>
 </div>
@@ -144,7 +151,7 @@
           <th>Editar</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="insumosCadastrados">
         {% for insumo in insumos %}
           <tr class="insumos-cadastrados" style="border-color: black;">
             <td>{{insumo.codigo_insumo}}</td>
@@ -160,6 +167,13 @@
     {% endif %}
   </div>
     <div class="modal-footer bg-light" style="border-top: #fb8306 solid; border-radius: 20px;">
+      <div id="pagination-buttons-insumos" class="pagination-buttons mx-auto">
+        <button type="button" class="btn btn-stanza" id="btn-first-insumos">Primeira</button>
+        <button type="button" class="btn btn-stanza" id="btn-previous-insumos">Anterior</button>
+        <span id="page-indicator-insumos"></span>
+        <button type="button" class="btn btn-stanza" id="btn-next-insumos">Próxima</button>
+        <button type="button" class="btn btn-stanza" id="btn-last-insumos">Última</button>
+      </div>
       <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
     </div>
 </div>
@@ -201,8 +215,8 @@
                     <!-- Button trigger modal -->
                     <div class="mt-5 d-flex ">
                       <button type="button" id="cadastrarInsumo" class="shadow btn btn-roxo mx-auto" style="width: 30%; border-radius: 7px;" data-bs-toggle="modal" data-bs-target="#modalInsumos"> Adicionar Insumo </button>   
+                      <button type="button" id="verInsumos" class="shadow btn btn-roxo mx-auto" style="width: 30%; border-radius: 7px;" data-bs-toggle="modal" data-bs-target="#modalVerInsumos"> Ver insumos </button>   
                       <button type="button" id="editarInsumo" class="shadow btn btn-roxo mx-auto" style="width: 30%; border-radius: 7px;" data-bs-toggle="modal" data-bs-target="#modalEditarInsumos"> Editar insumos </button>   
-                      <button type="button" id="verInsumos" class="shadow btn btn-roxo mx-auto" style="width: 30%; border-radius: 7px; display: none;" data-bs-toggle="modal" data-bs-target="#modalVerInsumos"> Ver insumos </button>   
                     </div>
                 </div>
     
@@ -244,8 +258,116 @@ background-color: white;
   background: linear-gradient(135deg, rgb(161 232 255 / 10%), rgb(121 218 255 / 0%));
 }
 </style>
+<script>
+function paginateInsumos() {
+  var tableinsumos = document.getElementById("insumosCadastrados");
+  var pageIndicatorinsumos = document.getElementById('page-indicator-insumos');
+  var currentPageinsumos = 1;
+  var rowsPerPageinsumos = 15;
+  console.log('funcionou')
+  function updateTableinsumos() {
+    var start = (currentPageinsumos - 1) * rowsPerPageinsumos;
+    var end = start + rowsPerPageinsumos;
 
-    <script>
+    for (var i = 0; i < tableinsumos.rows.length; i++) {
+      tableinsumos.rows[i].style.display = 'none';
+    }
+
+    for (var i = start; i < end && i < tableinsumos.rows.length; i++) {
+      tableinsumos.rows[i].style.display = '';
+    }
+
+    pageIndicatorinsumos.textContent = 'Página ' + currentPageinsumos;
+  }
+
+  function goToPageinsumos(page) {
+    if (page >= 1 && page <= Math.ceil(tableinsumos.rows.length / rowsPerPageinsumos)) {
+      currentPageinsumos = page;
+      updateTableinsumos();
+    }
+  }
+
+  function goToFirstPageinsumos() {
+    goToPageinsumos(1);
+  }
+
+  function goToLastPageinsumos() {
+    goToPageinsumos(Math.ceil(tableinsumos.rows.length / rowsPerPageinsumos));
+  }
+
+  function goToPreviousPageinsumos() {
+    goToPageinsumos(currentPageinsumos - 1);
+  }
+
+  function goToNextPageinsumos() {
+    goToPageinsumos(currentPageinsumos + 1);
+  }
+
+  document.getElementById('btn-first-insumos').addEventListener('click', goToFirstPageinsumos);
+  document.getElementById('btn-last-insumos').addEventListener('click', goToLastPageinsumos);
+  document.getElementById('btn-previous-insumos').addEventListener('click', goToPreviousPageinsumos);
+  document.getElementById('btn-next-insumos').addEventListener('click', goToNextPageinsumos);
+
+  updateTableinsumos();
+}
+
+function paginateInsumosEditar() {
+  var tableeditarinsumos = document.getElementById("insumosEditar");
+  var pageIndicatorEditarinsumos = document.getElementById('page-indicator-editar-insumos');
+  var currentPageEditarinsumos = 1;
+  var rowsPerPageEditarinsumos = 10;
+  console.log('funcionou editar')
+  function updateTableeditarinsumos() {
+    var start = (currentPageEditarinsumos - 1) * rowsPerPageEditarinsumos;
+    var end = start + rowsPerPageEditarinsumos;
+
+    for (var i = 0; i < tableeditarinsumos.rows.length; i++) {
+      tableeditarinsumos.rows[i].style.display = 'none';
+    }
+
+    for (var i = start; i < end && i < tableeditarinsumos.rows.length; i++) {
+      tableeditarinsumos.rows[i].style.display = '';
+    }
+
+    pageIndicatorEditarinsumos.textContent = 'Página ' + currentPageEditarinsumos;
+  }
+
+  function goToPageinsumos(page) {
+    if (page >= 1 && page <= Math.ceil(tableeditarinsumos.rows.length / rowsPerPageEditarinsumos)) {
+      currentPageEditarinsumos = page;
+      updateTableeditarinsumos();
+    }
+  }
+
+  function goToFirstPageEditarinsumos() {
+    goToPageinsumos(1);
+  }
+
+  function goToLastPageEditarinsumos() {
+    goToPageinsumos(Math.ceil(tableeditarinsumos.rows.length / rowsPerPageEditarinsumos));
+  }
+
+  function goToPreviousPageEditarinsumos() {
+    goToPageinsumos(currentPageEditarinsumos - 1);
+  }
+
+  function goToNextPageEditarinsumos() {
+    goToPageinsumos(currentPageEditarinsumos + 1);
+  }
+
+  document.getElementById('btn-first-editar-insumos').addEventListener('click', goToFirstPageEditarinsumos);
+  document.getElementById('btn-last-editar-insumos').addEventListener('click', goToLastPageEditarinsumos);
+  document.getElementById('btn-previous-editar-insumos').addEventListener('click', goToPreviousPageEditarinsumos);
+  document.getElementById('btn-next-editar-insumos').addEventListener('click', goToNextPageEditarinsumos);
+
+  updateTableeditarinsumos();
+}
+
+paginateInsumos();
+paginateInsumosEditar();
+
+</script>
+<script>
     const toastTrigger = document.getElementById('liveToastBtn')
     const toastLiveExample = document.getElementById('liveToast')
 
@@ -306,6 +428,6 @@ if (toastTrigger) {
     }
 }
   
-      </script>
+</script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 from core.models import Dados, Operations, Insumos, DadosAjuCard, DadosRH, Totais, DadosComercial,ClientesComercial, DadosVT, Minutas
 from .forms import FiltroForm, UploadForm, AddInsumoForm, UploadRH, FiltrarObras, MinutaSelecionada
+import tempfile, os, math, time, locale, numero_por_extenso, collections, tempfile, re, os
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-import tempfile, os, math, time, locale, numero_por_extenso, collections
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -15,11 +15,6 @@ from django.db.models import Sum
 from django.db.models import Q
 import pandas as pd
 import numpy as np
-import tempfile
-import re
-import os
-
-
 
 
 #Verifica se o usuário pertence ao grupo para o qual ele fez solicitação de análise
@@ -385,10 +380,14 @@ def results_rh(request):
     reais = DadosRH.objects.all()
     obras = []
     anterior = None
+    n_colaboradores = []
     for real in reais:
         if real.nome_obra is not None and anterior != real.nome_obra:
             obras.append(real.nome_obra)
             anterior = real.nome_obra
+        if real.pagar > 0:
+            n_colaboradores.append(real.pagar)
+
 
     for dado in dados:
         total = dado.total
@@ -399,7 +398,7 @@ def results_rh(request):
     #calcular_dias_uteis(dado.data_planilha)  
     return render(request, 'results-rh.html', {'reais':DadosRH.objects.all(), 'Ajucards': DadosAjuCard.objects.all(), 
                                                    'total': total, 'total_pagar': total_pagar, 'total_descontos': total_descontos, 
-                                                   'data_planilha': data.data_planilha, 'nome_obra': nome_obra, 'obras': obras,})
+                                                   'data_planilha': data.data_planilha, 'nome_obra': nome_obra, 'obras': obras, 'numero_colaboradores': (len(n_colaboradores))})
 
 #Cria e disponibiliza para download o arquivo Excel com os dados do VT
 def download_table(request, nome_obra):
