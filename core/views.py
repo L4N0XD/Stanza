@@ -801,6 +801,7 @@ def cadastrar_insumo(request):
         return(redirect(reverse('upload-page-obras') + '?success=True'))
     return(redirect('upload-page-obras'))
 
+#Edita os insumos no banco de dados para o calculo de previsão de entrega
 def editar_insumo(request, codigo_insumo):
     insumo = Insumos.objects.get(codigo_insumo=codigo_insumo)
     print(insumo)
@@ -814,6 +815,7 @@ def editar_insumo(request, codigo_insumo):
     
     return redirect('upload-page-obras')  # Redirecione para a view desejada após a edição
 
+#Exclui os insumos no banco de dados para o calculo de previsão de entrega
 def  excluir_insumo(request, codigo_insumo):
         insumo = Insumos.objects.get(codigo_insumo=codigo_insumo)
         if request.method == 'POST':

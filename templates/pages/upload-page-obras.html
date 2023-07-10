@@ -368,6 +368,18 @@ paginateInsumosEditar();
 
 </script>
 <script>
+  var tempo;
+    function checkFile() {
+    const input = document.querySelector('#arquivo');
+    var file = input.files[0];
+    tempo = file.size*0.000085
+    const btn = document.querySelector('#startUpload');
+    if (input.value) {
+        btn.disabled = false;
+    } else {
+        btn.disabled = true;
+    }
+}
     const toastTrigger = document.getElementById('liveToastBtn')
     const toastLiveExample = document.getElementById('liveToast')
 
@@ -392,7 +404,8 @@ if (toastTrigger) {
     const startProgress = document.querySelector('#startProgress')
     const divProgress = document.querySelector('#divProgress')
     startUpload.addEventListener('click', () => startProgress.click())
-  function startProgressBar() {
+  
+    function startProgressBar() {
       var progressBar = document.querySelector('#progresso')
       var textProgress = document.querySelector('#text_progress')
       var formUpload = document.querySelector('#uploadForm')
@@ -400,7 +413,7 @@ if (toastTrigger) {
       divProgress.style.display = 'flex'
       var width = 0;
       var index = 0;
-      var id = setInterval(frame, 65);
+      var id = setInterval(frame, tempo);
       const loadTexts = ["Carregando...","Por favor, aguarde...","Lendo o arquivo...","Processando os dados...","Carregando informações...","Quase lá...","Finalizando a leitura...", "Pronto!"];
   
       
@@ -418,15 +431,7 @@ if (toastTrigger) {
         }
       }
   }
-  function checkFile() {
-    const input = document.querySelector('#arquivo');
-    const btn = document.querySelector('#startUpload');
-    if (input.value) {
-        btn.disabled = false;
-    } else {
-        btn.disabled = true;
-    }
-}
+
   
 </script>
 </body>
