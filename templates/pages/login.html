@@ -119,6 +119,7 @@
                             </div>
                             <button id="cadastrar" type="submit" disabled class="btn btn-stanza shadow" style="width: 100%;">Cadastrar</button>
                         </form>
+                        <button id="fazerLogin" class="btn btn-stanza shadow mt-2 mb-3 d-flex" style="width: 100%; justify-content: space-between;"><span class="material-symbols-outlined">arrow_back</span>Voltar para Login<span class="material-symbols-outlined">arrow_back</span></button>
                     </div>
             </div>
     </div>
@@ -139,14 +140,21 @@
     var emailInput = document.getElementById("emailRegister");
     footer.style.width = '100%';
     cadastro = document.querySelector('#cadastro')
+    fazerLogin = document.querySelector('#fazerLogin')
     registro = document.getElementById("signup");
     login = document.getElementById("login");
     cadastro.addEventListener('click', () => registrar())
+    fazerLogin.addEventListener('click', () => fazer_Login())
     
     function registrar () {
         document.getElementById("titulo").text = 'Cadastro',
         login.style.display = 'none',
         registro.style.display = 'flex'
+    }
+    function fazer_Login () {
+        document.getElementById("titulo").text = 'Login',
+        login.style.display = 'flex',
+        registro.style.display = 'none'
     }
 
 
